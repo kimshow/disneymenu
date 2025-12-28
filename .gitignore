@@ -29,3 +29,13 @@ data/*.json
 # Environment
 .env
 .env.local
+
+# Testing
+.coverage
+htmlcov/
+cov_annotate/
+.pytest_cache/
+
+# Downloaded test files
+*.html
+*_files/
