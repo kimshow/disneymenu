@@ -7,20 +7,20 @@ export interface MenuItem {
   name: string;
   description?: string;
   price: PriceInfo;
-  image_urls: string[];
-  thumbnail_url?: string;
+  image_urls: string[];  // バックエンドモデルに合わせて修正
+  thumbnail_url?: string;  // サムネイル画像URL
   restaurants: Restaurant[];
   categories: string[];
   tags: string[];
-  characters: string[];
-  allergens: string[];
-  nutritional_info?: Record<string, unknown>;
+  keywords?: string[];
+  characters?: string[];  // 関連キャラクター
+  allergens?: string[];  // アレルゲン情報
   source_url: string;
   scraped_at: string;
-  last_updated?: string;
-  is_seasonal: boolean;
-  is_new: boolean;
-  is_available: boolean;
+  is_seasonal: boolean;  // 季節限定フラグ
+  is_new: boolean;  // 新商品フラグ
+  is_available: boolean;  // 販売中フラグ
+  map_locations?: MapLocation[];  // マップ位置情報
 }
 
 export interface Restaurant {
@@ -29,14 +29,14 @@ export interface Restaurant {
   park: "tdl" | "tds";
   area: string;
   url: string;
-  service_types: string[];
+  service_types?: string[];  // サービスタイプ
   availability?: AvailabilityPeriod;
 }
 
 export interface PriceInfo {
   amount: number;
   unit: string;
-  tax_included: boolean;
+  tax_included?: boolean;  // 税込価格フラグ
 }
 
 export interface AvailabilityPeriod {
@@ -94,4 +94,18 @@ export interface StatsData {
 export interface StatsResponse {
   success: boolean;
   data: StatsData;
+}
+
+/**
+ * マップ位置情報
+ */
+export interface MapLocation {
+  restaurant_id: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  floor?: string;
+  zone?: string;
+  map_url?: string;
 }

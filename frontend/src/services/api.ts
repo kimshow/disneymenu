@@ -12,9 +12,8 @@ import type {
   StatsResponse,
 } from '../types/menu';
 
-const API_BASE_URL = import.meta.env.PROD
-  ? '/api'
-  : 'http://localhost:8000/api';
+// API Base URL (開発環境・本番環境ともにプロキシ経由で統一)
+const API_BASE_URL = '/api';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -26,9 +25,34 @@ const apiClient = axios.create({
 
 // レスポンスインターセプター（エラーハンドリング）
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // 成功時のログ（開発環境のみ）
+    if (import.meta.env.DEV) {
+      console.log('API Success:', response.config.url, response.status);
+    }
+    return response;
+  },
   (error) => {
-    console.error('API Error:', error);
+    // 詳細なエラーログ
+    if (error.response) {
+      // サーバーがエラーレスポンスを返した場合
+      console.error('API Error Response:', {
+        url: error.config?.url,
+        status: error.response.status,
+        statusText: error.response.statusText,
+        data: error.response.data,
+      });
+    } else if (error.request) {
+      // リクエストは送信されたが、レスポンスがない場合（バックエンド停止など）
+      console.error('API No Response:', {
+        url: error.config?.url,
+        message: 'バックエンドサーバーに接続できません。サーバーが起動しているか確認してください。',
+      });
+    } else {
+      // リクエスト設定時のエラー
+      console.error('API Request Setup Error:', error.message);
+    }
+
     return Promise.reject(error);
   }
 );

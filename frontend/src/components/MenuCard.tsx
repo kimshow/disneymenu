@@ -1,8 +1,11 @@
 /**
  * メニューカードコンポーネント
  */
-import { Card, CardContent, CardMedia, Typography, Chip, Box } from '@mui/material';
-import { MenuItem } from '../types/menu';
+import { Card, CardContent, CardMedia, Typography, Chip, Box, Stack } from '@mui/material';
+import type { MenuItem } from '../types/menu';
+import { ParkChip } from './menu/ParkChip';
+import { CategoryChips } from './menu/CategoryChips';
+import { RestaurantList } from './menu/RestaurantList';
 
 interface MenuCardProps {
   menu: MenuItem;
@@ -10,9 +13,10 @@ interface MenuCardProps {
 }
 
 export function MenuCard({ menu, onClick }: MenuCardProps) {
-  const imageUrl = menu.thumbnail_url || menu.image_urls[0] || '/placeholder.jpg';
-  const restaurant = menu.restaurants[0];
-  const parkLabel = restaurant?.park === 'tdl' ? 'ランド' : 'シー';
+  // thumbnail_urlまたはimage_urlsの最初の画像を取得
+  const imageUrl = menu.thumbnail_url || menu.image_urls?.[0];
+  // ユニークなパークを取得
+  const parks = [...new Set(menu.restaurants.map(r => r.park))];
 
   return (
     <Card
@@ -22,50 +26,97 @@ export function MenuCard({ menu, onClick }: MenuCardProps) {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        transition: 'transform 0.2s',
+        transition: 'transform 0.2s, box-shadow 0.2s',
         '&:hover': onClick ? {
           transform: 'translateY(-4px)',
-          boxShadow: 3,
+          boxShadow: 4,
         } : {},
+        position: 'relative',
       }}
     >
-      <CardMedia
-        component="img"
-        height="200"
-        image={imageUrl}
-        alt={menu.name}
-        sx={{ objectFit: 'cover' }}
-      />
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Typography gutterBottom variant="h6" component="h2" noWrap>
+      {/* 販売状況バッジ */}
+      {!menu.is_available && (
+        <Chip
+          label="販売終了"
+          size="small"
+          color="default"
+          sx={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            zIndex: 1,
+          }}
+        />
+      )}
+
+      {menu.is_seasonal && (
+        <Chip
+          label="季節限定"
+          size="small"
+          color="success"
+          sx={{
+            position: 'absolute',
+            top: 8,
+            left: 8,
+            zIndex: 1,
+          }}
+        />
+      )}
+
+      {/* 画像 */}
+      {imageUrl ? (
+        <CardMedia
+          component="img"
+          height="200"
+          image={imageUrl}
+          alt={menu.name}
+          sx={{ objectFit: 'cover' }}
+        />
+      ) : (
+        <Box
+          sx={{
+            height: 200,
+            bgcolor: 'grey.200',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            画像なし
+          </Typography>
+        </Box>
+      )}
+
+      <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+        {/* メニュー名 */}
+        <Typography variant="h6" component="h2" gutterBottom>
           {menu.name}
         </Typography>
 
+        {/* 価格 */}
         <Typography variant="h5" color="primary" gutterBottom>
           ¥{menu.price.amount.toLocaleString()}
-          {menu.price.unit && (
-            <Typography component="span" variant="body2" color="text.secondary" ml={1}>
-              {menu.price.unit}
-            </Typography>
-          )}
+          <Typography component="span" variant="body2" color="text.secondary" sx={{ ml: 0.5 }}>
+            / {menu.price.unit}
+          </Typography>
         </Typography>
 
-        {restaurant && (
-          <Typography variant="body2" color="text.secondary" gutterBottom>
-            {restaurant.name} ({parkLabel})
-          </Typography>
-        )}
-
-        <Box sx={{ mt: 1, display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-          {menu.is_seasonal && (
-            <Chip label="季節限定" size="small" color="secondary" />
-          )}
-          {menu.is_new && (
-            <Chip label="新商品" size="small" color="success" />
-          )}
-          {menu.tags.slice(0, 2).map((tag) => (
-            <Chip key={tag} label={tag} size="small" variant="outlined" />
+        {/* パークタグ */}
+        <Stack direction="row" spacing={0.5} sx={{ mb: 1 }} flexWrap="wrap">
+          {parks.map((park) => (
+            <ParkChip key={park} park={park} />
           ))}
+        </Stack>
+
+        {/* カテゴリータグ */}
+        <Box sx={{ mb: 1 }}>
+          <CategoryChips categories={menu.categories} />
+        </Box>
+
+        {/* レストランリスト */}
+        <Box sx={{ mt: 'auto' }}>
+          <RestaurantList restaurants={menu.restaurants} />
         </Box>
       </CardContent>
     </Card>

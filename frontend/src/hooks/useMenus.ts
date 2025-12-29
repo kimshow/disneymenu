@@ -1,7 +1,8 @@
 /**
  * Custom hooks for menu data fetching with React Query
  */
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
 import { menuAPI } from '../services/api';
 import type {
   MenuItem,
