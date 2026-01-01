@@ -114,17 +114,17 @@ export function FavoritesPage() {
               mb: { xs: 2, sm: 3 },
             }}
           />
-          <Typography 
-            variant="h4" 
+          <Typography
+            variant="h4"
             gutterBottom
             sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}
           >
             お気に入りがありません
           </Typography>
-          <Typography 
-            variant="body1" 
-            color="text.secondary" 
-            sx={{ 
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{
               mb: { xs: 3, sm: 4 },
               fontSize: { xs: '0.875rem', sm: '1rem' },
               maxWidth: { xs: '100%', sm: '400px' },
@@ -138,7 +138,7 @@ export function FavoritesPage() {
             variant="contained"
             size="large"
             onClick={() => navigate('/menus')}
-            sx={{ 
+            sx={{
               width: { xs: '100%', sm: 'auto' },
               maxWidth: { xs: '300px', sm: 'none' },
             }}
