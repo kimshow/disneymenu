@@ -7,7 +7,6 @@ import {
   Container,
   Typography,
   Box,
-  Grid2,
   Button,
   FormControl,
   InputLabel,
@@ -34,16 +33,21 @@ export function FavoritesPage() {
   const [sortBy, setSortBy] = useState<FavoritesSortOption>('addedAt');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
+  // お気に入りメニューをカンマ区切りのIDで取得
+  const favoriteIds = favorites.join(',');
+
   // お気に入りのメニューIDを使ってメニューデータを取得
-  const { data, isLoading, isError } = useMenus({
-    ids: favorites.join(','),
-  });
+  const { data, isLoading, isError } = useMenus(
+    favoriteIds ? { q: favoriteIds } : undefined
+  );
 
   // ソート処理
   const sortedMenus = useMemo(() => {
     if (!data?.data) return [];
 
-    const menus = [...data.data];
+    // お気に入りIDに一致するメニューのみをフィルター
+    const favoriteMenus = data.data.filter(menu => favorites.includes(menu.id));
+    const menus = [...favoriteMenus];
 
     switch (sortBy) {
       case 'name':
@@ -226,13 +230,21 @@ export function FavoritesPage() {
       </Box>
 
       {/* メニュー一覧 */}
-      <Grid2 container spacing={3}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+          },
+          gap: 3,
+        }}
+      >
         {sortedMenus.map((menu) => (
-          <Grid2 key={menu.id} size={{ xs: 12, sm: 6, md: 4 }}>
-            <MenuCard menu={menu} />
-          </Grid2>
+          <MenuCard key={menu.id} menu={menu} />
         ))}
-      </Grid2>
+      </Box>
     </Container>
   );
 }
