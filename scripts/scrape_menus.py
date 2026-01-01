@@ -39,20 +39,17 @@ async def scrape_menu(
 
     async with semaphore:
         try:
-            async with session.get(url, timeout=aiohttp.ClientTimeout(total=60)) as response:
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as response:
                 if response.status == 200:
                     html = await response.text()
                     return scraper.parse_menu_page(html, menu_id)
                 elif response.status == 404:
                     return None  # 存在しないID
                 else:
-                    print(f"Warning: {menu_id} returned status {response.status}")
                     return None
         except asyncio.TimeoutError:
-            print(f"Timeout: {menu_id}")
             return None
         except Exception as e:
-            print(f"Error scraping {menu_id}: {e}")
             return None
 
 
@@ -90,22 +87,41 @@ async def scrape_all_menus(
     connector = aiohttp.TCPConnector(limit=max_concurrent, limit_per_host=max_concurrent, ttl_dns_cache=300, ssl=True)
 
     async with aiohttp.ClientSession(headers=headers, connector=connector) as session:
-        tasks = []
+        total_ids = end_id - start_id + 1
+        batch_size = 10  # 10件ずつバッチ処理
 
-        for menu_id_num in range(start_id, end_id + 1):
-            menu_id_str = str(menu_id_num).zfill(4)
-            tasks.append(scrape_menu(session, menu_id_str, scraper, semaphore))
+        print(f"\nScraping menu IDs {start_id:04d} to {end_id:04d} ({total_ids} IDs)")
+        print(f"Concurrent requests: {max_concurrent}")
+        print(f"Batch size: {batch_size}")
+        print(f"Rate limit: {rate_limit}s between batches")
+        print(f"Estimated time: ~{total_ids * rate_limit / batch_size / 60:.1f} minutes\n")
 
-            # レート制限: 指定された秒数待機
-            if rate_limit > 0:
-                await asyncio.sleep(rate_limit)
+        # プログレスバー付きでバッチ処理
+        with tqdm(total=total_ids, desc="Scraping", unit="menu") as pbar:
+            for batch_start in range(start_id, end_id + 1, batch_size):
+                batch_end = min(batch_start + batch_size - 1, end_id)
 
-        # プログレスバー付きで実行
-        print(f"Scraping menu IDs {start_id:04d} to {end_id:04d}...")
-        for coro in tqdm(asyncio.as_completed(tasks), total=len(tasks), desc="Scraping"):
-            data = await coro
-            if data:
-                results.append(data)
+                # バッチ内のタスクを作成
+                tasks = []
+                for menu_id_num in range(batch_start, batch_end + 1):
+                    menu_id_str = str(menu_id_num).zfill(4)
+                    tasks.append(scrape_menu(session, menu_id_str, scraper, semaphore))
+
+                # バッチを並行実行
+                batch_results = await asyncio.gather(*tasks)
+
+                # 結果を集約
+                for data in batch_results:
+                    if data:
+                        results.append(data)
+
+                # プログレスバー更新
+                pbar.update(len(tasks))
+                pbar.set_postfix({"found": len(results)})
+
+                # レート制限: バッチ間の待機（最後のバッチ以外）
+                if rate_limit > 0 and batch_end < end_id:
+                    await asyncio.sleep(rate_limit)
 
     return results
 
@@ -153,8 +169,10 @@ def main():
     parser.add_argument("--start", type=int, default=0, help="Start menu ID (default: 0)")
     parser.add_argument("--end", type=int, default=9999, help="End menu ID (default: 9999)")
     parser.add_argument("--output", type=str, default="data/menus.json", help="Output file path")
-    parser.add_argument("--rate-limit", type=float, default=1.0, help="Rate limit in seconds (default: 1.0)")
-    parser.add_argument("--max-concurrent", type=int, default=5, help="Max concurrent requests (default: 5)")
+    parser.add_argument(
+        "--rate-limit", type=float, default=1.0, help="Rate limit between batches in seconds (default: 1.0)"
+    )
+    parser.add_argument("--max-concurrent", type=int, default=10, help="Max concurrent requests (default: 10)")
 
     args = parser.parse_args()
 
