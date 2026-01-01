@@ -49,7 +49,7 @@ export const RestaurantFilter = () => {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder={selectedPark ? `${selectedPark === 'disneyland' ? 'ランド' : 'シー'}のレストランを選択` : 'レストランを選択'}
+          placeholder="レストランを選択"
           InputProps={{
             ...params.InputProps,
             endAdornment: (
