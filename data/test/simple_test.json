@@ -1,0 +1,127 @@
+[
+  {
+    "id": "1779",
+    "name": "リトルグリーンまん",
+    "description": "東京ディズニーシー、東京ディズニーランドのおすすめメニュー「リトルグリーンまん」の紹介ページです。",
+    "price": {
+      "amount": 400,
+      "unit": "1カップ",
+      "tax_included": true
+    },
+    "image_urls": [
+      "https://media1.tokyodisneyresort.jp/food_menu/image/1779_1.34_1_C2w75656.jpg"
+    ],
+    "thumbnail_url": "https://media1.tokyodisneyresort.jp/food_menu/image/1779_1.34_1_C2w75656.jpg",
+    "restaurants": [
+      {
+        "id": "335",
+        "name": "プラザパビリオン・レストラン",
+        "park": "tdl",
+        "area": "ウエスタンランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/335/",
+        "availability": {
+          "start_date": "2025-12-26",
+          "end_date": null
+        },
+        "service_types": []
+      },
+      {
+        "id": "354",
+        "name": "ソフトランディング",
+        "park": "tdl",
+        "area": "トゥモローランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/354/",
+        "availability": null,
+        "service_types": []
+      },
+      {
+        "id": "353",
+        "name": "パン・ギャラクティック・ピザ・ポート",
+        "park": "tdl",
+        "area": "トゥモローランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/353/",
+        "availability": null,
+        "service_types": []
+      },
+      {
+        "id": "352",
+        "name": "プラズマ・レイズ・ダイナー",
+        "park": "tdl",
+        "area": "トゥモローランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/352/",
+        "availability": null,
+        "service_types": []
+      },
+      {
+        "id": "403",
+        "name": "ザンビーニ･ブラザーズ･リストランテ",
+        "park": "tds",
+        "area": "メディテレーニアンハーバー",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/403/",
+        "availability": null,
+        "service_types": []
+      },
+      {
+        "id": "422",
+        "name": "ニューヨーク・デリ",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/422/",
+        "availability": {
+          "start_date": "2025-07-01",
+          "end_date": "2026-03-31"
+        },
+        "service_types": []
+      },
+      {
+        "id": "459",
+        "name": "ユカタン・ベースキャンプ・グリル",
+        "park": "tds",
+        "area": "ロストリバーデルタ",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/459/",
+        "availability": null,
+        "service_types": []
+      },
+      {
+        "id": "452",
+        "name": "ユカタン・ベースキャンプ・グリル（テイクアウトカウンター）",
+        "park": "tds",
+        "area": "ロストリバーデルタ",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/452/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー",
+      "スウィーツ",
+      "スナック",
+      "デザート／スウィーツ"
+    ],
+    "tags": [
+      "パン・ギャラクティック・ピザ・ポート",
+      "ソフトランディング",
+      "ザンビーニ･ブラザーズ･リストランテ",
+      "カウンターサービス",
+      "バフェテリアサービス",
+      "おすすめメニュー",
+      "スウィーツ",
+      "スナック",
+      "キャラクターモチーフのメニュー",
+      "デザート／スウィーツ",
+      "～500円"
+    ],
+    "characters": [
+      "トイ・ストーリー",
+      "ピクサー"
+    ],
+    "source_url": "https://www.tokyodisneyresort.jp/food/1779/",
+    "scraped_at": "2025-12-31T22:48:33.025908",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  }
+]

@@ -1,0 +1,1796 @@
+[
+  {
+    "id": "0007",
+    "name": "ミルク（紙パック）",
+    "description": "東京ディズニーランドのおすすめメニュー「ミルク（紙パック）」の紹介ページです。",
+    "price": {
+      "amount": 190,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "316",
+        "name": "スウィートハート・カフェ",
+        "park": "tdl",
+        "area": "ワールドバザール",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/316/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ワールドバザール",
+      "スウィートハート・カフェ",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0007/",
+    "scraped_at": "2025-12-31T22:50:24.544011",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0008",
+    "name": "コーヒー",
+    "description": "東京ディズニーランドのおすすめメニュー「コーヒー」の紹介ページです。",
+    "price": {
+      "amount": 0,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "323",
+        "name": "クリスタルパレス・レストラン",
+        "park": "tdl",
+        "area": "アドベンチャーランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/323/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ブッフェサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "フリー・リフィル"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0008/",
+    "scraped_at": "2025-12-31T22:50:36.315722",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0009",
+    "name": "紅茶",
+    "description": "東京ディズニーランドのおすすめメニュー「紅茶」の紹介ページです。",
+    "price": {
+      "amount": 0,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "323",
+        "name": "クリスタルパレス・レストラン",
+        "park": "tdl",
+        "area": "アドベンチャーランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/323/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ブッフェサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "フリー・リフィル"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0009/",
+    "scraped_at": "2025-12-31T22:50:46.166213",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0010",
+    "name": "ウーロン茶",
+    "description": "東京ディズニーランドのおすすめメニュー「ウーロン茶」の紹介ページです。",
+    "price": {
+      "amount": 0,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "323",
+        "name": "クリスタルパレス・レストラン",
+        "park": "tdl",
+        "area": "アドベンチャーランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/323/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ブッフェサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "フリー・リフィル"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0010/",
+    "scraped_at": "2025-12-31T22:50:56.386000",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0011",
+    "name": "アイスコーヒー",
+    "description": "東京ディズニーランドのおすすめメニュー「アイスコーヒー」の紹介ページです。",
+    "price": {
+      "amount": 0,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "323",
+        "name": "クリスタルパレス・レストラン",
+        "park": "tdl",
+        "area": "アドベンチャーランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/323/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ブッフェサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "フリー・リフィル"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0011/",
+    "scraped_at": "2025-12-31T22:51:08.573999",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0012",
+    "name": "アイスウーロン茶",
+    "description": "東京ディズニーランドのおすすめメニュー「アイスウーロン茶」の紹介ページです。",
+    "price": {
+      "amount": 0,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "323",
+        "name": "クリスタルパレス・レストラン",
+        "park": "tdl",
+        "area": "アドベンチャーランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/323/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ブッフェサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "フリー・リフィル"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0012/",
+    "scraped_at": "2025-12-31T22:51:19.938958",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0013",
+    "name": "オレンジジュース",
+    "description": "東京ディズニーランドのおすすめメニュー「オレンジジュース」の紹介ページです。",
+    "price": {
+      "amount": 0,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "323",
+        "name": "クリスタルパレス・レストラン",
+        "park": "tdl",
+        "area": "アドベンチャーランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/323/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ブッフェサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "フリー・リフィル"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0013/",
+    "scraped_at": "2025-12-31T22:51:31.098743",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0016",
+    "name": "テリヤキチキンレッグ",
+    "description": "東京ディズニーランドのおすすめメニュー「テリヤキチキンレッグ」の紹介ページです。",
+    "price": {
+      "amount": 600,
+      "unit": "1個",
+      "tax_included": true
+    },
+    "image_urls": [
+      "https://media1.tokyodisneyresort.jp/food_menu/image/16_1.9_1_1GZ8M43e.jpg"
+    ],
+    "thumbnail_url": "https://media1.tokyodisneyresort.jp/food_menu/image/16_1.9_1_1GZ8M43e.jpg",
+    "restaurants": [
+      {
+        "id": "331",
+        "name": "スキッパーズ・ギャレー",
+        "park": "tdl",
+        "area": "アドベンチャーランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/331/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー",
+      "スナック"
+    ],
+    "tags": [
+      "スキッパーズ・ギャレー",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "スナック",
+      "ワンハンドメニュー",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0016/",
+    "scraped_at": "2025-12-31T22:52:00.598520",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0017",
+    "name": "ミルク（紙パック）",
+    "description": "東京ディズニーシーのおすすめメニュー「ミルク（紙パック）」の紹介ページです。",
+    "price": {
+      "amount": 190,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "401",
+        "name": "マンマ・ビスコッティーズ・ベーカリー",
+        "park": "tds",
+        "area": "メディテレーニアンハーバー",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/401/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "マンマ・ビスコッティーズ・ベーカリー",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0017/",
+    "scraped_at": "2025-12-31T22:52:12.778633",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0018",
+    "name": "オレンジジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「オレンジジュース」の紹介ページです。",
+    "price": {
+      "amount": 680,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "412",
+        "name": "マゼランズ",
+        "park": "tds",
+        "area": "メディテレーニアンハーバー",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/412/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "マゼランズ",
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0018/",
+    "scraped_at": "2025-12-31T22:52:23.019429",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0019",
+    "name": "グレープフルーツジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「グレープフルーツジュース」の紹介ページです。",
+    "price": {
+      "amount": 680,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "412",
+        "name": "マゼランズ",
+        "park": "tds",
+        "area": "メディテレーニアンハーバー",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/412/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "マゼランズ",
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0019/",
+    "scraped_at": "2025-12-31T22:52:32.846861",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0021",
+    "name": "アップルジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「アップルジュース」の紹介ページです。",
+    "price": {
+      "amount": 680,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "412",
+        "name": "マゼランズ",
+        "park": "tds",
+        "area": "メディテレーニアンハーバー",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/412/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "マゼランズ",
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0021/",
+    "scraped_at": "2025-12-31T22:52:53.286790",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0027",
+    "name": "オレンジジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「オレンジジュース」の紹介ページです。",
+    "price": {
+      "amount": 520,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "432",
+        "name": "レストラン櫻",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/432/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "レストラン櫻",
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0027/",
+    "scraped_at": "2025-12-31T22:53:52.309376",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0028",
+    "name": "アップルジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「アップルジュース」の紹介ページです。",
+    "price": {
+      "amount": 520,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "432",
+        "name": "レストラン櫻",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/432/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "レストラン櫻",
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0028/",
+    "scraped_at": "2025-12-31T22:54:03.165533",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0029",
+    "name": "スパイシースモークチキンレッグ",
+    "description": "東京ディズニーシー、東京ディズニーランドのおすすめメニュー「スパイシースモークチキンレッグ」の紹介ページです。",
+    "price": {
+      "amount": 600,
+      "unit": "1本",
+      "tax_included": true
+    },
+    "image_urls": [
+      "https://media1.tokyodisneyresort.jp/food_menu/image/29_1.9_1_75yB4a20.jpg"
+    ],
+    "thumbnail_url": "https://media1.tokyodisneyresort.jp/food_menu/image/29_1.9_1_75yB4a20.jpg",
+    "restaurants": [
+      {
+        "id": "335",
+        "name": "プラザパビリオン・レストラン",
+        "park": "tdl",
+        "area": "ウエスタンランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/335/",
+        "availability": null,
+        "service_types": []
+      },
+      {
+        "id": "459",
+        "name": "ユカタン・ベースキャンプ・グリル",
+        "park": "tds",
+        "area": "ロストリバーデルタ",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/459/",
+        "availability": null,
+        "service_types": []
+      },
+      {
+        "id": "461",
+        "name": "ロストリバークックハウス",
+        "park": "tds",
+        "area": "ロストリバーデルタ",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/461/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー",
+      "スナック",
+      "サイド"
+    ],
+    "tags": [
+      "ロストリバークックハウス",
+      "カウンターサービス",
+      "バフェテリアサービス",
+      "おすすめメニュー",
+      "スナック",
+      "サイド",
+      "ワンハンドメニュー",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0029/",
+    "scraped_at": "2025-12-31T22:54:14.426710",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0030",
+    "name": "ユカタンソーセージドッグ",
+    "description": "東京ディズニーシーのおすすめメニュー「ユカタンソーセージドッグ」の紹介ページです。",
+    "price": {
+      "amount": 600,
+      "unit": "1本",
+      "tax_included": true
+    },
+    "image_urls": [
+      "https://media1.tokyodisneyresort.jp/food_menu/image/30_1.1_1_72bD41R2.jpg"
+    ],
+    "thumbnail_url": "https://media1.tokyodisneyresort.jp/food_menu/image/30_1.1_1_72bD41R2.jpg",
+    "restaurants": [
+      {
+        "id": "460",
+        "name": "エクスペディション・イート",
+        "park": "tds",
+        "area": "ロストリバーデルタ",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/460/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー",
+      "スナック"
+    ],
+    "tags": [
+      "エクスペディション・イート",
+      "ワゴンサービス",
+      "おすすめメニュー",
+      "スナック",
+      "ワンハンドメニュー",
+      "ホットドッグ",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0030/",
+    "scraped_at": "2025-12-31T22:54:24.258120",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0031",
+    "name": "オレンジジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「オレンジジュース」の紹介ページです。",
+    "price": {
+      "amount": 680,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "425",
+        "name": "S.S.コロンビア・ダイニングルーム",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/425/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0031/",
+    "scraped_at": "2025-12-31T22:54:36.035520",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0032",
+    "name": "アップルジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「アップルジュース」の紹介ページです。",
+    "price": {
+      "amount": 680,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "425",
+        "name": "S.S.コロンビア・ダイニングルーム",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/425/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0032/",
+    "scraped_at": "2025-12-31T22:54:47.603421",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0033",
+    "name": "オレンジジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「オレンジジュース」の紹介ページです。",
+    "price": {
+      "amount": 950,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "429",
+        "name": "テディ・ルーズヴェルト・ラウンジ",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/429/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "テディ・ルーズヴェルト・ラウンジ",
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0033/",
+    "scraped_at": "2025-12-31T22:54:58.868647",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0034",
+    "name": "グレープフルーツジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「グレープフルーツジュース」の紹介ページです。",
+    "price": {
+      "amount": 950,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "429",
+        "name": "テディ・ルーズヴェルト・ラウンジ",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/429/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "テディ・ルーズヴェルト・ラウンジ",
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0034/",
+    "scraped_at": "2025-12-31T22:55:10.744011",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0035",
+    "name": "パイナップルジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「パイナップルジュース」の紹介ページです。",
+    "price": {
+      "amount": 950,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "429",
+        "name": "テディ・ルーズヴェルト・ラウンジ",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/429/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "テディ・ルーズヴェルト・ラウンジ",
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0035/",
+    "scraped_at": "2025-12-31T22:55:21.497521",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0036",
+    "name": "トマトジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「トマトジュース」の紹介ページです。",
+    "price": {
+      "amount": 950,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "429",
+        "name": "テディ・ルーズヴェルト・ラウンジ",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/429/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "テディ・ルーズヴェルト・ラウンジ",
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0036/",
+    "scraped_at": "2025-12-31T22:55:31.675308",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0037",
+    "name": "アップルジュース",
+    "description": "東京ディズニーシーのおすすめメニュー「アップルジュース」の紹介ページです。",
+    "price": {
+      "amount": 950,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "429",
+        "name": "テディ・ルーズヴェルト・ラウンジ",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/429/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "テディ・ルーズヴェルト・ラウンジ",
+      "テーブルサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0037/",
+    "scraped_at": "2025-12-31T22:55:41.474441",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0038",
+    "name": "ミルク（紙パック）",
+    "description": "東京ディズニーシーのおすすめメニュー「ミルク（紙パック）」の紹介ページです。",
+    "price": {
+      "amount": 190,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "422",
+        "name": "ニューヨーク・デリ",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/422/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0038/",
+    "scraped_at": "2025-12-31T22:55:52.729932",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0040",
+    "name": "チャーシューと玉子のチャーハン",
+    "description": "東京ディズニーシーのおすすめメニュー「チャーシューと玉子のチャーハン」の紹介ページです。",
+    "price": {
+      "amount": 980,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [
+      "https://media1.tokyodisneyresort.jp/food_menu/image/40_1.1_1_957pV909.jpg"
+    ],
+    "thumbnail_url": "https://media1.tokyodisneyresort.jp/food_menu/image/40_1.1_1_957pV909.jpg",
+    "restaurants": [
+      {
+        "id": "418",
+        "name": "ヴォルケイニア・レストラン",
+        "park": "tds",
+        "area": "ミステリアスアイランド",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/418/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "バフェテリアサービス",
+      "おすすめメニュー",
+      "メインディッシュ",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0040/",
+    "scraped_at": "2025-12-31T22:56:14.748468",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0041",
+    "name": "海老のチリソース",
+    "description": "東京ディズニーシーのおすすめメニュー「海老のチリソース」の紹介ページです。",
+    "price": {
+      "amount": 980,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [
+      "https://media1.tokyodisneyresort.jp/food_menu/image/41_1.1_1_68WT1Mwc.jpg"
+    ],
+    "thumbnail_url": "https://media1.tokyodisneyresort.jp/food_menu/image/41_1.1_1_68WT1Mwc.jpg",
+    "restaurants": [
+      {
+        "id": "418",
+        "name": "ヴォルケイニア・レストラン",
+        "park": "tds",
+        "area": "ミステリアスアイランド",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/418/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "バフェテリアサービス",
+      "おすすめメニュー",
+      "メインディッシュ",
+      "中華",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0041/",
+    "scraped_at": "2025-12-31T22:56:25.600535",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0042",
+    "name": "マーボー豆腐",
+    "description": "東京ディズニーシーのおすすめメニュー「マーボー豆腐」の紹介ページです。",
+    "price": {
+      "amount": 980,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [
+      "https://media1.tokyodisneyresort.jp/food_menu/image/42_1.1_1_9LvUK7lc.jpg"
+    ],
+    "thumbnail_url": "https://media1.tokyodisneyresort.jp/food_menu/image/42_1.1_1_9LvUK7lc.jpg",
+    "restaurants": [
+      {
+        "id": "418",
+        "name": "ヴォルケイニア・レストラン",
+        "park": "tds",
+        "area": "ミステリアスアイランド",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/418/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "バフェテリアサービス",
+      "おすすめメニュー",
+      "メインディッシュ",
+      "中華",
+      "あったかい（ホット）",
+      "500～1000円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0042/",
+    "scraped_at": "2025-12-31T22:56:37.896074",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0074",
+    "name": "アクエリアス",
+    "description": "東京ディズニーランドのおすすめメニュー「アクエリアス」の紹介ページです。",
+    "price": {
+      "amount": 250,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "354",
+        "name": "ソフトランディング",
+        "park": "tdl",
+        "area": "トゥモローランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/354/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ソフトランディング",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ペットボトル",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0074/",
+    "scraped_at": "2025-12-31T23:02:04.194476",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0075",
+    "name": "キリン 生茶",
+    "description": "東京ディズニーランドのおすすめメニュー「キリン 生茶」の紹介ページです。",
+    "price": {
+      "amount": 250,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "316",
+        "name": "スウィートハート・カフェ",
+        "park": "tdl",
+        "area": "ワールドバザール",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/316/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ワールドバザール",
+      "スウィートハート・カフェ",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ペットボトル",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0075/",
+    "scraped_at": "2025-12-31T23:02:15.972649",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0076",
+    "name": "キリンレモン",
+    "description": "東京ディズニーランドのおすすめメニュー「キリンレモン」の紹介ページです。",
+    "price": {
+      "amount": 250,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "316",
+        "name": "スウィートハート・カフェ",
+        "park": "tdl",
+        "area": "ワールドバザール",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/316/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ワールドバザール",
+      "スウィートハート・カフェ",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ペットボトル",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0076/",
+    "scraped_at": "2025-12-31T23:02:26.108332",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0077",
+    "name": "い・ろ・は・す",
+    "description": "東京ディズニーランドのおすすめメニュー「い・ろ・は・す」の紹介ページです。",
+    "price": {
+      "amount": 250,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "316",
+        "name": "スウィートハート・カフェ",
+        "park": "tdl",
+        "area": "ワールドバザール",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/316/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ワールドバザール",
+      "スウィートハート・カフェ",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ペットボトル",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0077/",
+    "scraped_at": "2025-12-31T23:02:38.396961",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0084",
+    "name": "アクエリアス",
+    "description": "東京ディズニーシーのおすすめメニュー「アクエリアス」の紹介ページです。",
+    "price": {
+      "amount": 250,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "401",
+        "name": "マンマ・ビスコッティーズ・ベーカリー",
+        "park": "tds",
+        "area": "メディテレーニアンハーバー",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/401/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "マンマ・ビスコッティーズ・ベーカリー",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ペットボトル",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0084/",
+    "scraped_at": "2025-12-31T23:03:46.393362",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0085",
+    "name": "い・ろ・は・す",
+    "description": "東京ディズニーシーのおすすめメニュー「い・ろ・は・す」の紹介ページです。",
+    "price": {
+      "amount": 250,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "421",
+        "name": "ノーチラスギャレー",
+        "park": "tds",
+        "area": "ミステリアスアイランド",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/421/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ノーチラスギャレー",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ペットボトル",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0085/",
+    "scraped_at": "2025-12-31T23:03:56.223583",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0086",
+    "name": "ファンタ ゴールデンサイダー",
+    "description": "東京ディズニーランドのおすすめメニュー「ファンタ ゴールデンサイダー」の紹介ページです。",
+    "price": {
+      "amount": 0,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "323",
+        "name": "クリスタルパレス・レストラン",
+        "park": "tdl",
+        "area": "アドベンチャーランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/323/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ブッフェサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "フリー・リフィル"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0086/",
+    "scraped_at": "2025-12-31T23:04:11.379440",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0087",
+    "name": "ファンタ メロン",
+    "description": "東京ディズニーランドのおすすめメニュー「ファンタ メロン」の紹介ページです。",
+    "price": {
+      "amount": 0,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "323",
+        "name": "クリスタルパレス・レストラン",
+        "park": "tdl",
+        "area": "アドベンチャーランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/323/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ブッフェサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "フリー・リフィル"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0087/",
+    "scraped_at": "2025-12-31T23:04:22.235136",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0088",
+    "name": "コカ・コーラ",
+    "description": "東京ディズニーランドのおすすめメニュー「コカ・コーラ」の紹介ページです。",
+    "price": {
+      "amount": 0,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "323",
+        "name": "クリスタルパレス・レストラン",
+        "park": "tdl",
+        "area": "アドベンチャーランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/323/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "ブッフェサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "フリー・リフィル"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0088/",
+    "scraped_at": "2025-12-31T23:04:33.090174",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0090",
+    "name": "コカ・コーラ",
+    "description": "東京ディズニーシーのおすすめメニュー「コカ・コーラ」の紹介ページです。",
+    "price": {
+      "amount": 250,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "423",
+        "name": "デランシー・ケータリング",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/423/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "デランシー・ケータリング",
+      "ワゴンサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ペットボトル",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0090/",
+    "scraped_at": "2025-12-31T23:04:54.799157",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0097",
+    "name": "うきわまん（エビ）",
+    "description": "東京ディズニーシーのおすすめメニュー「うきわまん（エビ）」の紹介ページです。",
+    "price": {
+      "amount": 600,
+      "unit": "1個",
+      "tax_included": true
+    },
+    "image_urls": [
+      "https://media1.tokyodisneyresort.jp/food_menu/image/97_1.12_1_302wae6k.jpg"
+    ],
+    "thumbnail_url": "https://media1.tokyodisneyresort.jp/food_menu/image/97_1.12_1_302wae6k.jpg",
+    "restaurants": [
+      {
+        "id": "450",
+        "name": "シーサイドスナック",
+        "park": "tds",
+        "area": "ポートディスカバリー",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/450/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー",
+      "スナック"
+    ],
+    "tags": [
+      "シーサイドスナック",
+      "ドナルドダック",
+      "ワゴンサービス",
+      "おすすめメニュー",
+      "スナック",
+      "キャラクターモチーフのメニュー",
+      "ワンハンドメニュー",
+      "あったかい（ホット）",
+      "500～1000円",
+      "肉まん",
+      "中華まん"
+    ],
+    "characters": [
+      "ドナルドダック"
+    ],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0097/",
+    "scraped_at": "2025-12-31T23:06:06.072657",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0098",
+    "name": "ブラックペッパーてりやきチキンロール",
+    "description": "東京ディズニーシーのおすすめメニュー「ブラックペッパーてりやきチキンロール」の紹介ページです。",
+    "price": {
+      "amount": 600,
+      "unit": "1個",
+      "tax_included": true
+    },
+    "image_urls": [
+      "https://media1.tokyodisneyresort.jp/food_menu/image/98_1.24_1_057f42Ww.jpg"
+    ],
+    "thumbnail_url": "https://media1.tokyodisneyresort.jp/food_menu/image/98_1.24_1_057f42Ww.jpg",
+    "restaurants": [
+      {
+        "id": "436",
+        "name": "レストラン櫻 テラス席",
+        "park": "tds",
+        "area": "アメリカンウォーターフロント",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/436/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー",
+      "スナック"
+    ],
+    "tags": [
+      "レストラン櫻 テラス席",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "スナック",
+      "ワンハンドメニュー",
+      "500～1000円",
+      "肉巻"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0098/",
+    "scraped_at": "2025-12-31T23:06:17.234827",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0099",
+    "name": "キリン 生茶",
+    "description": "東京ディズニーシーのおすすめメニュー「キリン 生茶」の紹介ページです。",
+    "price": {
+      "amount": 250,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "401",
+        "name": "マンマ・ビスコッティーズ・ベーカリー",
+        "park": "tds",
+        "area": "メディテレーニアンハーバー",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/401/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "マンマ・ビスコッティーズ・ベーカリー",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ペットボトル",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0099/",
+    "scraped_at": "2025-12-31T23:06:28.497292",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  },
+  {
+    "id": "0100",
+    "name": "ミルクコーヒー（紙パック）",
+    "description": "東京ディズニーシーのおすすめメニュー「ミルクコーヒー（紙パック）」の紹介ページです。",
+    "price": {
+      "amount": 190,
+      "unit": "",
+      "tax_included": true
+    },
+    "image_urls": [],
+    "thumbnail_url": "",
+    "restaurants": [
+      {
+        "id": "401",
+        "name": "マンマ・ビスコッティーズ・ベーカリー",
+        "park": "tds",
+        "area": "メディテレーニアンハーバー",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/401/",
+        "availability": null,
+        "service_types": []
+      }
+    ],
+    "categories": [
+      "おすすめメニュー"
+    ],
+    "tags": [
+      "マンマ・ビスコッティーズ・ベーカリー",
+      "カウンターサービス",
+      "おすすめメニュー",
+      "ドリンク（ソフトドリンク）",
+      "ソフトドリンク",
+      "～500円"
+    ],
+    "characters": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/0100/",
+    "scraped_at": "2025-12-31T23:06:39.661064",
+    "is_seasonal": false,
+    "is_available": true,
+    "allergens": [],
+    "nutritional_info": null,
+    "last_updated": null,
+    "is_new": false
+  }
+]
