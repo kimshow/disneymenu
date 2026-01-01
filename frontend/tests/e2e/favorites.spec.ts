@@ -103,7 +103,7 @@ test.describe('お気に入り機能', () => {
     // お気に入りに追加
     const favoriteButton = menuCards.first().locator('[aria-label*="お気に入り"]').first();
     await favoriteButton.click();
-    
+
     // バッジが「1」と表示されるまで待機（お気に入りが追加されたことを確認）
     await expect(page.locator('[data-testid="favorites-badge"]')).toContainText('1', { timeout: 5000 });
     await page.waitForTimeout(500); // 状態更新の完了を確実にする

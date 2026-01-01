@@ -38,6 +38,7 @@ export const FavoritesBadge = memo<FavoritesBadgeProps>(({
         color={color}
         max={max}
         showZero={false}
+        data-testid="favorites-badge"
         sx={{
           '& .MuiBadge-badge': {
             fontSize: '0.7rem',
