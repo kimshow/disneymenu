@@ -15,7 +15,7 @@ export const RestaurantFilter = () => {
 
   const selectedRestaurantName = searchParams.get('restaurant');
   const selectedPark = searchParams.get('park') || '';
-  
+
   // パークでフィルタリング
   const filteredRestaurants = selectedPark
     ? restaurants?.filter(r => r.park.toLowerCase() === selectedPark.toLowerCase())

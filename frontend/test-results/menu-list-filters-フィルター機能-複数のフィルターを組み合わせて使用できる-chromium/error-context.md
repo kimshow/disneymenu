@@ -1,0 +1,384 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e5]:
+    - heading "フィルター" [level=2] [ref=e7]
+    - separator [ref=e8]
+    - generic [ref=e10]:
+      - heading "価格範囲" [level=6] [ref=e11]
+      - generic [ref=e12]:
+        - generic [ref=e13] [cursor=pointer]:
+          - generic [ref=e17]: ¥0
+          - generic [ref=e19]: ¥5,000
+          - generic [ref=e21]: ¥10,000
+          - generic [ref=e23]: ¥17,000
+          - slider [ref=e25]: "0"
+          - slider [ref=e27]: "17000"
+        - generic [ref=e28]: ¥0 - ¥17,000
+    - generic [ref=e29]:
+      - heading "パーク" [level=6] [ref=e30]
+      - group "パーク選択" [ref=e31]:
+        - button "すべて" [ref=e32] [cursor=pointer]
+        - button "ランド" [pressed] [ref=e33] [cursor=pointer]: 🏰 ランド
+        - button "シー" [ref=e34] [cursor=pointer]: 🌊 シー
+    - generic [ref=e35]:
+      - heading "カテゴリ" [level=6] [ref=e36]
+      - generic [ref=e38]:
+        - generic: カテゴリ
+        - generic [ref=e39]:
+          - combobox "カテゴリ" [ref=e40] [cursor=pointer]
+          - textbox
+          - img
+          - group:
+            - generic: カテゴリ
+    - generic [ref=e41]:
+      - heading "レストラン" [level=6] [ref=e42]
+      - generic [ref=e45]:
+        - combobox "レストランを選択" [ref=e46]
+        - button "開く" [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+        - group
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - heading "料理の種類" [level=3] [ref=e54]:
+          - button "料理の種類" [expanded] [ref=e55] [cursor=pointer]:
+            - heading "料理の種類" [level=6] [ref=e57]
+            - img [ref=e59]
+        - region [ref=e64]:
+          - generic [ref=e66]:
+            - button "お子様メニュー" [ref=e67] [cursor=pointer]:
+              - generic [ref=e68]: お子様メニュー
+            - button "イタリアン" [ref=e69] [cursor=pointer]:
+              - generic [ref=e70]: イタリアン
+            - button "カレー" [ref=e71] [cursor=pointer]:
+              - generic [ref=e72]: カレー
+            - button "セット" [ref=e73] [cursor=pointer]:
+              - generic [ref=e74]: セット
+            - button "タンドーリチキン" [ref=e75] [cursor=pointer]:
+              - generic [ref=e76]: タンドーリチキン
+            - button "デザート／スウィーツ" [ref=e77] [cursor=pointer]:
+              - generic [ref=e78]: デザート／スウィーツ
+            - button "ハンバーガー" [ref=e79] [cursor=pointer]:
+              - generic [ref=e80]: ハンバーガー
+            - button "パスタ" [ref=e81] [cursor=pointer]:
+              - generic [ref=e82]: パスタ
+            - button "ピザ" [ref=e83] [cursor=pointer]:
+              - generic [ref=e84]: ピザ
+            - button "ホットドッグ" [ref=e85] [cursor=pointer]:
+              - generic [ref=e86]: ホットドッグ
+            - button "ポップコーン" [ref=e87] [cursor=pointer]:
+              - generic [ref=e88]: ポップコーン
+            - button "ワンハンドメニュー" [ref=e89] [cursor=pointer]:
+              - generic [ref=e90]: ワンハンドメニュー
+            - button "中華" [ref=e91] [cursor=pointer]:
+              - generic [ref=e92]: 中華
+      - heading "ドリンク種類" [level=3] [ref=e94]:
+        - button "ドリンク種類" [ref=e95] [cursor=pointer]:
+          - heading "ドリンク種類" [level=6] [ref=e97]
+          - img [ref=e99]
+      - heading "キャラクター" [level=3] [ref=e102]:
+        - button "キャラクター" [ref=e103] [cursor=pointer]:
+          - heading "キャラクター" [level=6] [ref=e105]
+          - img [ref=e107]
+      - heading "エリア" [level=3] [ref=e110]:
+        - button "エリア" [ref=e111] [cursor=pointer]:
+          - heading "エリア" [level=6] [ref=e113]
+          - img [ref=e115]
+      - heading "特徴" [level=3] [ref=e118]:
+        - button "特徴" [ref=e119] [cursor=pointer]:
+          - heading "特徴" [level=6] [ref=e121]
+          - img [ref=e123]
+    - generic [ref=e126] [cursor=pointer]:
+      - switch "販売中のみ表示" [ref=e129]
+      - generic [ref=e132]: 販売中のみ表示
+  - generic [ref=e134]:
+    - generic [ref=e135]:
+      - heading "メニュー一覧" [level=1] [ref=e136]
+      - button "フィルターを閉じる" [ref=e137] [cursor=pointer]:
+        - img [ref=e138]
+    - generic "メニュー検索" [ref=e140]:
+      - generic [ref=e141]:
+        - button "検索を実行" [ref=e143] [cursor=pointer]:
+          - img [ref=e144]
+        - 'search "メニューを検索（例: カレー、ミッキー）Enterで検索" [ref=e146]'
+        - group
+    - generic [ref=e147]:
+      - generic [ref=e148]:
+        - generic [ref=e149]: 並び替え
+        - generic "並び替え" [ref=e150]:
+          - combobox "並び替え 新着順" [ref=e151] [cursor=pointer]: 新着順
+          - textbox: scraped_at
+          - img
+          - group:
+            - generic: 並び替え
+      - generic [ref=e152]:
+        - button "降順" [ref=e153] [cursor=pointer]:
+          - img [ref=e154]
+        - paragraph [ref=e156]: 新しい順
+    - generic [ref=e157]:
+      - generic [ref=e158]:
+        - heading "適用中のフィルター:" [level=6] [ref=e159]
+        - button "すべてクリア" [ref=e160] [cursor=pointer]:
+          - img [ref=e162]
+          - text: すべてクリア
+      - 'button "パーク: 🏰 ランド" [ref=e165]':
+        - generic [ref=e166]: "パーク: 🏰 ランド"
+        - img [ref=e167] [cursor=pointer]
+    - paragraph [ref=e169]: 全515件中 1-12件を表示
+    - generic [ref=e170]:
+      - generic [ref=e171] [cursor=pointer]:
+        - paragraph [ref=e173]: 画像なし
+        - generic [ref=e174]:
+          - heading "ミルク（紙パック）" [level=2] [ref=e175]
+          - heading "¥190/" [level=5] [ref=e176]
+          - generic [ref=e178]:
+            - img [ref=e179]
+            - generic [ref=e181]: ランド
+          - generic [ref=e184]:
+            - img [ref=e185]
+            - generic [ref=e189]: おすすめメニュー
+          - generic [ref=e191]:
+            - generic [ref=e192]:
+              - img [ref=e193]
+              - paragraph [ref=e195]: スウィートハート・カフェ
+            - generic [ref=e196]:
+              - generic [ref=e198]: ランド
+              - generic [ref=e200]: ワールドバザール
+      - generic [ref=e201] [cursor=pointer]:
+        - paragraph [ref=e203]: 画像なし
+        - generic [ref=e204]:
+          - heading "コーヒー" [level=2] [ref=e205]
+          - heading "¥0/" [level=5] [ref=e206]
+          - generic [ref=e208]:
+            - img [ref=e209]
+            - generic [ref=e211]: ランド
+          - generic [ref=e214]:
+            - img [ref=e215]
+            - generic [ref=e219]: おすすめメニュー
+          - generic [ref=e221]:
+            - generic [ref=e222]:
+              - img [ref=e223]
+              - paragraph [ref=e225]: クリスタルパレス・レストラン
+            - generic [ref=e226]:
+              - generic [ref=e228]: ランド
+              - generic [ref=e230]: アドベンチャーランド
+      - generic [ref=e231] [cursor=pointer]:
+        - paragraph [ref=e233]: 画像なし
+        - generic [ref=e234]:
+          - heading "紅茶" [level=2] [ref=e235]
+          - heading "¥0/" [level=5] [ref=e236]
+          - generic [ref=e238]:
+            - img [ref=e239]
+            - generic [ref=e241]: ランド
+          - generic [ref=e244]:
+            - img [ref=e245]
+            - generic [ref=e249]: おすすめメニュー
+          - generic [ref=e251]:
+            - generic [ref=e252]:
+              - img [ref=e253]
+              - paragraph [ref=e255]: クリスタルパレス・レストラン
+            - generic [ref=e256]:
+              - generic [ref=e258]: ランド
+              - generic [ref=e260]: アドベンチャーランド
+      - generic [ref=e261] [cursor=pointer]:
+        - paragraph [ref=e263]: 画像なし
+        - generic [ref=e264]:
+          - heading "ウーロン茶" [level=2] [ref=e265]
+          - heading "¥0/" [level=5] [ref=e266]
+          - generic [ref=e268]:
+            - img [ref=e269]
+            - generic [ref=e271]: ランド
+          - generic [ref=e274]:
+            - img [ref=e275]
+            - generic [ref=e279]: おすすめメニュー
+          - generic [ref=e281]:
+            - generic [ref=e282]:
+              - img [ref=e283]
+              - paragraph [ref=e285]: クリスタルパレス・レストラン
+            - generic [ref=e286]:
+              - generic [ref=e288]: ランド
+              - generic [ref=e290]: アドベンチャーランド
+      - generic [ref=e291] [cursor=pointer]:
+        - paragraph [ref=e293]: 画像なし
+        - generic [ref=e294]:
+          - heading "アイスコーヒー" [level=2] [ref=e295]
+          - heading "¥0/" [level=5] [ref=e296]
+          - generic [ref=e298]:
+            - img [ref=e299]
+            - generic [ref=e301]: ランド
+          - generic [ref=e304]:
+            - img [ref=e305]
+            - generic [ref=e309]: おすすめメニュー
+          - generic [ref=e311]:
+            - generic [ref=e312]:
+              - img [ref=e313]
+              - paragraph [ref=e315]: クリスタルパレス・レストラン
+            - generic [ref=e316]:
+              - generic [ref=e318]: ランド
+              - generic [ref=e320]: アドベンチャーランド
+      - generic [ref=e321] [cursor=pointer]:
+        - paragraph [ref=e323]: 画像なし
+        - generic [ref=e324]:
+          - heading "アイスウーロン茶" [level=2] [ref=e325]
+          - heading "¥0/" [level=5] [ref=e326]
+          - generic [ref=e328]:
+            - img [ref=e329]
+            - generic [ref=e331]: ランド
+          - generic [ref=e334]:
+            - img [ref=e335]
+            - generic [ref=e339]: おすすめメニュー
+          - generic [ref=e341]:
+            - generic [ref=e342]:
+              - img [ref=e343]
+              - paragraph [ref=e345]: クリスタルパレス・レストラン
+            - generic [ref=e346]:
+              - generic [ref=e348]: ランド
+              - generic [ref=e350]: アドベンチャーランド
+      - generic [ref=e351] [cursor=pointer]:
+        - paragraph [ref=e353]: 画像なし
+        - generic [ref=e354]:
+          - heading "オレンジジュース" [level=2] [ref=e355]
+          - heading "¥0/" [level=5] [ref=e356]
+          - generic [ref=e358]:
+            - img [ref=e359]
+            - generic [ref=e361]: ランド
+          - generic [ref=e364]:
+            - img [ref=e365]
+            - generic [ref=e369]: おすすめメニュー
+          - generic [ref=e371]:
+            - generic [ref=e372]:
+              - img [ref=e373]
+              - paragraph [ref=e375]: クリスタルパレス・レストラン
+            - generic [ref=e376]:
+              - generic [ref=e378]: ランド
+              - generic [ref=e380]: アドベンチャーランド
+      - generic [ref=e381] [cursor=pointer]:
+        - img "テリヤキチキンレッグ" [ref=e382]
+        - generic [ref=e383]:
+          - heading "テリヤキチキンレッグ" [level=2] [ref=e384]
+          - heading "¥600/ 1個" [level=5] [ref=e385]:
+            - text: ¥600
+            - generic [ref=e386]: / 1個
+          - generic [ref=e388]:
+            - img [ref=e389]
+            - generic [ref=e391]: ランド
+          - generic [ref=e393]:
+            - generic [ref=e394]:
+              - img [ref=e395]
+              - generic [ref=e399]: おすすめメニュー
+            - generic [ref=e400]:
+              - img [ref=e401]
+              - generic [ref=e405]: スナック
+          - generic [ref=e407]:
+            - generic [ref=e408]:
+              - img [ref=e409]
+              - paragraph [ref=e411]: スキッパーズ・ギャレー
+            - generic [ref=e412]:
+              - generic [ref=e414]: ランド
+              - generic [ref=e416]: アドベンチャーランド
+      - generic [ref=e417] [cursor=pointer]:
+        - img "スパイシースモークチキンレッグ" [ref=e418]
+        - generic [ref=e419]:
+          - heading "スパイシースモークチキンレッグ" [level=2] [ref=e420]
+          - heading "¥600/ 1本" [level=5] [ref=e421]:
+            - text: ¥600
+            - generic [ref=e422]: / 1本
+          - generic [ref=e423]:
+            - generic [ref=e424]:
+              - img [ref=e425]
+              - generic [ref=e427]: ランド
+            - generic [ref=e428]:
+              - img [ref=e429]
+              - generic [ref=e431]: シー
+          - generic [ref=e433]:
+            - generic [ref=e434]:
+              - img [ref=e435]
+              - generic [ref=e439]: おすすめメニュー
+            - generic [ref=e440]:
+              - img [ref=e441]
+              - generic [ref=e445]: スナック
+            - generic [ref=e446]:
+              - img [ref=e447]
+              - generic [ref=e451]: サイド
+          - generic [ref=e454]:
+            - paragraph [ref=e455]: 販売場所 (3店舗)
+            - button [ref=e456]:
+              - img [ref=e457]
+      - generic [ref=e459] [cursor=pointer]:
+        - paragraph [ref=e461]: 画像なし
+        - generic [ref=e462]:
+          - heading "アクエリアス" [level=2] [ref=e463]
+          - heading "¥250/" [level=5] [ref=e464]
+          - generic [ref=e466]:
+            - img [ref=e467]
+            - generic [ref=e469]: ランド
+          - generic [ref=e472]:
+            - img [ref=e473]
+            - generic [ref=e477]: おすすめメニュー
+          - generic [ref=e479]:
+            - generic [ref=e480]:
+              - img [ref=e481]
+              - paragraph [ref=e483]: ソフトランディング
+            - generic [ref=e484]:
+              - generic [ref=e486]: ランド
+              - generic [ref=e488]: トゥモローランド
+      - generic [ref=e489] [cursor=pointer]:
+        - paragraph [ref=e491]: 画像なし
+        - generic [ref=e492]:
+          - heading "キリン 生茶" [level=2] [ref=e493]
+          - heading "¥250/" [level=5] [ref=e494]
+          - generic [ref=e496]:
+            - img [ref=e497]
+            - generic [ref=e499]: ランド
+          - generic [ref=e502]:
+            - img [ref=e503]
+            - generic [ref=e507]: おすすめメニュー
+          - generic [ref=e509]:
+            - generic [ref=e510]:
+              - img [ref=e511]
+              - paragraph [ref=e513]: スウィートハート・カフェ
+            - generic [ref=e514]:
+              - generic [ref=e516]: ランド
+              - generic [ref=e518]: ワールドバザール
+      - generic [ref=e519] [cursor=pointer]:
+        - paragraph [ref=e521]: 画像なし
+        - generic [ref=e522]:
+          - heading "キリンレモン" [level=2] [ref=e523]
+          - heading "¥250/" [level=5] [ref=e524]
+          - generic [ref=e526]:
+            - img [ref=e527]
+            - generic [ref=e529]: ランド
+          - generic [ref=e532]:
+            - img [ref=e533]
+            - generic [ref=e537]: おすすめメニュー
+          - generic [ref=e539]:
+            - generic [ref=e540]:
+              - img [ref=e541]
+              - paragraph [ref=e543]: スウィートハート・カフェ
+            - generic [ref=e544]:
+              - generic [ref=e546]: ランド
+              - generic [ref=e548]: ワールドバザール
+    - navigation "pagination navigation" [ref=e550]:
+      - list [ref=e551]:
+        - listitem [ref=e552]:
+          - button "Go to previous page" [disabled]:
+            - img
+        - listitem [ref=e553]:
+          - button "page 1" [ref=e554] [cursor=pointer]: "1"
+        - listitem [ref=e555]:
+          - button "Go to page 2" [ref=e556] [cursor=pointer]: "2"
+        - listitem [ref=e557]:
+          - button "Go to page 3" [ref=e558] [cursor=pointer]: "3"
+        - listitem [ref=e559]:
+          - button "Go to page 4" [ref=e560] [cursor=pointer]: "4"
+        - listitem [ref=e561]:
+          - button "Go to page 5" [ref=e562] [cursor=pointer]: "5"
+        - listitem [ref=e563]:
+          - generic [ref=e564]: …
+        - listitem [ref=e565]:
+          - button "Go to page 43" [ref=e566] [cursor=pointer]: "43"
+        - listitem [ref=e567]:
+          - button "Go to next page" [ref=e568] [cursor=pointer]:
+            - img [ref=e569]
+```

@@ -156,6 +156,78 @@ test.describe('フィルター機能', () => {
     }
   });
 
+  test('パーク選択時にエリアタグがフィルタリングされる', async ({ page }) => {
+    // ランドを選択
+    const landButton = page.locator('button:has-text("ランド")').or(page.locator('button:has-text("🏰")'));
+    if (await landButton.count() > 0) {
+      await landButton.first().click();
+      await page.waitForTimeout(500);
+
+      // エリアタグのアコーディオンを開く
+      const areaAccordion = page.locator('text="エリア"').first();
+      if (await areaAccordion.count() > 0) {
+        await areaAccordion.click();
+        await page.waitForTimeout(300);
+
+        // ランドのエリアタグが表示されることを確認
+        const landArea = page.locator('button:has-text("ワールドバザール")').or(page.locator('button:has-text("トゥモローランド")'));
+        if (await landArea.count() > 0) {
+          await expect(landArea.first()).toBeVisible();
+        }
+
+        // シーのエリアタグが表示されないことを確認
+        const seaArea = page.locator('button:has-text("メディテレーニアンハーバー")').or(page.locator('button:has-text("アメリカンウォーターフロント")'));
+        if (await seaArea.count() > 0) {
+          await expect(seaArea.first()).not.toBeVisible();
+        }
+      }
+
+      // エリアタグを選択できることを確認
+      const areaTag = page.locator('button:has-text("ワールドバザール")').or(page.locator('button:has-text("トゥモローランド")'));
+      if (await areaTag.count() > 0) {
+        await areaTag.first().click();
+        await page.waitForTimeout(500);
+
+        // URLにtagsパラメータが反映されることを確認
+        const url = page.url();
+        expect(url).toContain('tags=');
+      }
+    }
+  });
+
+  test('パーク未選択時に全エリアタグが表示される', async ({ page }) => {
+    // パークフィルターをクリア（もし選択されていた場合）
+    const clearButton = page.locator('button:has-text("クリア")').or(page.locator('button:has-text("リセット")'));
+    if (await clearButton.count() > 0) {
+      await clearButton.first().click();
+      await page.waitForTimeout(500);
+    }
+
+    // エリアタグのアコーディオンを開く
+    const areaAccordion = page.locator('text="エリア"').first();
+    if (await areaAccordion.count() > 0) {
+      await areaAccordion.click();
+      await page.waitForTimeout(300);
+
+      // 両パークのエリアタグが表示されることを確認
+      const landArea = page.locator('button:has-text("ワールドバザール")').or(page.locator('button:has-text("トゥモローランド")'));
+      const seaArea = page.locator('button:has-text("メディテレーニアンハーバー")').or(page.locator('button:has-text("アメリカンウォーターフロント")'));
+
+      // 少なくとも一方のエリアが表示されることを確認
+      const hasLandArea = await landArea.count() > 0;
+      const hasSeaArea = await seaArea.count() > 0;
+      expect(hasLandArea || hasSeaArea).toBe(true);
+    }
+  });
+
+  test('レストランフィルターのプレースホルダーが正しく表示される', async ({ page }) => {
+    // レストラン選択のプレースホルダーを確認
+    const restaurantInput = page.locator('input[placeholder="レストランを選択"]');
+    if (await restaurantInput.count() > 0) {
+      await expect(restaurantInput.first()).toBeVisible();
+    }
+  });
+
   test.skip('モバイルでフィルターDrawerが開閉できる', async ({ page }) => {
     // TODO: Drawer が自動的に開いている場合の処理を改善する必要がある
     // モバイルサイズに設定

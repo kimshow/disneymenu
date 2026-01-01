@@ -234,7 +234,7 @@ async def get_tags():
 async def get_grouped_tags(park: Optional[str] = None) -> Dict[str, Any]:
     """
     カテゴリ別にグループ化されたタグを返す
-    
+
     Args:
         park: パークフィルター（"disneyland" または "disneysea"）
 
@@ -253,7 +253,7 @@ async def get_grouped_tags(park: Optional[str] = None) -> Dict[str, Any]:
     """
     # メニューデータから実際に使用されているタグを抽出
     menus = loader.load_menus()
-    
+
     # パークでフィルタリング
     if park:
         filtered_menus = []

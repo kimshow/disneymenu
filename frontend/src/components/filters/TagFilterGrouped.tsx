@@ -25,7 +25,7 @@ export const TagFilterGrouped = memo<TagFilterGroupedProps>(({ groupedTags }) =>
 
   // 現在選択されているタグを取得
   const selectedTags = searchParams.get('tags')?.split(',').filter(Boolean) || [];
-  
+
   // 選択されているパークを取得
   const selectedPark = searchParams.get('park') || '';
 
@@ -66,11 +66,11 @@ export const TagFilterGrouped = memo<TagFilterGroupedProps>(({ groupedTags }) =>
         // パークが選択されている場合、エリアタグをフィルタリング
         let filteredTags = tags;
         if (category === 'area' && selectedPark) {
-          const parkKey = selectedPark.toLowerCase() as 'disneyland' | 'disneysea';
+          const parkKey = selectedPark.toLowerCase() as 'disneyland' | 'disneysea' | 'tdl' | 'tds';
           const allowedAreas = PARK_AREAS[parkKey] || [];
           filteredTags = tags.filter(tag => allowedAreas.includes(tag));
         }
-        
+
         // タグが0件の場合は表示しない
         if (filteredTags.length === 0) {
           return null;
