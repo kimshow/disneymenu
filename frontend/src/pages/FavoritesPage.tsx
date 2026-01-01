@@ -42,10 +42,17 @@ export function FavoritesPage() {
 
   // ソート処理
   const sortedMenus = useMemo(() => {
+    console.log('FavoritesPage - data:', data);
+    console.log('FavoritesPage - favorites:', favorites);
+
     if (!data?.data) return [];
+
+    console.log('FavoritesPage - data.data.length:', data.data.length);
 
     // お気に入りIDに一致するメニューのみをフィルター
     const favoriteMenus = data.data.filter(menu => favorites.includes(menu.id));
+    console.log('FavoritesPage - favoriteMenus.length:', favoriteMenus.length);
+
     const menus = [...favoriteMenus];
 
     switch (sortBy) {
