@@ -35,22 +35,22 @@ test.describe('お気に入り機能', () => {
 
     const firstCard = menuCards.first();
     const favoriteButton = firstCard.locator('[aria-label*="お気に入り"]').first();
-    
+
     // 追加前: アウトラインアイコン
     await expect(favoriteButton.locator('[data-testid="favorite-outline"]')).toBeVisible();
-    
+
     // クリックしてお気に入りに追加
     await favoriteButton.click();
-    
+
     // 追加後: 塗りつぶしアイコン
     await expect(favoriteButton.locator('[data-testid="favorite-filled"]')).toBeVisible({ timeout: 2000 });
-    
+
     // localStorageに保存されていることを確認
     const favorites = await page.evaluate(() => {
       const data = localStorage.getItem('disney-menu-favorites');
       return data ? JSON.parse(data) : null;
     });
-    
+
     expect(favorites).toBeTruthy();
     expect(favorites.favorites).toHaveLength(1);
   });
@@ -66,7 +66,7 @@ test.describe('お気に入り機能', () => {
     // メニューをお気に入りに追加
     const menuCards = page.locator('[data-testid="menu-card"]');
     await expect(menuCards.first()).toBeVisible({ timeout: 10000 });
-    
+
     const favoriteButton = menuCards.first().locator('[aria-label*="お気に入り"]').first();
     await favoriteButton.click();
 
@@ -84,7 +84,7 @@ test.describe('お気に入り機能', () => {
 
     // お気に入りページに遷移
     await expect(page).toHaveURL('/favorites');
-    
+
     // お気に入りページのタイトルが表示される
     await expect(page.locator('h4:has-text("お気に入り")')).toBeVisible();
   });
@@ -105,12 +105,22 @@ test.describe('お気に入り機能', () => {
     await favoriteButton.click();
     await page.waitForTimeout(500); // アニメーション待機
 
+    // localStorageに保存されるまで待機
+    await page.waitForFunction(() => {
+      const stored = localStorage.getItem('disneymenu_favorites');
+      return stored !== null && JSON.parse(stored).favorites.length > 0;
+    });
+
     // お気に入りページに遷移
     await page.goto('/favorites');
     await page.waitForLoadState('networkidle');
 
-    // 追加したメニューが表示されることを確認
-    await expect(page.locator(`h6:has-text("${firstMenuName}")`)).toBeVisible({ timeout: 5000 });
+    // メニューカードが表示されるまで待機
+    const favMenuCards = page.locator('[data-testid="menu-card"]');
+    await expect(favMenuCards).toHaveCount(1, { timeout: 10000 });
+
+    // 追加したメニューが表示されることを確認（h2要素で実装されている）
+    await expect(page.locator(`h2:has-text("${firstMenuName}")`)).toBeVisible({ timeout: 5000 });
   });
 
   test('お気に入りから削除できる', async ({ page }) => {
@@ -120,7 +130,7 @@ test.describe('お気に入り機能', () => {
     // メニューをお気に入りに追加
     const menuCards = page.locator('[data-testid="menu-card"]');
     await expect(menuCards.first()).toBeVisible({ timeout: 10000 });
-    
+
     const favoriteButton = menuCards.first().locator('[aria-label*="お気に入り"]').first();
     await favoriteButton.click();
     await page.waitForTimeout(500);
@@ -137,7 +147,7 @@ test.describe('お気に入り機能', () => {
       const data = localStorage.getItem('disney-menu-favorites');
       return data ? JSON.parse(data) : null;
     });
-    
+
     expect(favorites.favorites).toHaveLength(0);
   });
 
@@ -147,7 +157,7 @@ test.describe('お気に入り機能', () => {
 
     // 空状態メッセージが表示される
     await expect(page.locator('text=お気に入りがありません')).toBeVisible({ timeout: 5000 });
-    
+
     // メニュー一覧へ戻るボタンが表示される（大きいボタンを選択）
     await expect(page.getByRole('button', { name: 'メニュー一覧へ戻る' }).last()).toBeVisible();
   });
@@ -159,7 +169,7 @@ test.describe('お気に入り機能', () => {
     // 複数のメニューをお気に入りに追加
     const menuCards = page.locator('[data-testid="menu-card"]');
     await expect(menuCards.first()).toBeVisible({ timeout: 10000 });
-    
+
     // 最初の3つのメニューを追加
     for (let i = 0; i < 3; i++) {
       const card = menuCards.nth(i);
@@ -172,12 +182,16 @@ test.describe('お気に入り機能', () => {
     await page.goto('/favorites');
     await page.waitForLoadState('networkidle');
 
+    // メニューカードが表示されるまで待機
+    const favMenuCards = page.locator('[data-testid="menu-card"]');
+    await expect(favMenuCards).toHaveCount(3, { timeout: 10000 });
+
     // ソート機能が表示されることを確認
     await expect(page.getByLabel('並び替え')).toBeVisible();
-    
+
     // Material-UI SelectをクリックしてプションOをCpen（role="combobox"で検索）
     await page.getByRole('combobox', { name: '並び替え' }).click();
-    
+
     // ソートオプションが表示される
     await expect(page.getByRole('option', { name: '名前' })).toBeVisible();
     await expect(page.getByRole('option', { name: '価格' })).toBeVisible();
@@ -190,7 +204,7 @@ test.describe('お気に入り機能', () => {
     // メニューをお気に入りに追加
     const menuCards = page.locator('[data-testid="menu-card"]');
     await expect(menuCards.first()).toBeVisible({ timeout: 10000 });
-    
+
     const favoriteButton = menuCards.first().locator('[aria-label*="お気に入り"]').first();
     await favoriteButton.click();
     await page.waitForTimeout(500);
@@ -252,7 +266,7 @@ test.describe('お気に入り機能', () => {
     // メニューをお気に入りに追加
     const menuCards = page.locator('[data-testid="menu-card"]');
     await expect(menuCards.first()).toBeVisible({ timeout: 10000 });
-    
+
     const favoriteButton = menuCards.first().locator('[aria-label*="お気に入り"]').first();
     await favoriteButton.click();
     await page.waitForTimeout(500);
@@ -264,7 +278,7 @@ test.describe('お気に入り機能', () => {
     // お気に入りが保持されていることを確認（塗りつぶしアイコン）
     const reloadedCards = page.locator('[data-testid="menu-card"]');
     await expect(reloadedCards.first()).toBeVisible({ timeout: 10000 });
-    
+
     const reloadedButton = reloadedCards.first().locator('[aria-label*="お気に入り"]').first();
     await expect(reloadedButton.locator('[data-testid="favorite-filled"]')).toBeVisible();
 
