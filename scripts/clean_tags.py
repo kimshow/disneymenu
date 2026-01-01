@@ -51,8 +51,14 @@ REMOVE_TAGS_PHASE2 = [
     "4000円～",
 ]
 
+# 削除対象タグ（Phase 3 - 料理の種類タグの整理）
+REMOVE_TAGS_PHASE3 = [
+    # 中華まんと肉まんは統合
+    "肉まん",  # 「中華まん」に統合
+]
+
 # 統合削除リスト
-REMOVE_TAGS = REMOVE_TAGS_PHASE1 + REMOVE_TAGS_PHASE2
+REMOVE_TAGS = REMOVE_TAGS_PHASE1 + REMOVE_TAGS_PHASE2 + REMOVE_TAGS_PHASE3
 
 # タグ正規化マップ
 TAG_NORMALIZATION = {
@@ -63,6 +69,25 @@ TAG_NORMALIZATION = {
     # 表記ゆれの統一
     "ミッキーモチーフのメニュー": "ミッキーマウス",
 }
+
+# メニュー名から自動付与するタグ（Phase 3）
+AUTO_TAG_RULES = [
+    {
+        "keywords": ["バーガー"],
+        "tag": "ハンバーガー",
+        "exclude_tags": ["ハンバーガー"],  # 既に付いている場合はスキップ
+    },
+    {
+        "keywords": ["中華まん", "肉まん", "あんまん", "うきわまん"],
+        "tag": "中華まん",
+        "exclude_tags": ["中華まん"],
+    },
+    {
+        "keywords": ["ホットドッグ", "ドッグ"],
+        "tag": "ホットドッグ",
+        "exclude_tags": ["ホットドッグ", "ハンバーガー"],  # ハンバーガーは除外
+    },
+]
 
 
 def analyze_tags(menus: list) -> dict:
@@ -139,12 +164,14 @@ def clean_and_normalize_tags(data_path: Path, dry_run: bool = False) -> dict:
     changed_menus = 0
     removed_tag_count = 0
     normalized_tag_count = 0
+    auto_tagged_count = 0
 
     for menu in menus:
         original_tags = menu.get("tags", [])
+        menu_name = menu.get("name", "")
 
         if not original_tags:
-            continue
+            original_tags = []
 
         # 1. 削除対象タグを除外
         cleaned_tags = [tag for tag in original_tags if tag not in REMOVE_TAGS]
@@ -158,7 +185,18 @@ def clean_and_normalize_tags(data_path: Path, dry_run: bool = False) -> dict:
             if tag != normalized_tag:
                 normalized_tag_count += 1
 
-        # 3. 重複削除（順序を保持）
+        # 3. メニュー名から自動タグ付与（Phase 3）
+        for rule in AUTO_TAG_RULES:
+            # キーワードがメニュー名に含まれているかチェック
+            if any(keyword in menu_name for keyword in rule["keywords"]):
+                # 除外タグがない場合のみ追加
+                if rule["tag"] not in normalized_tags and not any(
+                    exclude_tag in normalized_tags for exclude_tag in rule.get("exclude_tags", [])
+                ):
+                    normalized_tags.append(rule["tag"])
+                    auto_tagged_count += 1
+
+        # 4. 重複削除（順序を保持）
         unique_tags = list(dict.fromkeys(normalized_tags))
 
         # タグが変更された場合のみカウント
@@ -185,6 +223,7 @@ def clean_and_normalize_tags(data_path: Path, dry_run: bool = False) -> dict:
     print(f"   - 変更されたメニュー数: {changed_menus:,} 件")
     print(f"   - 削除されたタグ数: {removed_tag_count:,} 個")
     print(f"   - 正規化されたタグ数: {normalized_tag_count:,} 個")
+    print(f"   - 自動付与されたタグ数: {auto_tagged_count:,} 個")
     print(
         f"   - ユニークタグ数の変化: {before_stats['unique_tags']} → {after_stats['unique_tags']} ({after_stats['unique_tags'] - before_stats['unique_tags']:+d})"
     )

@@ -109,39 +109,39 @@ async def get_menus(
     # タグフィルタ（同じカテゴリ内はOR、異なるカテゴリ間はAND）
     if tags:
         from collections import defaultdict
-        
+
         tag_list = [t.strip() for t in tags.split(",")]
-        
+
         # タグをカテゴリ別にグループ化
         tags_by_category = defaultdict(list)
         for tag in tag_list:
             category_found = False
-            
+
             # 定義済みカテゴリから検索
             for category, category_tags in TAG_CATEGORIES.items():
                 if tag in category_tags:
                     tags_by_category[category].append(tag)
                     category_found = True
                     break
-            
+
             # エリア・レストランは動的に判定（すべてのメニューをスキャン）
             if not category_found:
                 # エリアまたはレストランとして扱う（動的カテゴリ）
                 # 同じタグは同じカテゴリとして扱う
                 tags_by_category[f"dynamic_{tag}"].append(tag)
-        
+
         # フィルタリング: 各カテゴリ内はOR、カテゴリ間はAND
         def matches_tag_filter(menu):
             menu_tags = set(menu.get("tags", []))
-            
+
             # 各カテゴリについて、少なくとも1つのタグがマッチする必要がある（AND）
             for category, category_tag_list in tags_by_category.items():
                 # このカテゴリのタグのいずれかがマッチするか（OR）
                 if not any(tag in menu_tags for tag in category_tag_list):
                     return False
-            
+
             return True
-        
+
         menus = [m for m in menus if matches_tag_filter(m)]
 
     # カテゴリフィルタ（category フィールドと照合）

@@ -145,12 +145,35 @@ MENU_CATEGORIES = {
 
 def determine_category(menu: dict) -> str:
     """
-    メニューのタグに基づいてカテゴリを判定
+    メニューのタグとメニュー名に基づいてカテゴリを判定
 
     優先順位: character_menu > souvenir_menu > sweets > food > drink > snack > set_menu > other
+    
+    判定ロジック:
+    1. タグベースの判定（既存ロジック）
+    2. メニュー名ベースの判定（バーガー、ホットドッグなどの料理名）
     """
     tags = set(menu.get("tags", []))
+    menu_name = menu.get("name", "")
 
+    # メニュー名から料理カテゴリを判定（タグがない場合の補完）
+    food_name_keywords = {
+        "バーガー": "food",
+        "ハンバーガー": "food",
+        "ホットドッグ": "food",
+        "ドッグ": "food",  # チリドッグなど
+        "サンド": "food",
+        "ライス": "food",
+        "チャーハン": "food",
+        "寿司": "food",
+        "ロール": "food",  # 寿司ロール、肉巻など
+        "グラタン": "food",
+        "リゾット": "food",
+        "ポテト": "snack",  # ベイクドチーズポテトなど
+        "フライ": "snack",
+        "チュロス": "snack",
+    }
+    
     # カテゴリごとにマッチするタグをチェック
     matched_categories = []
     for category_key, category_info in MENU_CATEGORIES.items():
@@ -161,7 +184,16 @@ def determine_category(menu: dict) -> str:
         if tags & category_tags:  # 交差があれば
             matched_categories.append((category_key, category_info["priority"]))
 
-    # マッチしたカテゴリがない場合は 'other'
+    # タグベースでマッチしない場合、メニュー名から判定
+    if not matched_categories:
+        for keyword, category_key in food_name_keywords.items():
+            if keyword in menu_name:
+                # メニュー名から判定した場合、そのカテゴリの優先度を取得
+                priority = MENU_CATEGORIES[category_key]["priority"]
+                matched_categories.append((category_key, priority))
+                break
+    
+    # それでもマッチしない場合は 'other'
     if not matched_categories:
         return "other"
 

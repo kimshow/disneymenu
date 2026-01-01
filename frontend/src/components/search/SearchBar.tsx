@@ -2,8 +2,7 @@ import { TextField, InputAdornment, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useSearchParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useDebounce } from '../../hooks/useDebounce';
+import { useState, useEffect, useCallback } from 'react';
 
 interface SearchBarProps {
   placeholder?: string;
@@ -13,23 +12,29 @@ interface SearchBarProps {
  * 検索バーコンポーネント
  *
  * メニュー検索用のテキストフィールド
- * URLクエリパラメータと自動同期
+ * URLクエリパラメータと同期
+ * Enterキーまたは検索ボタンクリックで検索実行
  *
  * @param placeholder - プレースホルダーテキスト
  */
-export const SearchBar = ({ placeholder = 'メニューを検索（例: カレー、ミッキー）' }: SearchBarProps) => {
+export const SearchBar = ({ placeholder = 'メニューを検索（例: カレー、ミッキー）Enterで検索' }: SearchBarProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = useState(searchParams.get('q') || '');
 
-  // デバウンス（300ms）
-  const debouncedValue = useDebounce(value, 300);
-
-  // デバウンスされた値をURLに反映
+  // URLパラメータが外部から変更された場合に同期
   useEffect(() => {
+    const qParam = searchParams.get('q') || '';
+    if (qParam !== value) {
+      setValue(qParam);
+    }
+  }, [searchParams.get('q')]);
+
+  // 検索実行
+  const executeSearch = useCallback(() => {
     const params = new URLSearchParams(searchParams);
 
-    if (debouncedValue) {
-      params.set('q', debouncedValue);
+    if (value.trim()) {
+      params.set('q', value.trim());
     } else {
       params.delete('q');
     }
@@ -38,18 +43,23 @@ export const SearchBar = ({ placeholder = 'メニューを検索（例: カレ�
     params.delete('page');
 
     setSearchParams(params);
-  }, [debouncedValue]);
+  }, [value, searchParams, setSearchParams]);
 
-  // URLパラメータが外部から変更された場合に同期
-  useEffect(() => {
-    const qParam = searchParams.get('q') || '';
-    if (qParam !== value) {
-      setValue(qParam);
+  // Enterキー押下で検索
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      executeSearch();
     }
-  }, [searchParams]);
+  };
 
   const handleClear = () => {
     setValue('');
+    // クリア時は即座に検索をクリア
+    const params = new URLSearchParams(searchParams);
+    params.delete('q');
+    params.delete('page');
+    setSearchParams(params);
   };
 
   return (
@@ -58,6 +68,7 @@ export const SearchBar = ({ placeholder = 'メニューを検索（例: カレ�
       placeholder={placeholder}
       value={value}
       onChange={(e) => setValue(e.target.value)}
+      onKeyDown={handleKeyDown}
       aria-label="メニュー検索"
       inputProps={{
         role: 'search',
@@ -66,7 +77,14 @@ export const SearchBar = ({ placeholder = 'メニューを検索（例: カレ�
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <SearchIcon color="action" />
+            <IconButton
+              size="small"
+              onClick={executeSearch}
+              aria-label="検索を実行"
+              edge="start"
+            >
+              <SearchIcon color="action" />
+            </IconButton>
           </InputAdornment>
         ),
         endAdornment: value && (
