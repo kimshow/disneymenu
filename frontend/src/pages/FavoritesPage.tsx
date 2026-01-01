@@ -197,9 +197,9 @@ export function FavoritesPage() {
             color="error"
             startIcon={<DeleteSweepIcon />}
             onClick={handleClearAll}
-            sx={{ 
+            sx={{
               width: { xs: '100%', sm: 'auto' },
-              minWidth: { sm: 150 } 
+              minWidth: { sm: 150 }
             }}
           >
             すべてクリア
