@@ -111,6 +111,18 @@ class TestGetMenus:
         assert response.status_code == 200
         assert mock_data_loader.load_menus.called
 
+    def test_get_menus_with_area_filter(self, client, mock_data_loader):
+        """Test get menus filtered by area"""
+        response = client.get("/api/menus?area=トゥモローランド")
+        assert response.status_code == 200
+        assert mock_data_loader.load_menus.called
+
+    def test_get_menus_with_character_filter(self, client, mock_data_loader):
+        """Test get menus filtered by character"""
+        response = client.get("/api/menus?character=ミッキー")
+        assert response.status_code == 200
+        assert mock_data_loader.load_menus.called
+
     def test_get_menus_with_all_filters(self, client, mock_data_loader):
         """Test get menus with all filters combined"""
         response = client.get(

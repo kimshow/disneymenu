@@ -15,8 +15,8 @@ test.describe('メニュー一覧ページ', () => {
   test('メニューカードが表示される', async ({ page }) => {
     await page.waitForLoadState('networkidle');
 
-    // メニューカードの存在を確認
-    const menuCards = page.locator('.MuiCard-root');
+    // メニューカードの存在を確認（Material-UIのCardコンポーネント）
+    const menuCards = page.locator('[class*="MuiCard-root"]');
     await expect(menuCards.first()).toBeVisible({ timeout: 10000 });
 
     // 少なくとも1つのカードが表示されていることを確認
@@ -28,7 +28,7 @@ test.describe('メニュー一覧ページ', () => {
     await page.waitForLoadState('networkidle');
 
     // 任意のメニューカード内のh2要素（メニュー名）が表示されることを確認
-    const menuCards = page.locator('.MuiCard-root');
+    const menuCards = page.locator('[class*="MuiCard-root"]');
     await expect(menuCards.first()).toBeVisible({ timeout: 10000 });
 
     const menuName = menuCards.first().locator('h2');
@@ -51,7 +51,7 @@ test.describe('メニュー一覧ページ', () => {
     await page.waitForLoadState('networkidle');
 
     // メニューカード内のレストラン情報が表示されることを確認
-    const menuCards = page.locator('.MuiCard-root');
+    const menuCards = page.locator('[class*="MuiCard-root"]');
     await expect(menuCards.first()).toBeVisible({ timeout: 10000 });
 
     // body2タイポグラフィ（レストラン情報）が存在することを確認
@@ -62,16 +62,16 @@ test.describe('メニュー一覧ページ', () => {
   test('パーク情報が表示される', async ({ page }) => {
     await page.waitForLoadState('networkidle');
 
-    // パーク情報の確認（ランド/シー）
-    const park = page.getByText(/\(ランド\)|\(シー\)/);
+    // パーク情報の確認（ランド/シー - ParkChipコンポーネント）
+    const park = page.getByText(/^(ランド|シー)$/);
     await expect(park.first()).toBeVisible({ timeout: 10000 });
   });
 
   test('タグが表示される', async ({ page }) => {
     await page.waitForLoadState('networkidle');
 
-    // タグチップの確認
-    const tag = page.locator('.MuiChip-root');
+    // タグチップの確認（MUIのChipコンポーネント）
+    const tag = page.locator('[class*="MuiChip-root"]');
     await expect(tag.first()).toBeVisible({ timeout: 10000 });
   });
 
@@ -80,11 +80,11 @@ test.describe('メニュー一覧ページ', () => {
     await page.reload();
 
     // ローディングスピナーが表示されることを確認
-    const loading = page.locator('.MuiCircularProgress-root');
+    const loading = page.locator('[class*="MuiCircularProgress-root"]');
 
     // ローディングが表示されるか、すでにデータが表示されているか
     const isLoadingVisible = await loading.isVisible().catch(() => false);
-    const isMenuVisible = await page.locator('.MuiCard-root').isVisible().catch(() => false);
+    const isMenuVisible = await page.locator('[class*="MuiCard-root"]').isVisible().catch(() => false);
 
     expect(isLoadingVisible || isMenuVisible).toBeTruthy();
   });
@@ -93,7 +93,7 @@ test.describe('メニュー一覧ページ', () => {
     await page.waitForLoadState('networkidle');
 
     // 複数のメニューカードが存在することを確認
-    const menuCards = page.locator('.MuiCard-root');
+    const menuCards = page.locator('[class*="MuiCard-root"]');
     const count = await menuCards.count();
 
     expect(count).toBeGreaterThan(0);
@@ -103,7 +103,7 @@ test.describe('メニュー一覧ページ', () => {
     await page.waitForLoadState('networkidle');
 
     // ページネーションボタンの確認（存在しない場合もある）
-    const pagination = page.locator('.MuiPagination-root');
+    const pagination = page.locator('[class*="MuiPagination-root"]');
 
     // ページネーションが表示されているか確認（表示されない場合もOK）
     const paginationExists = await pagination.count();
@@ -116,7 +116,7 @@ test.describe('メニュー一覧ページ', () => {
     await page.waitForLoadState('networkidle');
 
     // メニューカードが表示される
-    const menuCard = page.locator('.MuiCard-root').first();
+    const menuCard = page.locator('[class*="MuiCard-root"]').first();
     await expect(menuCard).toBeVisible();
   });
 
@@ -126,7 +126,7 @@ test.describe('メニュー一覧ページ', () => {
     await page.waitForLoadState('networkidle');
 
     // メニューカードが表示される
-    const menuCard = page.locator('.MuiCard-root').first();
+    const menuCard = page.locator('[class*="MuiCard-root"]').first();
     await expect(menuCard).toBeVisible();
   });
 });
@@ -138,8 +138,8 @@ test.describe('エラーハンドリング', () => {
 
     await page.goto('/');
 
-    // エラーメッセージの確認
-    const errorMessage = page.getByText(/エラー|失敗/i);
-    await expect(errorMessage).toBeVisible({ timeout: 10000 });
+    // エラーメッセージの確認（見出しのみを対象にして、strict mode violationを回避）
+    const errorHeading = page.getByRole('heading', { name: /読み込みに失敗しました/i });
+    await expect(errorHeading).toBeVisible({ timeout: 10000 });
   });
 });

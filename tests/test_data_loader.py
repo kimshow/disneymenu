@@ -297,3 +297,54 @@ class TestMenuDataLoaderEdgeCases:
             result = loader.filter_by_availability([menu_with_start_only], check_date=test_date)
             # 開始日より後なので含まれる
             assert len(result) == 1
+
+    def test_filter_with_no_availability_period(self, temp_menu_json):
+        """Test filter with restaurant that has no availability period"""
+        loader = MenuDataLoader(data_path=str(temp_menu_json))
+        menus = loader.load_menus()
+
+        if menus:
+            # availability指定なしのメニュー
+            menu_without_availability = menus[0].copy()
+            menu_without_availability["restaurants"] = [
+                {
+                    "id": "test",
+                    "name": "Test Restaurant",
+                    "park": "tdl",
+                    "area": "Test Area",
+                    "url": "https://example.com",
+                    "service_types": [],
+                }
+            ]
+
+            result = loader.filter_by_availability([menu_without_availability])
+            # availability指定がない場合は常に販売中として扱われる
+            assert len(result) == 1
+
+    def test_filter_with_invalid_end_date(self, temp_menu_json):
+        """Test filter with invalid end date format"""
+        loader = MenuDataLoader(data_path=str(temp_menu_json))
+        menus = loader.load_menus()
+
+        if menus:
+            # 無効な終了日フォーマットを持つメニュー
+            menu_with_invalid_end = menus[0].copy()
+            menu_with_invalid_end["restaurants"] = [
+                {
+                    "id": "test",
+                    "name": "Test",
+                    "park": "tdl",
+                    "area": "Test Area",
+                    "url": "https://example.com",
+                    "availability": {
+                        "start_date": "2025-01-01",
+                        "end_date": "invalid-date-format",
+                    },
+                    "service_types": [],
+                }
+            ]
+
+            test_date = date(2025, 6, 1)
+            result = loader.filter_by_availability([menu_with_invalid_end], check_date=test_date)
+            # 無効な終了日はスキップされ、開始日のチェックのみで通過する
+            assert len(result) == 1

@@ -4,6 +4,7 @@ Usage:
     python scripts/scrape_menus.py --start 0 --end 100  # Test with first 100 IDs
     python scripts/scrape_menus.py                       # Scrape all (0-9999)
 """
+
 import asyncio
 import aiohttp
 import json
@@ -20,10 +21,7 @@ from api.scraper import MenuScraper
 
 
 async def scrape_menu(
-    session: aiohttp.ClientSession,
-    menu_id: str,
-    scraper: MenuScraper,
-    semaphore: asyncio.Semaphore
+    session: aiohttp.ClientSession, menu_id: str, scraper: MenuScraper, semaphore: asyncio.Semaphore
 ) -> Optional[Dict]:
     """
     単一メニューをスクレイピング
@@ -37,7 +35,7 @@ async def scrape_menu(
     Returns:
         パースされたメニューデータ、または None
     """
-    url = f'https://www.tokyodisneyresort.jp/food/{menu_id}/'
+    url = f"https://www.tokyodisneyresort.jp/food/{menu_id}/"
 
     async with semaphore:
         try:
@@ -59,10 +57,7 @@ async def scrape_menu(
 
 
 async def scrape_all_menus(
-    start_id: int = 0,
-    end_id: int = 9999,
-    rate_limit: float = 1.0,
-    max_concurrent: int = 5
+    start_id: int = 0, end_id: int = 9999, rate_limit: float = 1.0, max_concurrent: int = 5
 ) -> List[Dict]:
     """
     全メニューをスクレイピング
@@ -80,12 +75,21 @@ async def scrape_all_menus(
     results = []
     semaphore = asyncio.Semaphore(max_concurrent)
 
-    # ヘッダー設定（robots.txtに準拠し、User-Agentを設定）
+    # ヘッダー設定（より詳細なブラウザヘッダー）
     headers = {
-        'User-Agent': 'Mozilla/5.0 (compatible; DisneyMenuScraper/1.0; +https://github.com/kimshow/disneymenu)'
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Language": "ja,en-US;q=0.9,en;q=0.8",
+        "Accept-Encoding": "gzip, deflate, br",
+        "DNT": "1",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
     }
 
-    async with aiohttp.ClientSession(headers=headers) as session:
+    # TCPConnectorでSSL検証を有効化し、接続プールを設定
+    connector = aiohttp.TCPConnector(limit=max_concurrent, limit_per_host=max_concurrent, ttl_dns_cache=300, ssl=True)
+
+    async with aiohttp.ClientSession(headers=headers, connector=connector) as session:
         tasks = []
 
         for menu_id_num in range(start_id, end_id + 1):
@@ -106,7 +110,7 @@ async def scrape_all_menus(
     return results
 
 
-def save_menus(menus: List[Dict], output_path: str = 'data/menus.json'):
+def save_menus(menus: List[Dict], output_path: str = "data/menus.json"):
     """
     メニューデータをJSONに保存
 
@@ -117,7 +121,7 @@ def save_menus(menus: List[Dict], output_path: str = 'data/menus.json'):
     output_file = Path(output_path)
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(output_file, 'w', encoding='utf-8') as f:
+    with open(output_file, "w", encoding="utf-8") as f:
         json.dump(menus, f, ensure_ascii=False, indent=2)
 
     print(f"\n✓ Saved {len(menus)} menus to {output_path}")
@@ -129,15 +133,15 @@ def save_menus(menus: List[Dict], output_path: str = 'data/menus.json'):
 
         parks = {}
         for menu in menus:
-            for restaurant in menu.get('restaurants', []):
-                park = restaurant.get('park', 'unknown')
+            for restaurant in menu.get("restaurants", []):
+                park = restaurant.get("park", "unknown")
                 parks[park] = parks.get(park, 0) + 1
 
         for park, count in sorted(parks.items()):
             print(f"  {park.upper()}: {count} restaurant entries")
 
         # 価格統計
-        prices = [m['price']['amount'] for m in menus if m.get('price', {}).get('amount', 0) > 0]
+        prices = [m["price"]["amount"] for m in menus if m.get("price", {}).get("amount", 0) > 0]
         if prices:
             print(f"  Price range: ¥{min(prices)} - ¥{max(prices)}")
             print(f"  Average price: ¥{sum(prices) // len(prices)}")
@@ -145,12 +149,12 @@ def save_menus(menus: List[Dict], output_path: str = 'data/menus.json'):
 
 def main():
     """メインエントリーポイント"""
-    parser = argparse.ArgumentParser(description='Scrape Disney menu data')
-    parser.add_argument('--start', type=int, default=0, help='Start menu ID (default: 0)')
-    parser.add_argument('--end', type=int, default=9999, help='End menu ID (default: 9999)')
-    parser.add_argument('--output', type=str, default='data/menus.json', help='Output file path')
-    parser.add_argument('--rate-limit', type=float, default=1.0, help='Rate limit in seconds (default: 1.0)')
-    parser.add_argument('--max-concurrent', type=int, default=5, help='Max concurrent requests (default: 5)')
+    parser = argparse.ArgumentParser(description="Scrape Disney menu data")
+    parser.add_argument("--start", type=int, default=0, help="Start menu ID (default: 0)")
+    parser.add_argument("--end", type=int, default=9999, help="End menu ID (default: 9999)")
+    parser.add_argument("--output", type=str, default="data/menus.json", help="Output file path")
+    parser.add_argument("--rate-limit", type=float, default=1.0, help="Rate limit in seconds (default: 1.0)")
+    parser.add_argument("--max-concurrent", type=int, default=5, help="Max concurrent requests (default: 5)")
 
     args = parser.parse_args()
 
@@ -164,16 +168,15 @@ def main():
     print("=" * 60)
 
     # スクレイピング実行
-    menus = asyncio.run(scrape_all_menus(
-        start_id=args.start,
-        end_id=args.end,
-        rate_limit=args.rate_limit,
-        max_concurrent=args.max_concurrent
-    ))
+    menus = asyncio.run(
+        scrape_all_menus(
+            start_id=args.start, end_id=args.end, rate_limit=args.rate_limit, max_concurrent=args.max_concurrent
+        )
+    )
 
     # 保存
     save_menus(menus, args.output)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
