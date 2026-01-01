@@ -86,11 +86,12 @@ export function FavoritesPage() {
   // 空状態
   if (count === 0) {
     return (
-      <Container maxWidth="md" sx={{ py: { xs: 3, sm: 4 }, px: { xs: 2, sm: 3 } }}>
+      <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 4 }, px: { xs: 2, sm: 3 } }}>
         <Button
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate('/menus')}
-          sx={{ mb: 3 }}
+          sx={{ mb: { xs: 2, sm: 3 } }}
+          size="small"
         >
           メニュー一覧へ戻る
         </Button>
@@ -101,21 +102,34 @@ export function FavoritesPage() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: '60vh',
+            minHeight: { xs: '50vh', sm: '60vh' },
             textAlign: 'center',
+            px: { xs: 2, sm: 0 },
           }}
         >
           <FavoriteIcon
             sx={{
-              fontSize: 120,
+              fontSize: { xs: 80, sm: 120 },
               color: 'grey.300',
-              mb: 3,
+              mb: { xs: 2, sm: 3 },
             }}
           />
-          <Typography variant="h4" gutterBottom>
+          <Typography 
+            variant="h4" 
+            gutterBottom
+            sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}
+          >
             お気に入りがありません
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+          <Typography 
+            variant="body1" 
+            color="text.secondary" 
+            sx={{ 
+              mb: { xs: 3, sm: 4 },
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              maxWidth: { xs: '100%', sm: '400px' },
+            }}
+          >
             メニューのハートアイコンをタップして
             <br />
             お気に入りに追加しましょう！
@@ -124,6 +138,10 @@ export function FavoritesPage() {
             variant="contained"
             size="large"
             onClick={() => navigate('/menus')}
+            sx={{ 
+              width: { xs: '100%', sm: 'auto' },
+              maxWidth: { xs: '300px', sm: 'none' },
+            }}
           >
             メニュー一覧へ戻る
           </Button>
