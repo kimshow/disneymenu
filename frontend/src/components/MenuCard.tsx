@@ -7,6 +7,7 @@ import type { MenuItem } from '../types/menu';
 import { ParkChip } from './menu/ParkChip';
 import { CategoryChips } from './menu/CategoryChips';
 import { RestaurantList } from './menu/RestaurantList';
+import { FavoriteButton } from './favorites/FavoriteButton';
 
 interface MenuCardProps {
   menu: MenuItem;
@@ -36,6 +37,20 @@ export const MenuCard = memo<MenuCardProps>(({ menu, onClick }) => {
         position: 'relative',
       }}
     >
+      {/* お気に入りボタン */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 8,
+          right: 8,
+          zIndex: 2,
+          bgcolor: 'rgba(255, 255, 255, 0.9)',
+          borderRadius: '50%',
+        }}
+      >
+        <FavoriteButton menuId={menu.id} size="medium" />
+      </Box>
+
       {/* 販売状況バッジ */}
       {!menu.is_available && (
         <Chip
@@ -45,7 +60,7 @@ export const MenuCard = memo<MenuCardProps>(({ menu, onClick }) => {
           sx={{
             position: 'absolute',
             top: 8,
-            right: 8,
+            right: 56,
             zIndex: 1,
           }}
         />

@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import { MenuListPage } from './pages/MenuListPage';
+import { FavoritesPage } from './pages/FavoritesPage';
 
 const theme = createTheme({
   palette: {
@@ -36,6 +37,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MenuListPage />} />
           <Route path="/menus" element={<MenuListPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
         </Routes>
       </ThemeProvider>
     </FavoritesProvider>
