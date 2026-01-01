@@ -20,6 +20,7 @@ export function MenuCard({ menu, onClick }: MenuCardProps) {
 
   return (
     <Card
+      data-testid="menu-card"
       onClick={onClick}
       sx={{
         cursor: onClick ? 'pointer' : 'default',

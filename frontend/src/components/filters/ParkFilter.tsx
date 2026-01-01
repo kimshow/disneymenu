@@ -3,17 +3,17 @@ import { useSearchParams } from 'react-router-dom';
 
 /**
  * パークフィルターコンポーネント
- * 
+ *
  * ToggleButtonGroupを使用してパークを選択
  * URLクエリパラメータと同期
  */
 export const ParkFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const park = searchParams.get('park') || 'all';
-  
+
   const handleChange = (_: React.MouseEvent<HTMLElement>, newPark: string | null) => {
     if (newPark === null) return;
-    
+
     const params = new URLSearchParams(searchParams);
     if (newPark === 'all') {
       params.delete('park');
@@ -24,7 +24,7 @@ export const ParkFilter = () => {
     params.delete('page');
     setSearchParams(params);
   };
-  
+
   return (
     <ToggleButtonGroup
       value={park}

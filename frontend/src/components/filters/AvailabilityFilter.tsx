@@ -3,14 +3,14 @@ import { useSearchParams } from 'react-router-dom';
 
 /**
  * 販売状況フィルターコンポーネント
- * 
+ *
  * Switchを使用して販売中のメニューのみを表示
  * URLクエリパラメータと同期
  */
 export const AvailabilityFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const onlyAvailable = searchParams.get('only_available') === 'true';
-  
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const params = new URLSearchParams(searchParams);
     if (event.target.checked) {
@@ -22,7 +22,7 @@ export const AvailabilityFilter = () => {
     params.delete('page');
     setSearchParams(params);
   };
-  
+
   return (
     <FormControlLabel
       control={

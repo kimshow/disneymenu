@@ -5,17 +5,17 @@ import type { Restaurant } from '../../types/menu';
 
 /**
  * レストランフィルターコンポーネント
- * 
+ *
  * Autocompleteを使用してレストランを選択
  * URLクエリパラメータと同期
  */
 export const RestaurantFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: restaurants, isLoading } = useRestaurants();
-  
+
   const selectedRestaurantName = searchParams.get('restaurant');
   const selectedRestaurant = restaurants?.find(r => r.name === selectedRestaurantName) || null;
-  
+
   const handleChange = (_: unknown, value: Restaurant | null) => {
     const params = new URLSearchParams(searchParams);
     if (value) {
@@ -27,7 +27,7 @@ export const RestaurantFilter = () => {
     params.delete('page');
     setSearchParams(params);
   };
-  
+
   return (
     <Autocomplete
       options={restaurants || []}

@@ -15,10 +15,10 @@ interface FilterPanelProps {
 
 /**
  * フィルターパネルコンポーネント
- * 
+ *
  * デスクトップ: サイドバー形式（左側固定）
  * モバイル: Drawer形式（一時的表示）
- * 
+ *
  * @param open - パネルの開閉状態
  * @param onClose - パネルを閉じる時のコールバック
  * @param isMobile - モバイル表示かどうか
@@ -39,9 +39,9 @@ export const FilterPanel = ({ open, onClose, isMobile: isMobileProp }: FilterPan
           </IconButton>
         )}
       </Box>
-      
+
       <Divider sx={{ mb: 2 }} />
-      
+
       {/* レストランフィルター */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600 }}>
@@ -49,12 +49,12 @@ export const FilterPanel = ({ open, onClose, isMobile: isMobileProp }: FilterPan
         </Typography>
         <RestaurantFilter />
       </Box>
-      
+
       {/* 価格範囲フィルター */}
       <Box sx={{ mb: 3 }}>
         <PriceRangeFilter />
       </Box>
-      
+
       {/* パークフィルター */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600 }}>
@@ -62,7 +62,7 @@ export const FilterPanel = ({ open, onClose, isMobile: isMobileProp }: FilterPan
         </Typography>
         <ParkFilter />
       </Box>
-      
+
       {/* カテゴリフィルター */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600 }}>
@@ -70,7 +70,7 @@ export const FilterPanel = ({ open, onClose, isMobile: isMobileProp }: FilterPan
         </Typography>
         <CategoryFilter />
       </Box>
-      
+
       {/* タグフィルター */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600 }}>
@@ -78,14 +78,14 @@ export const FilterPanel = ({ open, onClose, isMobile: isMobileProp }: FilterPan
         </Typography>
         <TagFilter />
       </Box>
-      
+
       {/* 販売状況フィルター */}
       <Box sx={{ mb: 3 }}>
         <AvailabilityFilter />
       </Box>
     </Box>
   );
-  
+
   if (isMobile) {
     return (
       <Drawer
@@ -104,7 +104,7 @@ export const FilterPanel = ({ open, onClose, isMobile: isMobileProp }: FilterPan
       </Drawer>
     );
   }
-  
+
   return (
     <Box
       sx={{
