@@ -18,6 +18,7 @@ import argparse
 FOOD_TYPE_SIGNATURES = {
     "麺類": {
         "keywords": [
+            "麺",  # 追加: 「麺」を含む全てのメニュー
             "ラーメン",
             "らーめん",
             "拉麺",
