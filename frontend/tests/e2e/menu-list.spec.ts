@@ -94,9 +94,11 @@ test.describe('メニュー一覧ページ', () => {
 
     // 複数のメニューカードが存在することを確認
     const menuCards = page.locator('[class*="MuiCard-root"]');
-    const count = await menuCards.count();
+    await expect(menuCards.first()).toBeVisible({ timeout: 10000 });
 
+    const count = await menuCards.count();
     expect(count).toBeGreaterThan(0);
+    expect(count).toBe(12); // limit=12なので12件表示されるはず
   });
 
   test('ページネーションが表示される（メニューが多い場合）', async ({ page }) => {

@@ -62,9 +62,34 @@ export const menuAPI = {
    * メニュー一覧を取得
    */
   getMenus: async (filters?: MenuFilters): Promise<MenuListResponse> => {
-    const response = await apiClient.get<MenuListResponse>('/menus', {
-      params: filters,
+    // パラメータを明示的に構築
+    const params: Record<string, any> = {
+      page: filters?.page ?? 1,
+      limit: filters?.limit ?? 50,
+      only_available: filters?.only_available ?? false,
+    };
+
+    // オプショナルなパラメータを追加
+    if (filters?.q) params.q = filters.q;
+    if (filters?.tags) params.tags = filters.tags;
+    if (filters?.categories) params.categories = filters.categories;
+    if (filters?.min_price !== undefined) params.min_price = filters.min_price;
+    if (filters?.max_price !== undefined) params.max_price = filters.max_price;
+    if (filters?.park) params.park = filters.park;
+    if (filters?.area) params.area = filters.area;
+    if (filters?.character) params.character = filters.character;
+
+    // デバッグログ
+    console.log('[API] getMenus request params:', params);
+
+    const response = await apiClient.get<MenuListResponse>('/menus', { params });
+
+    console.log('[API] getMenus response:', {
+      total: response.data.meta?.total,
+      page: response.data.meta?.page,
+      count: response.data.data?.length,
     });
+
     return response.data;
   },
 
