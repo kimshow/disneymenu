@@ -187,11 +187,18 @@ test.describe('お気に入り機能', () => {
     const favMenuCards = page.locator('[data-testid="menu-card"]');
     await expect(favMenuCards).toHaveCount(3, { timeout: 10000 });
 
-    // ソート機能が表示されることを確認
-    await expect(page.getByLabel('並び替え')).toBeVisible();
+    // ページトップにスクロール（ソート機能はページ上部にある）
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(500);
 
-    // Material-UI SelectをクリックしてプションOをCpen（role="combobox"で検索）
-    await page.getByRole('combobox', { name: '並び替え' }).click();
+    // ソート機能が表示されることを確認（空状態では表示されない）
+    const sortLabel = page.locator('text=並び替え').first();
+    await expect(sortLabel).toBeVisible({ timeout: 5000 });
+
+    // Material-UI Selectを探してクリック
+    const sortSelect = page.locator('label:text("並び替え")').locator('..').locator('[role="combobox"]').first();
+    await expect(sortSelect).toBeVisible();
+    await sortSelect.click();
 
     // ソートオプションが表示される
     await expect(page.getByRole('option', { name: '名前' })).toBeVisible();
