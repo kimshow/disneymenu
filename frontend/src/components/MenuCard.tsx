@@ -48,7 +48,7 @@ export const MenuCard = memo<MenuCardProps>(({ menu, onClick }) => {
           borderRadius: '50%',
         }}
       >
-        <FavoriteButton menuId={menu.id} size="medium" />
+        <FavoriteButton menuId={menu.id} menuData={menu} size="medium" />
       </Box>
 
       {/* 販売状況バッジ */}

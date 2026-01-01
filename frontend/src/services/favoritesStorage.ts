@@ -3,15 +3,16 @@
  */
 
 import type { FavoriteItem, FavoritesData, ExportData } from '../types/favorites';
+import type { MenuItem } from '../types/menu';
 
 const STORAGE_KEY = 'disney-menu-favorites';
 const CURRENT_VERSION = '1.0';
 const MAX_FAVORITES = 500; // 最大保存件数
 
 /**
- * localStorageからお気に入りデータを読み込む
+ * localStorageから全お気に入りアイテムを読み込む（メニュー情報含む）
  */
-export function loadFavorites(): string[] {
+export function loadFavoriteItems(): FavoriteItem[] {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) {
@@ -26,8 +27,7 @@ export function loadFavorites(): string[] {
       return [];
     }
 
-    // メニューIDのみを返す
-    return parsed.favorites.map(item => item.menuId);
+    return parsed.favorites;
   } catch (error) {
     console.error('Failed to load favorites from localStorage:', error);
     return [];
@@ -35,20 +35,24 @@ export function loadFavorites(): string[] {
 }
 
 /**
+ * localStorageからお気に入りIDの配列を読み込む（後方互換性のため）
+ */
+export function loadFavorites(): string[] {
+  return loadFavoriteItems().map(item => item.menuId);
+}
+
+/**
  * localStorageにお気に入りデータを保存
  */
-export function saveFavorites(menuIds: string[]): void {
+function saveFavoriteItems(items: FavoriteItem[]): void {
   try {
     // 最大件数チェック
-    const trimmedIds = menuIds.slice(-MAX_FAVORITES);
+    const trimmedItems = items.slice(-MAX_FAVORITES);
 
     // FavoritesData形式に変換
     const data: FavoritesData = {
       version: CURRENT_VERSION,
-      favorites: trimmedIds.map(menuId => ({
-        menuId,
-        addedAt: new Date().toISOString(),
-      })),
+      favorites: trimmedItems,
       updatedAt: new Date().toISOString(),
     };
 
@@ -59,14 +63,11 @@ export function saveFavorites(menuIds: string[]): void {
       console.error('localStorage quota exceeded');
 
       // 古いデータを削除して再試行
-      const reducedIds = menuIds.slice(-400);
+      const reducedItems = items.slice(-400);
       try {
         const data: FavoritesData = {
           version: CURRENT_VERSION,
-          favorites: reducedIds.map(menuId => ({
-            menuId,
-            addedAt: new Date().toISOString(),
-          })),
+          favorites: reducedItems,
           updatedAt: new Date().toISOString(),
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -87,30 +88,36 @@ export function saveFavorites(menuIds: string[]): void {
 /**
  * お気に入りを追加
  */
-export function addFavorite(menuId: string): string[] {
-  const favorites = loadFavorites();
+export function addFavorite(menuId: string, menuData: MenuItem): string[] {
+  const items = loadFavoriteItems();
 
   // 既に追加済みの場合は何もしない
-  if (favorites.includes(menuId)) {
-    return favorites;
+  if (items.some(item => item.menuId === menuId)) {
+    return items.map(item => item.menuId);
   }
 
-  // 末尾に追加（最新が最後）
-  const updated = [...favorites, menuId];
-  saveFavorites(updated);
+  // 新しいアイテムを追加
+  const newItem: FavoriteItem = {
+    menuId,
+    addedAt: new Date().toISOString(),
+    menuData,
+  };
 
-  return updated;
+  const updated = [...items, newItem];
+  saveFavoriteItems(updated);
+
+  return updated.map(item => item.menuId);
 }
 
 /**
  * お気に入りから削除
  */
 export function removeFavorite(menuId: string): string[] {
-  const favorites = loadFavorites();
-  const updated = favorites.filter(id => id !== menuId);
-  saveFavorites(updated);
+  const items = loadFavoriteItems();
+  const updated = items.filter(item => item.menuId !== menuId);
+  saveFavoriteItems(updated);
 
-  return updated;
+  return updated.map(item => item.menuId);
 }
 
 /**
@@ -208,7 +215,9 @@ function validateFavoritesData(data: any): data is FavoritesData {
         typeof item === 'object' &&
         item !== null &&
         typeof item.menuId === 'string' &&
-        typeof item.addedAt === 'string'
+        typeof item.addedAt === 'string' &&
+        // menuDataは必須（新しいバージョン）
+        typeof item.menuData === 'object'
     ) &&
     typeof data.updatedAt === 'string'
   );
@@ -238,21 +247,5 @@ function validateExportData(data: any): data is ExportData {
  * お気に入り詳細情報を取得（追加日時付き）
  */
 export function getFavoriteDetails(): FavoriteItem[] {
-  try {
-    const data = localStorage.getItem(STORAGE_KEY);
-    if (!data) {
-      return [];
-    }
-
-    const parsed = JSON.parse(data) as FavoritesData;
-
-    if (!validateFavoritesData(parsed)) {
-      return [];
-    }
-
-    return parsed.favorites;
-  } catch (error) {
-    console.error('Failed to get favorite details:', error);
-    return [];
-  }
+  return loadFavoriteItems();
 }

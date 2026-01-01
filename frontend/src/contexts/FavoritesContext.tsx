@@ -3,7 +3,8 @@
  */
 
 import { createContext, useState, useEffect, useCallback, type ReactNode } from 'react';
-import type { FavoritesContextType } from '../types/favorites';
+import type { FavoritesContextType, FavoriteItem } from '../types/favorites';
+import type { MenuItem } from '../types/menu';
 import * as favoritesStorage from '../services/favoritesStorage';
 
 export const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
@@ -17,26 +18,33 @@ interface FavoritesProviderProps {
  */
 export function FavoritesProvider({ children }: FavoritesProviderProps) {
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [favoriteItems, setFavoriteItems] = useState<FavoriteItem[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
   // 初期化: localStorageから読み込み
   useEffect(() => {
     try {
-      const loaded = favoritesStorage.loadFavorites();
-      setFavorites(loaded);
+      const loadedItems = favoritesStorage.loadFavoriteItems();
+      setFavoriteItems(loadedItems);
+      setFavorites(loadedItems.map(item => item.menuId));
       setIsInitialized(true);
     } catch (error) {
       console.error('Failed to initialize favorites:', error);
       setFavorites([]);
+      setFavoriteItems([]);
       setIsInitialized(true);
     }
   }, []);
 
   // お気に入りに追加
-  const addFavorite = useCallback((menuId: string) => {
+  const addFavorite = useCallback((menuId: string, menuData: MenuItem) => {
     try {
-      const updated = favoritesStorage.addFavorite(menuId);
+      const updated = favoritesStorage.addFavorite(menuId, menuData);
       setFavorites(updated);
+
+      // アイテムも更新
+      const updatedItems = favoritesStorage.loadFavoriteItems();
+      setFavoriteItems(updatedItems);
     } catch (error) {
       console.error('Failed to add favorite:', error);
 
@@ -53,17 +61,21 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
     try {
       const updated = favoritesStorage.removeFavorite(menuId);
       setFavorites(updated);
+
+      // アイテムも更新
+      const updatedItems = favoritesStorage.loadFavoriteItems();
+      setFavoriteItems(updatedItems);
     } catch (error) {
       console.error('Failed to remove favorite:', error);
     }
   }, []);
 
   // お気に入りのトグル
-  const toggleFavorite = useCallback((menuId: string) => {
+  const toggleFavorite = useCallback((menuId: string, menuData: MenuItem) => {
     if (favoritesStorage.isFavorite(menuId)) {
       removeFavorite(menuId);
     } else {
-      addFavorite(menuId);
+      addFavorite(menuId, menuData);
     }
   }, [addFavorite, removeFavorite]);
 
@@ -77,6 +89,7 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
     try {
       favoritesStorage.clearAllFavorites();
       setFavorites([]);
+      setFavoriteItems([]);
     } catch (error) {
       console.error('Failed to clear favorites:', error);
     }
@@ -98,8 +111,9 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
       const success = favoritesStorage.importFavorites(data);
       if (success) {
         // インポート成功後、再読み込み
-        const loaded = favoritesStorage.loadFavorites();
-        setFavorites(loaded);
+        const loadedItems = favoritesStorage.loadFavoriteItems();
+        setFavoriteItems(loadedItems);
+        setFavorites(loadedItems.map(item => item.menuId));
       }
       return success;
     } catch (error) {
@@ -110,6 +124,7 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
 
   const value: FavoritesContextType = {
     favorites,
+    favoriteItems,
     addFavorite,
     removeFavorite,
     toggleFavorite,

@@ -6,10 +6,13 @@ import { memo } from 'react';
 import { IconButton, Tooltip, Zoom } from '@mui/material';
 import { Favorite as FavoriteIcon, FavoriteBorder as FavoriteBorderIcon } from '@mui/icons-material';
 import { useFavorites } from '../../hooks/useFavorites';
+import type { MenuItem } from '../../types/menu';
 
 interface FavoriteButtonProps {
   /** メニューID */
   menuId: string;
+  /** メニューデータ（お気に入り追加時に保存） */
+  menuData: MenuItem;
   /** ボタンサイズ */
   size?: 'small' | 'medium' | 'large';
   /** アイコンのフォントサイズ */
@@ -25,11 +28,12 @@ interface FavoriteButtonProps {
  *
  * @example
  * ```tsx
- * <FavoriteButton menuId="0123" size="medium" />
+ * <FavoriteButton menuId="0123" menuData={menu} size="medium" />
  * ```
  */
 export const FavoriteButton = memo<FavoriteButtonProps>(({
   menuId,
+  menuData,
   size = 'medium',
   fontSize = 'medium',
   color = 'error',
@@ -43,7 +47,7 @@ export const FavoriteButton = memo<FavoriteButtonProps>(({
     event.stopPropagation();
     event.preventDefault();
 
-    toggleFavorite(menuId);
+    toggleFavorite(menuId, menuData);
     onClick?.();
   };
 

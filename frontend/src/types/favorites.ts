@@ -2,6 +2,8 @@
  * お気に入り機能の型定義
  */
 
+import type { MenuItem } from './menu';
+
 /**
  * お気に入りアイテム
  */
@@ -10,6 +12,8 @@ export interface FavoriteItem {
   menuId: string;
   /** お気に入りに追加した日時（ISO 8601形式） */
   addedAt: string;
+  /** メニュー情報（APIから再取得を避けるため保存） */
+  menuData: MenuItem;
 }
 
 /**
@@ -30,12 +34,14 @@ export interface FavoritesData {
 export interface FavoritesContextType {
   /** お気に入りメニューIDの配列 */
   favorites: string[];
+  /** お気に入りアイテムの配列（メニュー情報含む） */
+  favoriteItems: FavoriteItem[];
   /** お気に入りに追加 */
-  addFavorite: (menuId: string) => void;
+  addFavorite: (menuId: string, menuData: MenuItem) => void;
   /** お気に入りから削除 */
   removeFavorite: (menuId: string) => void;
   /** お気に入りのトグル（追加/削除を切り替え） */
-  toggleFavorite: (menuId: string) => void;
+  toggleFavorite: (menuId: string, menuData: MenuItem) => void;
   /** お気に入りかどうかを判定 */
   isFavorite: (menuId: string) => boolean;
   /** すべてのお気に入りをクリア */

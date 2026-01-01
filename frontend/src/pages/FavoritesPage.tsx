@@ -13,8 +13,6 @@ import {
   Select,
   MenuItem,
   Stack,
-  Alert,
-  CircularProgress,
 } from '@mui/material';
 import {
   Favorite as FavoriteIcon,
@@ -23,37 +21,20 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useFavorites } from '../hooks/useFavorites';
-import { useMenus } from '../hooks/useMenus';
 import { MenuCard } from '../components/MenuCard';
 import type { FavoritesSortOption, SortOrder } from '../types/favorites';
 
 export function FavoritesPage() {
   const navigate = useNavigate();
-  const { favorites, clearAll, count } = useFavorites();
+  const { favoriteItems, clearAll, count } = useFavorites();
   const [sortBy, setSortBy] = useState<FavoritesSortOption>('addedAt');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
-  // お気に入りのメニューIDを使ってメニューデータを取得
-  // お気に入りが0件の場合はAPIコールしない
-  // limit=1000で全メニューを取得（お気に入りメニューが確実に含まれるように）
-  const { data, isLoading, isError } = useMenus(
-    count > 0 ? { limit: 1000 } : undefined
-  );
-
-  // ソート処理
+  // ソート処理（localStorageから直接取得したメニューデータを使用）
   const sortedMenus = useMemo(() => {
-    console.log('FavoritesPage - data:', data);
-    console.log('FavoritesPage - favorites:', favorites);
+    if (favoriteItems.length === 0) return [];
 
-    if (!data?.data) return [];
-
-    console.log('FavoritesPage - data.data.length:', data.data.length);
-
-    // お気に入りIDに一致するメニューのみをフィルター
-    const favoriteMenus = data.data.filter(menu => favorites.includes(menu.id));
-    console.log('FavoritesPage - favoriteMenus.length:', favoriteMenus.length);
-
-    const menus = [...favoriteMenus];
+    const menus = favoriteItems.map(item => item.menuData);
 
     switch (sortBy) {
       case 'name':
@@ -64,12 +45,8 @@ export function FavoritesPage() {
         break;
       case 'addedAt':
       default:
-        // お気に入りの追加順（favoritesの順序を維持）
-        menus.sort((a, b) => {
-          const indexA = favorites.indexOf(a.id);
-          const indexB = favorites.indexOf(b.id);
-          return indexA - indexB;
-        });
+        // お気に入りの追加順（favoriteItemsの順序を維持）
+        // 何もしない（すでに追加順）
         break;
     }
 
@@ -78,7 +55,7 @@ export function FavoritesPage() {
     }
 
     return menus;
-  }, [data, sortBy, sortOrder, favorites]);
+  }, [favoriteItems, sortBy, sortOrder]);
 
   // すべてクリア確認
   const handleClearAll = () => {
@@ -132,35 +109,6 @@ export function FavoritesPage() {
             メニュー一覧へ戻る
           </Button>
         </Box>
-      </Container>
-    );
-  }
-
-  // ローディング状態
-  if (isLoading) {
-    return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
-          <CircularProgress />
-        </Box>
-      </Container>
-    );
-  }
-
-  // エラー状態
-  if (isError) {
-    return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Alert severity="error">
-          お気に入りメニューの読み込みに失敗しました。
-        </Alert>
-        <Button
-          startIcon={<ArrowBackIcon />}
-          onClick={() => navigate('/menus')}
-          sx={{ mt: 2 }}
-        >
-          メニュー一覧へ戻る
-        </Button>
       </Container>
     );
   }
