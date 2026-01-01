@@ -103,13 +103,10 @@ test.describe('お気に入り機能', () => {
     // お気に入りに追加
     const favoriteButton = menuCards.first().locator('[aria-label*="お気に入り"]').first();
     await favoriteButton.click();
-    await page.waitForTimeout(500); // アニメーション待機
-
-    // localStorageに保存されるまで待機
-    await page.waitForFunction(() => {
-      const stored = localStorage.getItem('disneymenu_favorites');
-      return stored !== null && JSON.parse(stored).favorites.length > 0;
-    });
+    
+    // バッジが「1」と表示されるまで待機（お気に入りが追加されたことを確認）
+    await expect(page.locator('[data-testid="favorites-badge"]')).toContainText('1', { timeout: 5000 });
+    await page.waitForTimeout(500); // 状態更新の完了を確実にする
 
     // お気に入りページに遷移
     await page.goto('/favorites');
@@ -177,6 +174,10 @@ test.describe('お気に入り機能', () => {
       await favoriteButton.click();
       await page.waitForTimeout(300);
     }
+
+    // バッジが「3」と表示されるまで待機
+    await expect(page.locator('[data-testid="favorites-badge"]')).toContainText('3', { timeout: 5000 });
+    await page.waitForTimeout(500); // 状態更新の完了を確実にする
 
     // お気に入りページに遷移
     await page.goto('/favorites');
