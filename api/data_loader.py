@@ -1,7 +1,11 @@
 """
-Data loader for menu JSON files
+メニューデータローダーモジュール
+
+JSONファイルからメニューデータを読み込み、フィルタリング機能を提供します。
+キャッシュ機構により効率的なデータアクセスを実現しています。
 """
 
+import os
 import json
 from pathlib import Path
 from typing import List, Dict, Optional
@@ -10,30 +14,36 @@ from datetime import datetime, date
 
 
 class MenuDataLoader:
-    """メニューデータローダー"""
+    """
+    メニューデータローダークラス
+
+    メニューデータの読み込み、キャッシュ管理、フィルタリング機能を提供します。
+    """
 
     def __init__(self, data_path: str = "data/menus.json"):
         """
         初期化
 
         Args:
-            data_path: メニューデータJSONファイルのパス
+            data_path: メニューデータJSONファイルのパス（デフォルト: data/menus.json）
         """
         self.data_path = Path(data_path)
         self._cache_timestamp: Optional[datetime] = None
+        self.debug = os.getenv("DEBUG", "false").lower() == "true"
 
     def load_menus(self, force_reload: bool = False) -> List[Dict]:
         """
         メニューデータを読み込み
 
         Args:
-            force_reload: キャッシュを無視して再読み込みするか
+            force_reload: Trueの場合、キャッシュを無視して再読み込み（デフォルト: False）
 
         Returns:
-            メニューデータのリスト
+            メニューデータのリスト（各メニューは辞書型）
         """
         if not self.data_path.exists():
-            print(f"Warning: Data file not found: {self.data_path}")
+            if self.debug:
+                print(f"Warning: Data file not found: {self.data_path}")
             return []
 
         # ファイルの更新時刻をチェック
@@ -48,7 +58,8 @@ class MenuDataLoader:
             with open(self.data_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
         except json.JSONDecodeError as e:
-            print(f"Warning: Invalid JSON in {self.data_path}: {e}")
+            if self.debug:
+                print(f"Warning: Invalid JSON in {self.data_path}: {e}")
             return []
 
         self._cache_timestamp = datetime.now()

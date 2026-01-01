@@ -1,7 +1,11 @@
 """
 FastAPI application for Disney Menu API
+
+本APIは東京ディズニーリゾートのメニュー情報を提供します。
+検索、フィルタリング、ソート、ページネーション機能を備えています。
 """
 
+import os
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional, List, Dict, Any
@@ -10,7 +14,10 @@ from api.data_loader import MenuDataLoader
 from api.models import MenuItem, ParkType
 from api.constants import TAG_CATEGORIES, CATEGORY_LABELS, MENU_CATEGORIES
 
-app = FastAPI(title="Disney Menu API", description="API for browsing Tokyo Disney Resort food menus", version="1.0.0")
+# デバッグモード（環境変数で制御）
+DEBUG = os.getenv("DEBUG", "false").lower() == "true"
+
+app = FastAPI(title="Disney Menu API", description="東京ディズニーリゾートのメニュー検索API", version="1.0.0")
 
 # CORS設定
 app.add_middleware(
@@ -89,17 +96,22 @@ async def get_menus(
     """
     メニュー一覧を取得
 
-    各種フィルタリングとページネーションに対応
+    各種フィルタリング、ソート、ページネーションに対応。
+    検索クエリ、タグ、カテゴリ、価格範囲、パーク、エリア、キャラクターなどで絞り込み可能。
     """
     menus = loader.load_menus()
 
-    # デバッグログ
-    print(f"[API /menus] Total loaded: {len(menus)}, only_available: {only_available}, page: {page}, limit: {limit}")
+    # デバッグログ（本番環境では無効化）
+    if DEBUG:
+        print(
+            f"[API /menus] Total loaded: {len(menus)}, only_available: {only_available}, page: {page}, limit: {limit}"
+        )
 
     # 販売中のみフィルタ
     if only_available:
         menus = loader.filter_by_availability(menus)
-        print(f"[API /menus] After availability filter: {len(menus)}")
+        if DEBUG:
+            print(f"[API /menus] After availability filter: {len(menus)}")
 
     # 検索フィルタ
     if q:

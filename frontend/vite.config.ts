@@ -17,7 +17,10 @@ export default defineConfig({
             console.error('Proxy error:', err);
           });
           proxy.on('proxyReq', (_proxyReq, req, _res) => {
-            console.log('Proxying:', req.method, req.url, '-> http://localhost:8000' + req.url);
+            // プロキシログ（開発時のみ、VERBOSEモード）
+            if (process.env.VITE_VERBOSE) {
+              console.log('Proxying:', req.method, req.url, '-> http://localhost:8000' + req.url);
+            }
           });
         },
       },

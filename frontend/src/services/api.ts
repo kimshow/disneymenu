@@ -88,16 +88,21 @@ export const menuAPI = {
     if (filters?.sort) params.sort = filters.sort;
     if (filters?.order) params.order = filters.order;
 
-    // デバッグログ
-    console.log('[API] getMenus request params:', params);
+    // デバッグログ（開発環境のみ）
+    if (import.meta.env.DEV) {
+      console.log('[API] getMenus request params:', params);
+    }
 
     const response = await apiClient.get<MenuListResponse>('/menus', { params });
 
-    console.log('[API] getMenus response:', {
-      total: response.data.meta?.total,
-      page: response.data.meta?.page,
-      count: response.data.data?.length,
-    });
+    // デバッグログ（開発環境のみ）
+    if (import.meta.env.DEV) {
+      console.log('[API] getMenus response:', {
+        total: response.data.meta?.total,
+        page: response.data.meta?.page,
+        count: response.data.data?.length,
+      });
+    }
 
     return response.data;
   },
