@@ -54,9 +54,17 @@ class MenuDataLoader:
         self._cache_timestamp = datetime.now()
         return data
 
-    @lru_cache(maxsize=1)
     def _load_from_cache(self) -> List[Dict]:
         """キャッシュから読み込み（内部使用）"""
+        # ファイルの更新時刻をチェック
+        file_mtime = datetime.fromtimestamp(self.data_path.stat().st_mtime)
+
+        # キャッシュが古い場合は再読み込み
+        if self._cache_timestamp and file_mtime > self._cache_timestamp:
+            with open(self.data_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+
+        # キャッシュが有効な場合
         with open(self.data_path, "r", encoding="utf-8") as f:
             return json.load(f)
 

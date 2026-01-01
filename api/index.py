@@ -197,15 +197,6 @@ async def get_tags():
     return ListResponse(data=tags)
 
 
-@app.get("/api/categories", response_model=ListResponse, tags=["Categories"])
-async def get_categories():
-    """
-    カテゴリ一覧を取得
-    """
-    categories = loader.get_all_categories()
-    return ListResponse(data=categories)
-
-
 @app.get("/api/tags/grouped", tags=["Tags"])
 async def get_grouped_tags() -> Dict[str, Any]:
     """

@@ -18,7 +18,7 @@ interface Category {
  */
 export const CategoryFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   // カテゴリ一覧をAPIから取得
   const { data: categories, isLoading } = useQuery<Category[]>({
     queryKey: ['categories'],
