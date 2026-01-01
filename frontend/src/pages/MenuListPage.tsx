@@ -1,7 +1,8 @@
 /**
  * メニュー一覧ページ
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -11,27 +12,84 @@ import {
   Pagination,
 } from '@mui/material';
 import { useMenus } from '../hooks/useMenus';
+import { useDebounce } from '../hooks/useDebounce';
 import { MenuCard } from '../components/MenuCard';
 import { MenuDetailModal } from '../components/menu/MenuDetailModal';
+import { SearchBar } from '../components/search/SearchBar';
 import type { MenuFilters, MenuItem } from '../types/menu';
 
 export function MenuListPage() {
-  const [page, setPage] = useState(1);
-  const [filters] = useState<MenuFilters>({
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // URLからパラメータを読み取り
+  const qParam = searchParams.get('q') || '';
+  const pageParam = parseInt(searchParams.get('page') || '1');
+  const sortParam = searchParams.get('sort') || undefined;
+  const orderParam = searchParams.get('order') || undefined;
+
+  const [searchQuery, setSearchQuery] = useState(qParam);
+  const [page, setPage] = useState(pageParam);
+
+  // 検索クエリをデバウンス（300ms）
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
+  // フィルター構築
+  const filters: MenuFilters = {
+    q: debouncedSearchQuery || undefined,
+    sort: sortParam,
+    order: orderParam as 'asc' | 'desc' | undefined,
     page,
     limit: 12,
     only_available: false,  // すべてのメニューを表示
-  });
+  };
 
   // モーダル状態管理
   const [selectedMenu, setSelectedMenu] = useState<MenuItem | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { data, isLoading, error } = useMenus({ ...filters, page });
+  const { data, isLoading, error } = useMenus(filters);
+
+  // URLクエリパラメータを更新
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (debouncedSearchQuery) {
+      params.set('q', debouncedSearchQuery);
+    }
+    if (page > 1) {
+      params.set('page', page.toString());
+    }
+    if (sortParam) {
+      params.set('sort', sortParam);
+    }
+    if (orderParam) {
+      params.set('order', orderParam);
+    }
+
+    setSearchParams(params, { replace: true });
+  }, [debouncedSearchQuery, page, sortParam, orderParam, setSearchParams]);
+
+  // URLパラメータが変更されたら状態を同期
+  useEffect(() => {
+    const newQParam = searchParams.get('q') || '';
+    const newPageParam = parseInt(searchParams.get('page') || '1');
+
+    if (newQParam !== searchQuery) {
+      setSearchQuery(newQParam);
+    }
+    if (newPageParam !== page) {
+      setPage(newPageParam);
+    }
+  }, [searchParams]);
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    setPage(1); // 検索時は1ページ目に戻る
   };
 
   const handleCardClick = (menu: MenuItem) => {
@@ -105,6 +163,12 @@ export function MenuListPage() {
       <Typography variant="h4" component="h1" gutterBottom>
         メニュー一覧
       </Typography>
+
+      {/* 検索バー */}
+      <SearchBar
+        value={searchQuery}
+        onChange={handleSearchChange}
+      />
 
       {meta && (
         <Typography variant="body2" color="text.secondary" gutterBottom>

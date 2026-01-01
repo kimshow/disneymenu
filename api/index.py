@@ -80,6 +80,8 @@ async def get_menus(
     area: Optional[str] = Query(None, description="エリアフィルタ"),
     character: Optional[str] = Query(None, description="キャラクターフィルタ"),
     only_available: bool = Query(False, description="販売中のみ（デフォルト: すべて表示）"),
+    sort: Optional[str] = Query(None, description="ソート項目 (price, name, scraped_at)"),
+    order: Optional[str] = Query("asc", description="ソート順 (asc, desc)"),
     page: int = Query(1, ge=1, description="ページ番号"),
     limit: int = Query(50, ge=1, le=100, description="1ページあたりの件数"),
 ):
@@ -130,6 +132,16 @@ async def get_menus(
     # キャラクターフィルタ
     if character:
         menus = [m for m in menus if any(character.lower() in c.lower() for c in m.get("characters", []))]
+
+    # ソート処理
+    if sort:
+        reverse = order == "desc"
+        if sort == "price":
+            menus = sorted(menus, key=lambda x: x["price"]["amount"], reverse=reverse)
+        elif sort == "name":
+            menus = sorted(menus, key=lambda x: x["name"], reverse=reverse)
+        elif sort == "scraped_at":
+            menus = sorted(menus, key=lambda x: x.get("scraped_at", ""), reverse=reverse)
 
     # ページネーション
     total = len(menus)

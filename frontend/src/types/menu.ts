@@ -54,9 +54,22 @@ export interface MenuFilters {
   area?: string;
   character?: string;
   only_available?: boolean;
+  sort?: 'price' | 'name' | 'scraped_at';  // ソート項目
+  order?: 'asc' | 'desc';  // ソート順
   page?: number;
   limit?: number;
 }
+
+export interface SortOption {
+  value: 'price' | 'name' | 'scraped_at';
+  label: string;
+}
+
+export const SORT_OPTIONS: SortOption[] = [
+  { value: 'scraped_at', label: '新着順' },
+  { value: 'price', label: '価格順' },
+  { value: 'name', label: '名前順' },
+];
 
 export interface MenuListResponse {
   success: boolean;
