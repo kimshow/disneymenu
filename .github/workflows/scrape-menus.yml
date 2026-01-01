@@ -84,13 +84,17 @@ jobs:
           FOOD_TAG_STATS=$(python scripts/generate_commit_stats.py data/menus.json | grep FOOD_TAG_STATS | cut -d= -f2)
 
           git add data/menus.json
-          git commit -m "chore: 週次メニューデータ更新
+          
+          # コミットメッセージを作成（ヒアドキュメント使用）
+          git commit -F - <<EOF
+          chore: 週次メニューデータ更新
 
-- スクレイピング実行日時: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
-- 総メニュー数: ${MENU_COUNT}件
-- 料理種類タグ: ${FOOD_TAG_STATS}
-- 処理: スクレイピング → カテゴリ割当 → タグ正規化 → 料理種類タグ付与
-- 自動実行: GitHub Actions"
+          - スクレイピング実行日時: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          - 総メニュー数: ${MENU_COUNT}件
+          - 料理種類タグ: ${FOOD_TAG_STATS}
+          - 処理: スクレイピング → カテゴリ割当 → タグ正規化 → 料理種類タグ付与
+          - 自動実行: GitHub Actions
+          EOF
 
           git push
 
