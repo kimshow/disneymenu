@@ -208,6 +208,7 @@ export function MenuListPage() {
           )}
 
           <Box
+            data-testid="menu-list-grid-container"
             sx={{
               mt: 2,
               display: 'grid',

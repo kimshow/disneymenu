@@ -227,6 +227,7 @@ export function FavoritesPage() {
 
       {/* メニュー一覧 */}
       <Box
+        data-testid="favorites-grid-container"
         sx={{
           mt: 2,
           display: 'grid',

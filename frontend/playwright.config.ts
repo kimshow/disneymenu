@@ -21,7 +21,7 @@ export default defineConfig({
   /* 共通設定 */
   use: {
     /* ベースURL */
-    baseURL: 'http://localhost:5174',
+    baseURL: 'http://localhost:5176',
 
     /* スクリーンショット */
     screenshot: 'only-on-failure',
@@ -41,7 +41,7 @@ export default defineConfig({
   /* 開発サーバー起動 */
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:5174',
+    url: 'http://localhost:5176',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000, // 2分
   },
