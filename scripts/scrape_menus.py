@@ -35,13 +35,28 @@ async def scrape_menu(
     Returns:
         パースされたメニューデータ、または None
     """
-    url = f"https://www.tokyodisneyresort.jp/food/{menu_id}/"
+    # セキュリティ: URLを検証（SSRF対策）
+    allowed_domain = "www.tokyodisneyresort.jp"
+    url = f"https://{allowed_domain}/food/{menu_id}/"
 
     async with semaphore:
         try:
-            async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as response:
+            # タイムアウト設定（DoS対策）
+            timeout = aiohttp.ClientTimeout(total=10, connect=5)
+            async with session.get(url, timeout=timeout, allow_redirects=False) as response:
+                # リダイレクトを許可しない（SSRF対策）
                 if response.status == 200:
+                    # レスポンスサイズ制限（5MB）
+                    content_length = response.headers.get("Content-Length")
+                    if content_length and int(content_length) > 5 * 1024 * 1024:
+                        return None
+
                     html = await response.text()
+
+                    # HTMLサイズチェック
+                    if len(html) > 5 * 1024 * 1024:
+                        return None
+
                     return scraper.parse_menu_page(html, menu_id)
                 elif response.status == 404:
                     return None  # 存在しないID
@@ -49,7 +64,11 @@ async def scrape_menu(
                     return None
         except asyncio.TimeoutError:
             return None
-        except Exception as e:
+        except aiohttp.ClientError:
+            # ネットワークエラー（詳細を隠す）
+            return None
+        except Exception:
+            # その他のエラー（詳細を隠す）
             return None
 
 

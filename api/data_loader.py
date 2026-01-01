@@ -27,7 +27,29 @@ class MenuDataLoader:
         Args:
             data_path: メニューデータJSONファイルのパス（デフォルト: data/menus.json）
         """
-        self.data_path = Path(data_path)
+        # Path Traversal対策: 絶対パスに解決し、許可されたディレクトリ内かチェック
+        import os
+
+        # プロジェクトルートディレクトリを基準にする
+        project_root = Path(__file__).parent.parent
+
+        # data_pathが絶対パスか相対パスかを判定
+        if Path(data_path).is_absolute():
+            resolved_path = Path(data_path).resolve()
+        else:
+            # 相対パスの場合はプロジェクトルートからの相対パス
+            resolved_path = (project_root / data_path).resolve()
+
+        # 許可されたディレクトリ（dataディレクトリ）を定義
+        allowed_dir = (project_root / "data").resolve()
+
+        # 許可されたディレクトリ外へのアクセスを防止
+        try:
+            resolved_path.relative_to(allowed_dir)
+        except ValueError:
+            raise ValueError(f"Invalid data path: {data_path}. Must be within 'data/' directory.")
+
+        self.data_path = resolved_path
         self._cache_timestamp: Optional[datetime] = None
         self.debug = os.getenv("DEBUG", "false").lower() == "true"
 

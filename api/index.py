@@ -17,14 +17,27 @@ from api.constants import TAG_CATEGORIES, CATEGORY_LABELS, MENU_CATEGORIES
 # デバッグモード（環境変数で制御）
 DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
-app = FastAPI(title="Disney Menu API", description="東京ディズニーリゾートのメニュー検索API", version="1.0.0")
+# セキュリティ設定
+ALLOWED_ORIGINS = os.getenv(
+    "ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:5174,http://localhost:3000"
+).split(",")
 
-# CORS設定
+app = FastAPI(
+    title="Disney Menu API",
+    description="東京ディズニーリゾートのメニュー検索API",
+    version="1.0.0",
+    docs_url="/docs" if DEBUG else None,  # 本番環境ではSwagger UIを無効化
+    redoc_url="/redoc" if DEBUG else None,
+)
+
+# CORS設定（本番環境では特定のオリジンのみ許可）
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 本番環境では適切に設定
-    allow_methods=["GET"],
-    allow_headers=["*"],
+    allow_origins=ALLOWED_ORIGINS if not DEBUG else ["*"],
+    allow_credentials=False,  # クッキー認証を使用しないため無効化
+    allow_methods=["GET", "OPTIONS"],  # GET と OPTIONS のみ許可
+    allow_headers=["Content-Type", "Accept"],  # 必要最小限のヘッダーのみ
+    max_age=600,  # プリフライトリクエストのキャッシュ時間（10分）
 )
 
 # データローダー
@@ -79,18 +92,21 @@ async def root():
 
 @app.get("/api/menus", response_model=MenuListResponse, tags=["Menus"])
 async def get_menus(
-    q: Optional[str] = Query(None, description="検索クエリ（名前、説明）"),
-    tags: Optional[str] = Query(None, description="タグフィルタ（カンマ区切り）"),
-    categories: Optional[str] = Query(None, description="カテゴリフィルタ（カンマ区切り）"),
-    min_price: Optional[int] = Query(None, ge=0, description="最小価格"),
-    max_price: Optional[int] = Query(None, ge=0, description="最大価格"),
+    q: Optional[str] = Query(None, min_length=1, max_length=200, description="検索クエリ（名前、説明）"),
+    tags: Optional[str] = Query(None, max_length=500, description="タグフィルタ（カンマ区切り）"),
+    categories: Optional[str] = Query(None, max_length=200, description="カテゴリフィルタ（カンマ区切り）"),
+    min_price: Optional[int] = Query(None, ge=0, le=100000, description="最小価格"),
+    max_price: Optional[int] = Query(None, ge=0, le=100000, description="最大価格"),
     park: Optional[ParkType] = Query(None, description="パークフィルタ（tdl/tds）"),
-    area: Optional[str] = Query(None, description="エリアフィルタ"),
-    character: Optional[str] = Query(None, description="キャラクターフィルタ"),
+    area: Optional[str] = Query(None, max_length=100, description="エリアフィルタ"),
+    restaurant: Optional[str] = Query(None, max_length=200, description="レストランフィルタ（レストラン名）"),
+    character: Optional[str] = Query(None, max_length=100, description="キャラクターフィルタ"),
     only_available: bool = Query(False, description="販売中のみ（デフォルト: すべて表示）"),
-    sort: Optional[str] = Query(None, description="ソート項目 (price, name, scraped_at)"),
-    order: Optional[str] = Query("asc", description="ソート順 (asc, desc)"),
-    page: int = Query(1, ge=1, description="ページ番号"),
+    sort: Optional[str] = Query(
+        None, pattern="^(price|name|scraped_at)$", description="ソート項目 (price, name, scraped_at)"
+    ),
+    order: Optional[str] = Query("asc", pattern="^(asc|desc)$", description="ソート順 (asc, desc)"),
+    page: int = Query(1, ge=1, le=10000, description="ページ番号"),
     limit: int = Query(50, ge=1, le=100, description="1ページあたりの件数"),
 ):
     """
@@ -175,6 +191,11 @@ async def get_menus(
     if area:
         menus = [m for m in menus if any(area.lower() in r["area"].lower() for r in m.get("restaurants", []))]
 
+    # レストランフィルタ（レストラン名で完全一致または部分一致）
+    if restaurant:
+        restaurant_lower = restaurant.lower()
+        menus = [m for m in menus if any(restaurant_lower in r["name"].lower() for r in m.get("restaurants", []))]
+
     # キャラクターフィルタ
     if character:
         menus = [m for m in menus if any(character.lower() in c.lower() for c in m.get("characters", []))]
@@ -206,8 +227,14 @@ async def get_menu(menu_id: str):
     特定のメニューを取得
 
     Args:
-        menu_id: メニューID（4桁）
+        menu_id: メニューID（4桁の数字）
     """
+    # 入力バリデーション: 4桁の数字のみ許可
+    import re
+
+    if not re.match(r"^[0-9]{4}$", menu_id):
+        raise HTTPException(status_code=400, detail="Invalid menu ID format. Must be 4 digits.")
+
     menu = loader.get_menu_by_id(menu_id)
 
     if not menu:

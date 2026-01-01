@@ -229,6 +229,7 @@ GET /api/menus
 | `max_price` | integer | 最大価格 | - |
 | `park` | string | パーク（`tdl`/`tds`） | - |
 | `area` | string | エリア名 | - |
+| `restaurant` | string | レストラン名 | - |
 | `character` | string | キャラクター名 | - |
 | `only_available` | boolean | 販売中のみ | `false` |
 | `sort` | string | ソート項目（`price`/`name`/`scraped_at`） | - |

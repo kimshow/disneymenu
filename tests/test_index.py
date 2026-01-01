@@ -555,3 +555,15 @@ class TestQueryParameterParsing:
         """Test parsing invalid price value"""
         response = client.get("/api/menus?min_price=invalid")
         assert response.status_code == 422  # Validation error
+
+    def test_restaurant_filter_parameter(self, client, mock_data_loader):
+        """Test restaurant filter parameter is accepted"""
+        response = client.get("/api/menus?restaurant=ガゼーボ")
+        assert response.status_code == 200
+        assert mock_data_loader.load_menus.called
+
+    def test_restaurant_filter_with_japanese_name(self, client, mock_data_loader):
+        """Test restaurant filter with Japanese restaurant name"""
+        response = client.get("/api/menus?restaurant=カフェ・ポルトフィーノ")
+        assert response.status_code == 200
+        assert mock_data_loader.load_menus.called
