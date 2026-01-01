@@ -33,12 +33,10 @@ export function FavoritesPage() {
   const [sortBy, setSortBy] = useState<FavoritesSortOption>('addedAt');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
-  // お気に入りメニューをカンマ区切りのIDで取得
-  const favoriteIds = favorites.join(',');
-
   // お気に入りのメニューIDを使ってメニューデータを取得
+  // お気に入りが0件の場合はAPIコールしない
   const { data, isLoading, isError } = useMenus(
-    favoriteIds ? { q: favoriteIds } : undefined
+    count > 0 ? {} : undefined
   );
 
   // ソート処理

@@ -22,7 +22,7 @@ interface FavoriteButtonProps {
 
 /**
  * お気に入りボタンコンポーネント
- * 
+ *
  * @example
  * ```tsx
  * <FavoriteButton menuId="0123" size="medium" />
@@ -42,13 +42,13 @@ export const FavoriteButton = memo<FavoriteButtonProps>(({
     // イベントの伝播を止める（親要素のクリックイベントを発火させない）
     event.stopPropagation();
     event.preventDefault();
-    
+
     toggleFavorite(menuId);
     onClick?.();
   };
 
   return (
-    <Tooltip 
+    <Tooltip
       title={favorite ? 'お気に入りから削除' : 'お気に入りに追加'}
       TransitionComponent={Zoom}
       arrow
@@ -70,8 +70,8 @@ export const FavoriteButton = memo<FavoriteButtonProps>(({
         data-testid={`favorite-button-${menuId}`}
       >
         {favorite ? (
-          <FavoriteIcon 
-            fontSize={fontSize} 
+          <FavoriteIcon
+            fontSize={fontSize}
             data-testid="favorite-filled"
             sx={{
               animation: 'heartBeat 0.3s ease-in-out',
@@ -83,7 +83,7 @@ export const FavoriteButton = memo<FavoriteButtonProps>(({
             }}
           />
         ) : (
-          <FavoriteBorderIcon 
+          <FavoriteBorderIcon
             fontSize={fontSize}
             data-testid="favorite-outline"
           />

@@ -7,12 +7,12 @@ import { FavoritesContext } from '../contexts/FavoritesContext';
 
 /**
  * お気に入り機能を使用するためのカスタムフック
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { favorites, addFavorite, isFavorite, count } = useFavorites();
- *   
+ *
  *   return (
  *     <div>
  *       <p>お気に入り: {count}件</p>
@@ -26,10 +26,10 @@ import { FavoritesContext } from '../contexts/FavoritesContext';
  */
 export function useFavorites() {
   const context = useContext(FavoritesContext);
-  
+
   if (context === undefined) {
     throw new Error('useFavorites must be used within a FavoritesProvider');
   }
-  
+
   return context;
 }

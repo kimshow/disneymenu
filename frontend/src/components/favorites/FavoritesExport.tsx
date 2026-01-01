@@ -67,7 +67,7 @@ export function FavoritesExport({ open, onClose }: FavoritesExportProps) {
       try {
         const content = e.target?.result as string;
         const success = importFavorites(content);
-        
+
         if (success) {
           setImportSuccess(true);
           setTimeout(() => {
@@ -87,7 +87,7 @@ export function FavoritesExport({ open, onClose }: FavoritesExportProps) {
     };
 
     reader.readAsText(file);
-    
+
     // ファイル入力をリセット
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -150,7 +150,7 @@ export function FavoritesExport({ open, onClose }: FavoritesExportProps) {
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
               バックアップファイルからお気に入りを復元します。
             </Typography>
-            
+
             <input
               ref={fileInputRef}
               type="file"

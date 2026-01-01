@@ -19,7 +19,7 @@ export function loadFavorites(): string[] {
     }
 
     const parsed = JSON.parse(data) as FavoritesData;
-    
+
     // データの検証
     if (!validateFavoritesData(parsed)) {
       console.warn('Invalid favorites data format, resetting...');
@@ -41,7 +41,7 @@ export function saveFavorites(menuIds: string[]): void {
   try {
     // 最大件数チェック
     const trimmedIds = menuIds.slice(-MAX_FAVORITES);
-    
+
     // FavoritesData形式に変換
     const data: FavoritesData = {
       version: CURRENT_VERSION,
@@ -57,7 +57,7 @@ export function saveFavorites(menuIds: string[]): void {
     if (error instanceof DOMException && error.name === 'QuotaExceededError') {
       // ストレージ容量超過の場合
       console.error('localStorage quota exceeded');
-      
+
       // 古いデータを削除して再試行
       const reducedIds = menuIds.slice(-400);
       try {
@@ -70,7 +70,7 @@ export function saveFavorites(menuIds: string[]): void {
           updatedAt: new Date().toISOString(),
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        
+
         // ユーザーに通知（呼び出し元でハンドリング）
         throw new Error('QUOTA_EXCEEDED');
       } catch (retryError) {
@@ -89,7 +89,7 @@ export function saveFavorites(menuIds: string[]): void {
  */
 export function addFavorite(menuId: string): string[] {
   const favorites = loadFavorites();
-  
+
   // 既に追加済みの場合は何もしない
   if (favorites.includes(menuId)) {
     return favorites;
@@ -98,7 +98,7 @@ export function addFavorite(menuId: string): string[] {
   // 末尾に追加（最新が最後）
   const updated = [...favorites, menuId];
   saveFavorites(updated);
-  
+
   return updated;
 }
 
@@ -109,7 +109,7 @@ export function removeFavorite(menuId: string): string[] {
   const favorites = loadFavorites();
   const updated = favorites.filter(id => id !== menuId);
   saveFavorites(updated);
-  
+
   return updated;
 }
 
@@ -150,7 +150,7 @@ export function exportFavorites(): string {
     }
 
     const parsed = JSON.parse(data) as FavoritesData;
-    
+
     // ExportData形式に変換
     const exportData: ExportData = {
       version: parsed.version,
@@ -172,7 +172,7 @@ export function exportFavorites(): string {
 export function importFavorites(jsonString: string): boolean {
   try {
     const data = JSON.parse(jsonString);
-    
+
     // ExportData形式の検証
     if (!validateExportData(data)) {
       console.error('Invalid export data format');
@@ -245,7 +245,7 @@ export function getFavoriteDetails(): FavoriteItem[] {
     }
 
     const parsed = JSON.parse(data) as FavoritesData;
-    
+
     if (!validateFavoritesData(parsed)) {
       return [];
     }

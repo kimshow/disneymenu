@@ -39,7 +39,7 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
       setFavorites(updated);
     } catch (error) {
       console.error('Failed to add favorite:', error);
-      
+
       // QUOTA_EXCEEDEDエラーの場合は通知
       if (error instanceof Error && error.message === 'QUOTA_EXCEEDED') {
         // TODO: ユーザーに通知を表示（Snackbar等）

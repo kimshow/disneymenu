@@ -18,7 +18,7 @@ interface FavoritesBadgeProps {
 
 /**
  * お気に入り数を表示するバッジコンポーネント
- * 
+ *
  * @example
  * ```tsx
  * <FavoritesBadge fontSize="medium" color="error" max={99} />
@@ -33,8 +33,8 @@ export const FavoritesBadge = memo<FavoritesBadgeProps>(({
 
   return (
     <Tooltip title={`お気に入り: ${count}件`}>
-      <Badge 
-        badgeContent={count} 
+      <Badge
+        badgeContent={count}
         color={color}
         max={max}
         showZero={false}
@@ -45,9 +45,9 @@ export const FavoritesBadge = memo<FavoritesBadgeProps>(({
           },
         }}
       >
-        <FavoriteIcon 
+        <FavoriteIcon
           fontSize={fontSize}
-          sx={{ 
+          sx={{
             color: count > 0 ? 'error.main' : 'action.disabled',
             transition: 'color 0.2s ease-in-out',
           }}
