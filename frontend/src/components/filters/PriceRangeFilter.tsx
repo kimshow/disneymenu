@@ -13,7 +13,7 @@ export const PriceRangeFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const minPriceParam = parseInt(searchParams.get('min_price') || '0');
-  const maxPriceParam = parseInt(searchParams.get('max_price') || '13000');
+  const maxPriceParam = parseInt(searchParams.get('max_price') || '17000');
 
   const [priceRange, setPriceRange] = useState<[number, number]>([minPriceParam, maxPriceParam]);
   const debouncedPriceRange = useDebounce(priceRange, 500);
@@ -33,7 +33,7 @@ export const PriceRangeFilter = () => {
       params.delete('min_price');
     }
 
-    if (debouncedPriceRange[1] < 13000) {
+    if (debouncedPriceRange[1] < 17000) {
       params.set('max_price', debouncedPriceRange[1].toString());
     } else {
       params.delete('max_price');
@@ -66,11 +66,13 @@ export const PriceRangeFilter = () => {
           valueLabelDisplay="auto"
           valueLabelFormat={formatValue}
           min={0}
-          max={13000}
+          max={17000}
           step={100}
           marks={[
             { value: 0, label: '¥0' },
-            { value: 13000, label: '¥13,000' },
+            { value: 5000, label: '¥5,000' },
+            { value: 10000, label: '¥10,000' },
+            { value: 17000, label: '¥17,000' },
           ]}
           sx={{ mt: 1 }}
         />
