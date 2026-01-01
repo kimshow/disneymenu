@@ -23,25 +23,19 @@ import sys
 
 # カテゴリ定義
 MENU_CATEGORIES = {
-    "food": {
-        "label": "料理",
-        "description": "食事メニュー（カレー、ピザ、パスタ、ハンバーガーなど）",
+    "main_dish": {
+        "label": "メインディッシュ",
+        "description": "カトラリー必須のしっかりした食事（カレー、パスタ、丼、中華料理など）",
         "priority": 4,
         "tags": [
             "カレー",
-            "ピザ",
-            "ハンバーガー",
+            "カレー味",
             "パスタ",
             "ラーメン",
             "うどん",
             "そば",
-            "チャーハン",
-            "サンドイッチ",
-            "スープ",
-            "サラダ",
-            "ポップコーン",
-            "ライス",
-            "パン",
+            "中華",
+            "イタリアン",
             "丼",
             "グラタン",
             "リゾット",
@@ -51,13 +45,35 @@ MENU_CATEGORIES = {
             "春巻き",
             "焼売",
             "エッグロール",
-            "チキン",
-            "ポーク",
-            "ビーフ",
-            "シーフード",
-            "ベジタブル",
-            "フライ",
-            "グリル",
+        ],
+    },
+    "quick_meal": {
+        "label": "クイックミール",
+        "description": "ワンハンドで食べられる軽食（バーガー、ホットドッグ、ピザなど）",
+        "priority": 5,
+        "tags": [
+            "ワンハンドメニュー",
+            "ワンハンド、食べ歩き、持ち歩き",
+            "ハンバーガー",
+            "ホットドッグ",
+            "サンドイッチ",
+            "カルツォーネ",
+        ],
+    },
+    "side_dish": {
+        "label": "サイド・トッピング",
+        "description": "サイドメニューや追加トッピング（ライス、パン、スープ、サラダなど）",
+        "priority": 8,
+        "tags": [
+            "サイド",
+            "トッピング",
+            "ライス",
+            "ごはん",
+            "パン",
+            "パン/ライス",
+            "サンドウィッチ・パン",
+            "スープ",
+            "サラダ",
         ],
     },
     "drink": {
@@ -117,7 +133,15 @@ MENU_CATEGORIES = {
         "label": "セットメニュー",
         "description": "コース料理やセット商品",
         "priority": 7,
-        "tags": ["コース料理", "セット", "コース", "ディナーセット", "ランチセット", "モーニングセット"],
+        "tags": [
+            "コース料理",
+            "セット",
+            "コース",
+            "ディナーセット",
+            "ランチセット",
+            "モーニングセット",
+            "お子様メニュー",
+        ],
     },
     "souvenir_menu": {
         "label": "スーベニア付きメニュー",
@@ -147,34 +171,78 @@ def determine_category(menu: dict) -> str:
     """
     メニューのタグとメニュー名に基づいてカテゴリを判定
 
-    優先順位: character_menu > souvenir_menu > sweets > food > drink > snack > set_menu > other
-    
+    優先順位: character_menu > souvenir_menu > set_menu > sweets > quick_meal > main_dish > side_dish > drink > snack > other
+
     判定ロジック:
     1. タグベースの判定（既存ロジック）
-    2. メニュー名ベースの判定（バーガー、ホットドッグなどの料理名）
+    2. メニュー名ベースの判定（特定の料理名や特徴）
+    3. ワンハンドメニューの特別判定
     """
     tags = set(menu.get("tags", []))
     menu_name = menu.get("name", "")
 
-    # メニュー名から料理カテゴリを判定（タグがない場合の補完）
-    food_name_keywords = {
-        "バーガー": "food",
-        "ハンバーガー": "food",
-        "ホットドッグ": "food",
-        "ドッグ": "food",  # チリドッグなど
-        "サンド": "food",
-        "ライス": "food",
-        "チャーハン": "food",
-        "寿司": "food",
-        "ロール": "food",  # 寿司ロール、肉巻など
-        "グラタン": "food",
-        "リゾット": "food",
-        "ポテト": "snack",  # ベイクドチーズポテトなど
-        "フライ": "snack",
-        "チュロス": "snack",
+    # 特別な判定ルール（優先度順）
+
+    # 1. ワンハンドメニュー判定（quick_mealへ）
+    # ただし、サイドディッシュやスナックに該当するものは除外
+    is_onehand = "ワンハンドメニュー" in tags or "ワンハンド、食べ歩き、持ち歩き" in tags
+    is_side = any(keyword in menu_name.lower() for keyword in ["ライス", "パン", "スープ", "サラダ"])
+
+    if is_onehand and not is_side:
+        # スナックタグがある場合はスナック優先
+        if not any(tag in tags for tag in ["スナック", "チュロス", "ポテト"]):
+            return "quick_meal"
+
+    # 2. サイド・トッピング判定
+    side_keywords = ["ライス", "パン", "スープ", "チャウダー", "サラダ", "トッピング", "メンマ", "白髪ねぎ", "チーズ（"]
+    if any(keyword in menu_name for keyword in side_keywords):
+        # ただし、「コンビカリー」のような複合メニューは例外
+        if "コンビカリー" in menu_name or "タンドーリチキン添え" in menu_name:
+            return "main_dish"
+        return "side_dish"
+
+    # 3. メインディッシュの名前判定（ピザを含む）
+    main_dish_keywords = {
+        "チャーハン": "main_dish",
+        "炒飯": "main_dish",
+        "海老のチリソース": "main_dish",
+        "マーボー豆腐": "main_dish",
+        "麻婆豆腐": "main_dish",
+        "ハンバーグ": "main_dish",
+        "ピザ": "main_dish",  # ワンハンドでなければmain_dish
+        "ピッツァ": "main_dish",
+        "カルツォーネ": "main_dish",  # ワンハンドでなければmain_dish
+        "ローストチキン": "main_dish",
+        "フランクステーキ": "main_dish",
+        "寿司": "quick_meal",  # 寿司ロールはワンハンド
+        "タンドーリチキン": "side_dish",
+        "春巻き": "side_dish",
+        "餃子": "side_dish",
+        "ポップン": "side_dish",
     }
-    
-    # カテゴリごとにマッチするタグをチェック
+
+    for keyword, category in main_dish_keywords.items():
+        if keyword in menu_name:
+            # ピザ・カルツォーネでワンハンドタグがある場合はquick_mealを維持
+            if keyword in ["ピザ", "ピッツァ", "カルツォーネ"] and is_onehand:
+                return "quick_meal"
+            return category
+
+    # 4. スイーツ判定（otherから移動）
+    sweets_keywords = ["ブラウニー", "クッキー", "マフィン", "ケーキ", "タルト"]
+    if any(keyword in menu_name for keyword in sweets_keywords):
+        return "sweets"
+
+    # 5. その他の特殊判定
+    # カップサラダ、コーンチップスなどはside_dish
+    if "カップサラダ" in menu_name or "コーンチップス" in menu_name:
+        return "side_dish"
+
+    # アソーテッドスナック、低アレルゲンメニュー、シリコーンモールドなどはother
+    if any(keyword in menu_name for keyword in ["アソーテッド", "低アレルゲンメニュー", "シリコーンモールド"]):
+        return "other"
+
+    # 6. 通常のタグベース判定
     matched_categories = []
     for category_key, category_info in MENU_CATEGORIES.items():
         if category_key == "other":
@@ -186,13 +254,23 @@ def determine_category(menu: dict) -> str:
 
     # タグベースでマッチしない場合、メニュー名から判定
     if not matched_categories:
+        food_name_keywords = {
+            "バーガー": "quick_meal",
+            "ハンバーガー": "quick_meal",
+            "ホットドッグ": "quick_meal",
+            "ドッグ": "quick_meal",
+            "サンド": "quick_meal",
+            "ポテト": "snack",
+            "フライ": "snack",
+            "チュロス": "snack",
+        }
+
         for keyword, category_key in food_name_keywords.items():
             if keyword in menu_name:
-                # メニュー名から判定した場合、そのカテゴリの優先度を取得
                 priority = MENU_CATEGORIES[category_key]["priority"]
                 matched_categories.append((category_key, priority))
                 break
-    
+
     # それでもマッチしない場合は 'other'
     if not matched_categories:
         return "other"

@@ -57,8 +57,18 @@ REMOVE_TAGS_PHASE3 = [
     "肉まん",  # 「中華まん」に統合
 ]
 
+# 削除対象タグ（Phase 4 - 追加統合）
+REMOVE_TAGS_PHASE4 = [
+    # カレー味はカレーに統合
+    "カレー味",  # 「カレー」に統合
+    # 重複・冗長タグ
+    "サンドウィッチ・パン",  # 「パン」または「サンドイッチ」で十分
+    "ごはん",  # 「ライス」に統合
+    "タンドリーチキン",  # 表記ゆれ、「タンドーリチキン」に統合
+]
+
 # 統合削除リスト
-REMOVE_TAGS = REMOVE_TAGS_PHASE1 + REMOVE_TAGS_PHASE2 + REMOVE_TAGS_PHASE3
+REMOVE_TAGS = REMOVE_TAGS_PHASE1 + REMOVE_TAGS_PHASE2 + REMOVE_TAGS_PHASE3 + REMOVE_TAGS_PHASE4
 
 # タグ正規化マップ
 TAG_NORMALIZATION = {
@@ -68,14 +78,18 @@ TAG_NORMALIZATION = {
     "あったかい（ホット）": "ホット",
     # 表記ゆれの統一
     "ミッキーモチーフのメニュー": "ミッキーマウス",
+    # カレー味をカレーに統合
+    "カレー味": "カレー",
+    # ごはんをライスに統合
+    "ごはん": "ライス",
 }
 
-# メニュー名から自動付与するタグ（Phase 3）
+# メニュー名から自動付与するタグ（Phase 3-4）
 AUTO_TAG_RULES = [
     {
         "keywords": ["バーガー"],
         "tag": "ハンバーガー",
-        "exclude_tags": ["ハンバーガー"],  # 既に付いている場合はスキップ
+        "exclude_tags": ["ハンバーガー"],
     },
     {
         "keywords": ["中華まん", "肉まん", "あんまん", "うきわまん"],
@@ -85,7 +99,12 @@ AUTO_TAG_RULES = [
     {
         "keywords": ["ホットドッグ", "ドッグ"],
         "tag": "ホットドッグ",
-        "exclude_tags": ["ホットドッグ", "ハンバーガー"],  # ハンバーガーは除外
+        "exclude_tags": ["ホットドッグ", "ハンバーガー"],
+    },
+    {
+        "keywords": ["タンドーリチキン"],
+        "tag": "タンドーリチキン",
+        "exclude_tags": ["タンドーリチキン", "タンドリーチキン"],
     },
 ]
 

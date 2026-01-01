@@ -12,21 +12,22 @@
 
 from typing import Dict, List
 
-# タグカテゴリ定義
+# タグカテゴリ定義（Phase 4対応: 統合済み）
 TAG_CATEGORIES: Dict[str, List[str]] = {
     "food_type": [
         "カレー",
         "ピザ",
         "ハンバーガー",
         "ホットドッグ",
-        "サンドウィッチ・パン",
         "中華",
         "ワンハンドメニュー",
-        "肉まん",
-        "中華まん",
+        "中華まん",  # 「肉まん」統合済み
         "肉巻",
         "カルツォーネ",
-        "ごはん",
+        "ライス",  # 「ごはん」統合済み
+        "パスタ",
+        "イタリアン",
+        "タンドーリチキン",
     ],
     "drink_type": [
         "ソフトドリンク",
@@ -65,7 +66,7 @@ CATEGORY_LABELS: Dict[str, str] = {
     "features": "特徴",
 }
 
-# メニューカテゴリ定義
+# メニューカテゴリ定義（新構造: カトラリー要否で分類）
 MENU_CATEGORIES: Dict[str, Dict[str, any]] = {
     "character_menu": {
         "label": "キャラクターメニュー",
@@ -75,13 +76,25 @@ MENU_CATEGORIES: Dict[str, Dict[str, any]] = {
         "label": "スーベニア付きメニュー",
         "description": "お土産容器付きのメニュー",
     },
+    "set_menu": {
+        "label": "セットメニュー",
+        "description": "コース料理やセット商品",
+    },
     "sweets": {
         "label": "スイーツ",
         "description": "デザート・お菓子類",
     },
-    "food": {
-        "label": "料理",
-        "description": "食事メニュー（カレー、ピザ、パスタ、ハンバーガーなど）",
+    "main_dish": {
+        "label": "メインディッシュ",
+        "description": "カトラリー必須のしっかりした食事（カレー、パスタ、ピザなど）",
+    },
+    "quick_meal": {
+        "label": "クイックミール",
+        "description": "ワンハンドで食べられる軽食（バーガー、ホットドッグなど）",
+    },
+    "side_dish": {
+        "label": "サイド・トッピング",
+        "description": "サイドメニューや追加トッピング（ライス、パン、スープなど）",
     },
     "drink": {
         "label": "ドリンク",
@@ -90,10 +103,6 @@ MENU_CATEGORIES: Dict[str, Dict[str, any]] = {
     "snack": {
         "label": "スナック",
         "description": "軽食・おつまみ",
-    },
-    "set_menu": {
-        "label": "セットメニュー",
-        "description": "コース料理やセット商品",
     },
     "other": {
         "label": "その他",
