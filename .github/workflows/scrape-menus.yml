@@ -1,0 +1,134 @@
+name: Weekly Menu Scraping
+
+on:
+  # 毎週日曜日の午前3時（JST）に実行
+  schedule:
+    - cron: '0 18 * * 0'  # UTC 18:00 = JST 3:00
+
+  # 手動実行も可能
+  workflow_dispatch:
+    inputs:
+      start_id:
+        description: '開始ID（デフォルト: 0）'
+        required: false
+        default: '0'
+      end_id:
+        description: '終了ID（デフォルト: 9999）'
+        required: false
+        default: '9999'
+
+jobs:
+  scrape-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run scraping script
+        env:
+          START_ID: ${{ github.event.inputs.start_id || '0' }}
+          END_ID: ${{ github.event.inputs.end_id || '9999' }}
+        run: |
+          python scripts/scrape_menus_simple.py \
+            --start ${START_ID} \
+            --end ${END_ID} \
+            --output data/menus.json \
+            --rate-limit 1.0
+
+      - name: Apply category assignments
+        run: |
+          echo "📁 カテゴリを自動割り当て中..."
+          python scripts/assign_categories.py data/menus.json
+
+      - name: Clean and normalize tags
+        run: |
+          echo "🏷️  タグを正規化中..."
+          python scripts/clean_tags.py data/menus.json
+
+      - name: Categorize food types
+        run: |
+          echo "🍽️  料理種類タグを付与中..."
+          python scripts/categorize_food_types.py --input data/menus.json
+
+      - name: Validate processed data
+        run: |
+          echo "✓ データを検証中..."
+          python scripts/validate_menus.py data/menus.json
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code data/menus.json || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # 統計情報を取得
+          MENU_COUNT=$(python scripts/generate_commit_stats.py data/menus.json | grep MENU_COUNT | cut -d= -f2)
+          FOOD_TAG_STATS=$(python scripts/generate_commit_stats.py data/menus.json | grep FOOD_TAG_STATS | cut -d= -f2)
+
+          git add data/menus.json
+
+          # コミットメッセージを作成（ヒアドキュメント使用）
+          git commit -F - <<EOF
+          chore: 週次メニューデータ更新
+
+          - スクレイピング実行日時: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          - 総メニュー数: ${MENU_COUNT}件
+          - 料理種類タグ: ${FOOD_TAG_STATS}
+          - 処理: スクレイピング → カテゴリ割当 → タグ正規化 → 料理種類タグ付与
+          - 自動実行: GitHub Actions
+          EOF
+
+          git push
+
+      - name: Deploy to Vercel
+        if: steps.git-check.outputs.changed == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          # Vercel CLIをインストール
+          npm install -g vercel
+
+          # 本番環境にデプロイ
+          echo "🚀 Vercelへデプロイ中..."
+          vercel --prod --yes \
+            --token ${VERCEL_TOKEN} \
+            || echo "⚠️  Vercelデプロイをスキップ（Secretsが未設定の可能性）"
+
+      - name: Create summary
+        if: always()
+        run: |
+          if [ "${{ steps.git-check.outputs.changed }}" == "true" ]; then
+            python scripts/generate_summary.py data/menus.json changed >> $GITHUB_STEP_SUMMARY
+          else
+            python scripts/generate_summary.py data/menus.json >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload artifact on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraping-logs
+          path: |
+            data/menus.json
+            *.log
+          retention-days: 7
