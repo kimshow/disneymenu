@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Box, Drawer, IconButton, Typography, Divider, useTheme, useMediaQuery, CircularProgress } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { RestaurantFilter } from './RestaurantFilter';
 import { PriceRangeFilter } from './PriceRangeFilter';
@@ -29,12 +30,20 @@ interface FilterPanelProps {
 export const FilterPanel = memo<FilterPanelProps>(({ open, onClose, isMobile: isMobileProp }) => {
   const theme = useTheme();
   const isMobile = isMobileProp ?? useMediaQuery(theme.breakpoints.down('md'));
+  const [searchParams] = useSearchParams();
 
-  // グループ化タグAPIを呼び出し
+  // 選択されているパークを取得
+  const selectedPark = searchParams.get('park') || '';
+
+  // グループ化タグAPIを呼び出し（パークでフィルタリング）
   const { data: groupedTags, isLoading: isLoadingTags } = useQuery({
-    queryKey: ['groupedTags'],
+    queryKey: ['groupedTags', selectedPark],
     queryFn: async () => {
-      const response = await axios.get('http://localhost:8000/api/tags/grouped');
+      const params = new URLSearchParams();
+      if (selectedPark) {
+        params.set('park', selectedPark);
+      }
+      const response = await axios.get(`http://localhost:8000/api/tags/grouped?${params.toString()}`);
       return response.data;
     },
     staleTime: 10 * 60 * 1000, // 10分間キャッシュ
@@ -55,14 +64,6 @@ export const FilterPanel = memo<FilterPanelProps>(({ open, onClose, isMobile: is
 
       <Divider sx={{ mb: 2 }} />
 
-      {/* レストランフィルター */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600 }}>
-          レストラン
-        </Typography>
-        <RestaurantFilter />
-      </Box>
-
       {/* 価格範囲フィルター */}
       <Box sx={{ mb: 3 }}>
         <PriceRangeFilter />
@@ -82,6 +83,14 @@ export const FilterPanel = memo<FilterPanelProps>(({ open, onClose, isMobile: is
           カテゴリ
         </Typography>
         <CategoryFilter />
+      </Box>
+
+      {/* レストランフィルター */}
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600 }}>
+          レストラン
+        </Typography>
+        <RestaurantFilter />
       </Box>
 
       {/* タグフィルター（グループ化） */}

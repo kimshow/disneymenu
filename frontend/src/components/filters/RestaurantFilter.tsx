@@ -14,7 +14,14 @@ export const RestaurantFilter = () => {
   const { data: restaurants, isLoading } = useRestaurants();
 
   const selectedRestaurantName = searchParams.get('restaurant');
-  const selectedRestaurant = restaurants?.find(r => r.name === selectedRestaurantName) || null;
+  const selectedPark = searchParams.get('park') || '';
+  
+  // パークでフィルタリング
+  const filteredRestaurants = selectedPark
+    ? restaurants?.filter(r => r.park.toLowerCase() === selectedPark.toLowerCase())
+    : restaurants;
+
+  const selectedRestaurant = filteredRestaurants?.find(r => r.name === selectedRestaurantName) || null;
 
   const handleChange = (_: unknown, value: Restaurant | null) => {
     const params = new URLSearchParams(searchParams);
@@ -30,7 +37,7 @@ export const RestaurantFilter = () => {
 
   return (
     <Autocomplete
-      options={restaurants || []}
+      options={filteredRestaurants || []}
       getOptionLabel={(option) => {
         const parkLabel = option.park === 'tdl' ? 'ランド' : 'シー';
         return `${option.name} (${parkLabel} - ${option.area || ''})`;
@@ -42,7 +49,7 @@ export const RestaurantFilter = () => {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="レストランを選択"
+          placeholder={selectedPark ? `${selectedPark === 'disneyland' ? 'ランド' : 'シー'}のレストランを選択` : 'レストランを選択'}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

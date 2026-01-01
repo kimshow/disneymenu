@@ -44,15 +44,17 @@ export const TagFilterGrouped = memo<TagFilterGroupedProps>(({ groupedTags }) =>
     setSearchParams(params);
   };
 
-  // カテゴリの表示順序を定義
-  const categoryOrder = ['food_type', 'drink_type', 'character', 'area', 'restaurant', 'features'];
+  // カテゴリの表示順序を定義（restaurantを除外）
+  const categoryOrder = ['food_type', 'drink_type', 'character', 'area', 'features'];
 
-  // カテゴリを順序に従ってソート
-  const sortedCategories = Object.entries(groupedTags).sort((a, b) => {
-    const indexA = categoryOrder.indexOf(a[0]);
-    const indexB = categoryOrder.indexOf(b[0]);
-    return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
-  });
+  // カテゴリを順序に従ってソート（restaurantカテゴリは表示しない）
+  const sortedCategories = Object.entries(groupedTags)
+    .filter(([category]) => category !== 'restaurant') // レストランカテゴリを除外
+    .sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a[0]);
+      const indexB = categoryOrder.indexOf(b[0]);
+      return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+    });
 
   return (
     <Box>

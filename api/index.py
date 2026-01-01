@@ -231,9 +231,12 @@ async def get_tags():
 
 
 @app.get("/api/tags/grouped", tags=["Tags"])
-async def get_grouped_tags() -> Dict[str, Any]:
+async def get_grouped_tags(park: Optional[str] = None) -> Dict[str, Any]:
     """
     カテゴリ別にグループ化されたタグを返す
+    
+    Args:
+        park: パークフィルター（"disneyland" または "disneysea"）
 
     Returns:
         {
@@ -250,6 +253,16 @@ async def get_grouped_tags() -> Dict[str, Any]:
     """
     # メニューデータから実際に使用されているタグを抽出
     menus = loader.load_menus()
+    
+    # パークでフィルタリング
+    if park:
+        filtered_menus = []
+        for menu in menus:
+            for restaurant in menu.get("restaurants", []):
+                if restaurant.get("park", "").lower() == park.lower():
+                    filtered_menus.append(menu)
+                    break
+        menus = filtered_menus
 
     # カテゴリごとのタグを格納
     all_tags_by_category: Dict[str, set] = {category: set() for category in TAG_CATEGORIES.keys()}
