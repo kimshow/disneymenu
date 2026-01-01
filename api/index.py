@@ -8,7 +8,7 @@ from typing import Optional, List, Dict, Any
 from pydantic import BaseModel
 from api.data_loader import MenuDataLoader
 from api.models import MenuItem, ParkType
-from api.constants import TAG_CATEGORIES, CATEGORY_LABELS
+from api.constants import TAG_CATEGORIES, CATEGORY_LABELS, MENU_CATEGORIES
 
 app = FastAPI(title="Disney Menu API", description="API for browsing Tokyo Disney Resort food menus", version="1.0.0")
 
@@ -111,10 +111,10 @@ async def get_menus(
         tag_list = [t.strip() for t in tags.split(",")]
         menus = [m for m in menus if any(tag in m.get("tags", []) for tag in tag_list)]
 
-    # カテゴリフィルタ
+    # カテゴリフィルタ（category フィールドと照合）
     if categories:
         category_list = [c.strip() for c in categories.split(",")]
-        menus = [m for m in menus if any(cat in m.get("categories", []) for cat in category_list)]
+        menus = [m for m in menus if m.get("category") in category_list]
 
     # 価格フィルタ
     if min_price is not None:
@@ -276,6 +276,30 @@ async def get_grouped_tags() -> Dict[str, Any]:
             }
 
     return result
+
+
+@app.get("/api/categories", response_model=ListResponse, tags=["Categories"])
+async def get_categories():
+    """
+    メニューカテゴリ一覧とそれぞれのメニュー数を取得
+    """
+    from collections import Counter
+
+    menus = loader.load_menus()
+    category_counts = Counter(menu.get("category", "other") for menu in menus)
+
+    categories = []
+    for key, info in MENU_CATEGORIES.items():
+        categories.append(
+            {
+                "key": key,
+                "label": info["label"],
+                "description": info["description"],
+                "count": category_counts.get(key, 0),
+            }
+        )
+
+    return ListResponse(data=categories)
 
 
 @app.get("/api/stats", response_model=StatsResponse, tags=["Stats"])

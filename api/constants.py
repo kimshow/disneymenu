@@ -64,3 +64,39 @@ CATEGORY_LABELS: Dict[str, str] = {
     "restaurant": "レストラン",
     "features": "特徴",
 }
+
+# メニューカテゴリ定義
+MENU_CATEGORIES: Dict[str, Dict[str, any]] = {
+    "character_menu": {
+        "label": "キャラクターメニュー",
+        "description": "キャラクターモチーフの特別メニュー",
+    },
+    "souvenir_menu": {
+        "label": "スーベニア付きメニュー",
+        "description": "お土産容器付きのメニュー",
+    },
+    "sweets": {
+        "label": "スイーツ",
+        "description": "デザート・お菓子類",
+    },
+    "food": {
+        "label": "料理",
+        "description": "食事メニュー（カレー、ピザ、パスタ、ハンバーガーなど）",
+    },
+    "drink": {
+        "label": "ドリンク",
+        "description": "飲み物全般（ソフトドリンク、アルコール含む）",
+    },
+    "snack": {
+        "label": "スナック",
+        "description": "軽食・おつまみ",
+    },
+    "set_menu": {
+        "label": "セットメニュー",
+        "description": "コース料理やセット商品",
+    },
+    "other": {
+        "label": "その他",
+        "description": "上記に該当しないメニュー",
+    },
+}

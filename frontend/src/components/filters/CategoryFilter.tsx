@@ -1,31 +1,42 @@
-import { Box, Chip, CircularProgress, Typography } from '@mui/material';
+import { Box, FormControl, InputLabel, Select, MenuItem, CircularProgress, Typography } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
-import { useCategories } from '../../hooks/useMenus';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+interface Category {
+  key: string;
+  label: string;
+  description: string;
+  count: number;
+}
 
 /**
  * カテゴリフィルターコンポーネント
  *
- * Chipを使用して複数のカテゴリを選択
+ * Selectドロップダウンを使用して単一のカテゴリを選択
  * URLクエリパラメータと同期
  */
 export const CategoryFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: categories, isLoading } = useCategories();
+  
+  // カテゴリ一覧をAPIから取得
+  const { data: categories, isLoading } = useQuery<Category[]>({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const response = await axios.get('http://localhost:8000/api/categories');
+      return response.data.data;
+    },
+    staleTime: 10 * 60 * 1000, // 10分間キャッシュ
+  });
 
-  const selectedCategories = searchParams.get('categories')?.split(',').filter(Boolean) || [];
+  const selectedCategory = searchParams.get('categories') || '';
 
-  const toggleCategory = (category: string) => {
+  const handleChange = (event: { target: { value: string } }) => {
+    const value = event.target.value;
     const params = new URLSearchParams(searchParams);
-    let newCategories: string[];
 
-    if (selectedCategories.includes(category)) {
-      newCategories = selectedCategories.filter(c => c !== category);
-    } else {
-      newCategories = [...selectedCategories, category];
-    }
-
-    if (newCategories.length > 0) {
-      params.set('categories', newCategories.join(','));
+    if (value) {
+      params.set('categories', value);
     } else {
       params.delete('categories');
     }
@@ -36,7 +47,11 @@ export const CategoryFilter = () => {
   };
 
   if (isLoading) {
-    return <CircularProgress size={24} />;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 1 }}>
+        <CircularProgress size={24} />
+      </Box>
+    );
   }
 
   if (!categories || categories.length === 0) {
@@ -48,18 +63,38 @@ export const CategoryFilter = () => {
   }
 
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-      {categories.map((category) => (
-        <Chip
-          key={category}
-          label={category}
-          onClick={() => toggleCategory(category)}
-          color={selectedCategories.includes(category) ? 'primary' : 'default'}
-          variant={selectedCategories.includes(category) ? 'filled' : 'outlined'}
-          size="small"
-          sx={{ cursor: 'pointer' }}
-        />
-      ))}
+    <Box sx={{ mb: 2 }}>
+      <FormControl fullWidth size="small">
+        <InputLabel id="category-filter-label">カテゴリ</InputLabel>
+        <Select
+          labelId="category-filter-label"
+          id="category-filter"
+          value={selectedCategory}
+          label="カテゴリ"
+          onChange={handleChange}
+        >
+          <MenuItem value="">
+            <em>すべて</em>
+          </MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category.key} value={category.key}>
+              <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <Typography component="span" sx={{ flexGrow: 1 }}>
+                  {category.label}
+                </Typography>
+                <Typography
+                  component="span"
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ ml: 1 }}
+                >
+                  ({category.count})
+                </Typography>
+              </Box>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </Box>
   );
 };

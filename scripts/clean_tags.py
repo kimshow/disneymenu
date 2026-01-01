@@ -22,8 +22,8 @@ from pathlib import Path
 from collections import Counter
 import sys
 
-# 削除対象タグ
-REMOVE_TAGS = [
+# 削除対象タグ（Phase 1 - 既に実行済み）
+REMOVE_TAGS_PHASE1 = [
     # 無意味なタグ
     "おすすめメニュー",  # ほぼ全メニューに付与されており無意味
     # 価格帯タグ（priceフィールドで検索可能）
@@ -41,6 +41,18 @@ REMOVE_TAGS = [
     "メインディッシュ",
     "サイド",
 ]
+
+# 削除対象タグ（Phase 2 - 冗長・重複タグ）
+REMOVE_TAGS_PHASE2 = [
+    # アルコールドリンク重複
+    "ドリンク（アルコールドリンク）",  # 'アルコールドリンク'で代替可能
+    # 価格帯タグ（残存分）
+    "2000～4000円",
+    "4000円～",
+]
+
+# 統合削除リスト
+REMOVE_TAGS = REMOVE_TAGS_PHASE1 + REMOVE_TAGS_PHASE2
 
 # タグ正規化マップ
 TAG_NORMALIZATION = {
