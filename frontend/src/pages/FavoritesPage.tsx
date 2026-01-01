@@ -86,22 +86,25 @@ export function FavoritesPage() {
   // 空状態
   if (count === 0) {
     return (
-      <Container
-        maxWidth="xl"
-        sx={{
-          py: { xs: 2, sm: 4 },
-          px: { xs: 2, sm: 3 },
-          mx: 'auto', // 中央揃えを強制
-        }}
-      >
-        <Button
-          startIcon={<ArrowBackIcon />}
-          onClick={() => navigate('/menus')}
-          sx={{ mb: { xs: 2, sm: 3 } }}
-          size="small"
-        >
-          メニュー一覧へ戻る
-        </Button>
+      <Box sx={{
+        width: '100%',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        py: { xs: 2, sm: 4 },
+        px: { xs: 2, sm: 3 },
+      }}>
+        <Box sx={{ width: '100%', maxWidth: 'xl', alignSelf: 'flex-start' }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate('/menus')}
+            sx={{ mb: { xs: 2, sm: 3 } }}
+            size="small"
+          >
+            メニュー一覧へ戻る
+          </Button>
+        </Box>
 
         <Box
           sx={{
@@ -109,9 +112,10 @@ export function FavoritesPage() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: { xs: '50vh', sm: '60vh' },
+            flex: 1,
             textAlign: 'center',
-            px: { xs: 2, sm: 0 },
+            width: '100%',
+            maxWidth: '500px',
           }}
         >
           <FavoriteIcon
@@ -134,7 +138,6 @@ export function FavoritesPage() {
             sx={{
               mb: { xs: 3, sm: 4 },
               fontSize: { xs: '0.875rem', sm: '1rem' },
-              maxWidth: { xs: '100%', sm: '400px' },
             }}
           >
             メニューのハートアイコンをタップして
@@ -153,7 +156,7 @@ export function FavoritesPage() {
             メニュー一覧へ戻る
           </Button>
         </Box>
-      </Container>
+      </Box>
     );
   }
 
