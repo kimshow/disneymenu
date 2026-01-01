@@ -2,7 +2,7 @@
  * メニュー一覧ページ
  */
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -12,6 +12,7 @@ import {
   Pagination,
   Fab,
   IconButton,
+  Button,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
@@ -25,12 +26,14 @@ import { SearchBar } from '../components/search/SearchBar';
 import { FilterPanel } from '../components/filters/FilterPanel';
 import { SortControl } from '../components/sort/SortControl';
 import { AppliedFilters } from '../components/filters/AppliedFilters';
+import { FavoritesBadge } from '../components/favorites/FavoritesBadge';
 import type { MenuFilters, MenuItem } from '../types/menu';
 
 export function MenuListPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   // URLからパラメータを読み取り
   const qParam = searchParams.get('q') || '';
@@ -164,15 +167,28 @@ export function MenuListPage() {
             <Typography variant="h4" component="h1">
               メニュー一覧
             </Typography>
-            {!isMobile && (
-              <IconButton
-                onClick={() => setFilterOpen(!filterOpen)}
-                aria-label={filterOpen ? 'フィルターを閉じる' : 'フィルターを開く'}
-                sx={{ ml: 2 }}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {/* お気に入りボタン */}
+              <Button
+                variant="outlined"
+                onClick={() => navigate('/favorites')}
+                startIcon={<FavoritesBadge fontSize="small" />}
+                sx={{
+                  textTransform: 'none',
+                  fontWeight: 'bold',
+                }}
               >
-                {filterOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-              </IconButton>
-            )}
+                {!isMobile && 'お気に入り'}
+              </Button>
+              {!isMobile && (
+                <IconButton
+                  onClick={() => setFilterOpen(!filterOpen)}
+                  aria-label={filterOpen ? 'フィルターを閉じる' : 'フィルターを開く'}
+                >
+                  {filterOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                </IconButton>
+              )}
+            </Box>
           </Box>
 
           {/* 検索バー */}
