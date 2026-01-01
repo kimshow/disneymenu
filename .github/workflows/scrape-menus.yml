@@ -1,0 +1,120 @@
+name: Weekly Menu Scraping
+
+on:
+  # 毎週日曜日の午前3時（JST）に実行
+  schedule:
+    - cron: '0 18 * * 0'  # UTC 18:00 = JST 3:00
+  
+  # 手動実行も可能
+  workflow_dispatch:
+    inputs:
+      start_id:
+        description: '開始ID（デフォルト: 0）'
+        required: false
+        default: '0'
+      end_id:
+        description: '終了ID（デフォルト: 9999）'
+        required: false
+        default: '9999'
+
+jobs:
+  scrape-and-update:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Run scraping script
+        env:
+          START_ID: ${{ github.event.inputs.start_id || '0' }}
+          END_ID: ${{ github.event.inputs.end_id || '9999' }}
+        run: |
+          python scripts/scrape_menus_simple.py \
+            --start ${START_ID} \
+            --end ${END_ID} \
+            --output data/menus.json \
+            --rate-limit 1.0
+      
+      - name: Validate scraped data
+        run: |
+          python scripts/validate_menus.py data/menus.json
+      
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code data/menus.json || echo "changed=true" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # メニュー数を取得
+          MENU_COUNT=$(python -c "import json; print(len(json.load(open('data/menus.json'))))")
+          
+          git add data/menus.json
+          git commit -m "chore: 週次メニューデータ更新
+
+- スクレイピング実行日時: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+- 総メニュー数: ${MENU_COUNT}件
+- 自動実行: GitHub Actions"
+          
+          git push
+      
+      - name: Create summary
+        if: always()
+        run: |
+          echo "## 🍴 スクレイピング実行結果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f data/menus.json ]; then
+            MENU_COUNT=$(python -c "import json; menus=json.load(open('data/menus.json')); print(len(menus))")
+            echo "✅ **総メニュー数**: ${MENU_COUNT}件" >> $GITHUB_STEP_SUMMARY
+            
+            # パーク別統計
+            python << 'EOF' >> $GITHUB_STEP_SUMMARY
+import json
+with open('data/menus.json') as f:
+    menus = json.load(f)
+
+tdl_count = sum(1 for m in menus if any(r.get('park') == 'tdl' for r in m.get('restaurants', [])))
+tds_count = sum(1 for m in menus if any(r.get('park') == 'tds' for r in m.get('restaurants', [])))
+
+print(f"- ディズニーランド: {tdl_count}件")
+print(f"- ディズニーシー: {tds_count}件")
+EOF
+            
+            if [ "${{ steps.git-check.outputs.changed }}" == "true" ]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "🔄 **データが更新されました**" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "ℹ️ データに変更はありませんでした" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "❌ スクレイピングに失敗しました" >> $GITHUB_STEP_SUMMARY
+          fi
+      
+      - name: Upload artifact on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraping-logs
+          path: |
+            data/menus.json
+            *.log
+          retention-days: 7
