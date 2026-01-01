@@ -86,7 +86,14 @@ export function FavoritesPage() {
   // 空状態
   if (count === 0) {
     return (
-      <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 4 }, px: { xs: 2, sm: 3 } }}>
+      <Container
+        maxWidth="xl"
+        sx={{
+          py: { xs: 2, sm: 4 },
+          px: { xs: 2, sm: 3 },
+          mx: 'auto', // 中央揃えを強制
+        }}
+      >
         <Button
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate('/menus')}
