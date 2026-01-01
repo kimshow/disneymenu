@@ -599,3 +599,117 @@ class TestMenuScraperErrorHandling:
         assert len(result["restaurants"]) == 1
         assert result["restaurants"][0]["url"].startswith("https://")
         assert result["restaurants"][0]["park"] == "tds"
+
+    def test_parse_menu_with_exception(self, scraper):
+        """Test parsing menu that raises an exception during data extraction"""
+        # _extract_restaurants内部で例外を発生させて、例外ハンドリングをテスト
+        import unittest.mock as mock
+
+        with mock.patch.object(scraper, "_extract_restaurants", side_effect=Exception("Test exception")):
+            html = r"""
+            <html>
+            <body>
+                <h1 class="heading1">テストメニュー</h1>
+                <p class="price">¥500</p>
+            </body>
+            </html>
+            """
+            result = scraper.parse_menu_page(html, "0011")
+            assert result is None
+
+    def test_parse_restaurant_with_empty_url(self, scraper):
+        """Test parsing restaurant with empty URL"""
+        html = r"""
+        <html>
+        <body>
+            <h1 class="heading1">テストメニュー</h1>
+            <p class="price">¥500</p>
+            <div class="linkList7">
+                <ul>
+                    <li>
+                        <a href="">
+                            <div class="listTextArea">
+                                <h3 class="heading3">テストレストラン</h3>
+                                <p>東京ディズニーランド/ファンタジーランド</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </body>
+        </html>
+        """
+        result = scraper.parse_menu_page(html, "0012")
+        # URLが空の場合はレストランが抽出されない
+        assert result is None
+
+    def test_parse_restaurant_with_empty_name(self, scraper):
+        """Test parsing restaurant with empty name"""
+        html = r"""
+        <html>
+        <body>
+            <h1 class="heading1">テストメニュー</h1>
+            <p class="price">¥500</p>
+            <div class="linkList7">
+                <ul>
+                    <li>
+                        <a href="/tdl/restaurant/detail/300/">
+                            <div class="listTextArea">
+                                <h3 class="heading3"></h3>
+                                <p>東京ディズニーランド/アドベンチャーランド</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </body>
+        </html>
+        """
+        result = scraper.parse_menu_page(html, "0013")
+        # 名前が空の場合はレストランが抽出されない
+        assert result is None
+
+    def test_parse_availability_with_empty_text(self, scraper):
+        """Test parsing availability with empty text"""
+        result = scraper._parse_availability("")
+        assert result is None
+
+    def test_extract_tags_excluding_restaurant_names(self, scraper):
+        """Test tag extraction excludes restaurant-like names"""
+        from bs4 import BeautifulSoup
+
+        html = r"""
+        <html>
+        <head>
+            <meta name="keywords" content="テストタグ,プラザパビリオン・レストラン,カウンター,グリル,ダイナー">
+        </head>
+        </html>
+        """
+        soup = BeautifulSoup(html, "html.parser")
+        tags = scraper._extract_tags(soup)
+        # レストラン名っぽいものは除外される
+        assert "プラザパビリオン・レストラン" not in tags
+        assert "カウンター" not in tags
+        assert "グリル" not in tags
+        assert "ダイナー" not in tags
+        assert "テストタグ" in tags
+
+    def test_extract_tags_excluding_character_names(self, scraper):
+        """Test tag extraction excludes character names"""
+        from bs4 import BeautifulSoup
+
+        html = r"""
+        <html>
+        <head>
+            <meta name="keywords" content="テストタグ,トイ・ストーリー,ピクサー,ミッキー,ミニー">
+        </head>
+        </html>
+        """
+        soup = BeautifulSoup(html, "html.parser")
+        tags = scraper._extract_tags(soup)
+        # キャラクター名は除外される
+        assert "トイ・ストーリー" not in tags
+        assert "ピクサー" not in tags
+        assert "ミッキー" not in tags
+        assert "ミニー" not in tags
+        assert "テストタグ" in tags

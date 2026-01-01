@@ -1,0 +1,207 @@
+[
+  {
+    "id": "4370",
+    "name": "ミッキーケーキセット",
+    "description": "ミッキーマウスをモチーフにしたケーキセット",
+    "price": {
+      "amount": 500,
+      "unit": "1個",
+      "tax_included": true
+    },
+    "image_urls": ["https://example.com/4370_1.jpg"],
+    "thumbnail_url": "https://example.com/4370_1.jpg",
+    "restaurants": [
+      {
+        "id": "312",
+        "name": "スウィートハート・カフェ",
+        "park": "tdl",
+        "area": "ワールドバザール",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/312/",
+        "service_types": ["カウンター"],
+        "availability": {
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31"
+        }
+      }
+    ],
+    "categories": ["デザート／スウィーツ"],
+    "tags": ["キャラクターモチーフのメニュー"],
+    "characters": ["ミッキーマウス"],
+    "allergens": [],
+    "source_url": "https://www.tokyodisneyresort.jp/food/4370/",
+    "scraped_at": "2025-12-28T12:00:00",
+    "is_seasonal": false,
+    "is_new": false,
+    "is_available": true
+  },
+  {
+    "id": "4371",
+    "name": "シーフードパスタ",
+    "description": "新鮮な魚介類を使用したパスタ",
+    "price": {
+      "amount": 1200,
+      "unit": "1皿",
+      "tax_included": true
+    },
+    "image_urls": ["https://example.com/4371_1.jpg"],
+    "thumbnail_url": "https://example.com/4371_1.jpg",
+    "restaurants": [
+      {
+        "id": "405",
+        "name": "リストランテ・ディ・カナレット",
+        "park": "tds",
+        "area": "ヴェネツィアン・ゴンドラ",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/405/",
+        "service_types": ["テーブル"],
+        "availability": {
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31"
+        }
+      }
+    ],
+    "categories": ["パスタ／ピザ"],
+    "tags": [],
+    "characters": [],
+    "allergens": ["えび", "かに"],
+    "source_url": "https://www.tokyodisneyresort.jp/food/4371/",
+    "scraped_at": "2025-12-28T12:00:00",
+    "is_seasonal": false,
+    "is_new": false,
+    "is_available": true
+  },
+  {
+    "id": "4372",
+    "name": "季節のフルーツタルト",
+    "description": "旬のフルーツを使用したタルト",
+    "price": {
+      "amount": 600,
+      "unit": "1個",
+      "tax_included": true
+    },
+    "image_urls": ["https://example.com/4372_1.jpg", "https://example.com/4372_2.jpg"],
+    "thumbnail_url": "https://example.com/4372_1.jpg",
+    "restaurants": [
+      {
+        "id": "312",
+        "name": "スウィートハート・カフェ",
+        "park": "tdl",
+        "area": "ワールドバザール",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/312/",
+        "service_types": ["カウンター"],
+        "availability": {
+          "start_date": "2025-06-01",
+          "end_date": "2025-08-31"
+        }
+      }
+    ],
+    "categories": ["デザート／スウィーツ"],
+    "tags": ["季節限定"],
+    "characters": [],
+    "allergens": ["小麦", "卵", "乳"],
+    "source_url": "https://www.tokyodisneyresort.jp/food/4372/",
+    "scraped_at": "2025-12-28T12:00:00",
+    "is_seasonal": true,
+    "is_new": false,
+    "is_available": false
+  },
+  {
+    "id": "1779",
+    "name": "リトルグリーンまん",
+    "description": "トイ・ストーリーのリトルグリーンメンをモチーフにしたスイーツ。エイリアンの形をした可愛い緑色の饅頭です。中身はカスタードクリーム。",
+    "price": {
+      "amount": 400,
+      "unit": "1個",
+      "tax_included": true
+    },
+    "image_urls": [
+      "https://media1.tokyodisneyresort.jp/food_menu/image/1779_1.34_1_C2w75656.jpg",
+      "https://media1.tokyodisneyresort.jp/food_menu/image/1779_2.34_1_C2w75656.jpg"
+    ],
+    "thumbnail_url": "https://media1.tokyodisneyresort.jp/food_menu/image/1779_1.34_1_C2w75656.jpg",
+    "restaurants": [
+      {
+        "id": "551",
+        "name": "ニューヨーク・デリ",
+        "park": "tdl",
+        "area": "トゥモローランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/551/",
+        "service_types": ["カウンター"],
+        "availability": {
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31"
+        }
+      },
+      {
+        "id": "552",
+        "name": "パン・ギャラクティック・ピザ・ポート",
+        "park": "tdl",
+        "area": "トゥモローランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/552/",
+        "service_types": ["カウンター"],
+        "availability": {
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31"
+        }
+      },
+      {
+        "id": "553",
+        "name": "プラザパビリオン・レストラン",
+        "park": "tdl",
+        "area": "ウエスタンランド",
+        "url": "https://www.tokyodisneyresort.jp/tdl/restaurant/detail/553/",
+        "service_types": ["バフェテリア"],
+        "availability": {
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31"
+        }
+      },
+      {
+        "id": "554",
+        "name": "プラズマ・レイズ・ダイナー",
+        "park": "tds",
+        "area": "ポートディスカバリー",
+        "url": "https://www.tokyodisneyresort.jp/tds/restaurant/detail/554/",
+        "service_types": ["カウンター"],
+        "availability": {
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31"
+        }
+      }
+    ],
+    "categories": ["デザート／スウィーツ", "スナック"],
+    "tags": ["キャラクターモチーフのメニュー", "トイ・ストーリー", "ピクサー"],
+    "characters": ["リトルグリーンメン", "エイリアン"],
+    "allergens": ["小麦", "卵", "乳"],
+    "source_url": "https://www.tokyodisneyresort.jp/food/1779/",
+    "scraped_at": "2025-12-29T10:00:00",
+    "is_seasonal": false,
+    "is_new": false,
+    "is_available": true,
+    "map_locations": [
+      {
+        "restaurant_id": "551",
+        "coordinates": { "lat": 35.6329, "lng": 139.8804 },
+        "floor": "1F",
+        "zone": "トゥモローランド中央"
+      },
+      {
+        "restaurant_id": "552",
+        "coordinates": { "lat": 35.6331, "lng": 139.8806 },
+        "floor": "1F",
+        "zone": "トゥモローランド東"
+      },
+      {
+        "restaurant_id": "553",
+        "coordinates": { "lat": 35.6324, "lng": 139.8798 },
+        "floor": "1F",
+        "zone": "ウエスタンランド北"
+      },
+      {
+        "restaurant_id": "554",
+        "coordinates": { "lat": 35.6267, "lng": 139.8835 },
+        "floor": "1F",
+        "zone": "ポートディスカバリー西"
+      }
+    ]
+  }
+]
