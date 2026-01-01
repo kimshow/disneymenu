@@ -10,15 +10,25 @@ import {
   Alert,
   Box,
   Pagination,
+  Fab,
+  IconButton,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useMenus } from '../hooks/useMenus';
 import { useDebounce } from '../hooks/useDebounce';
 import { MenuCard } from '../components/MenuCard';
 import { MenuDetailModal } from '../components/menu/MenuDetailModal';
 import { SearchBar } from '../components/search/SearchBar';
+import { FilterPanel } from '../components/filters/FilterPanel';
 import type { MenuFilters, MenuItem } from '../types/menu';
 
 export function MenuListPage() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [searchParams, setSearchParams] = useSearchParams();
 
   // URLからパラメータを読み取り
@@ -29,6 +39,7 @@ export function MenuListPage() {
 
   const [searchQuery, setSearchQuery] = useState(qParam);
   const [page, setPage] = useState(pageParam);
+  const [filterOpen, setFilterOpen] = useState(!isMobile); // デスクトップはデフォルトで開く
 
   // 検索クエリをデバウンス（300ms）
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
@@ -36,11 +47,17 @@ export function MenuListPage() {
   // フィルター構築
   const filters: MenuFilters = {
     q: debouncedSearchQuery || undefined,
+    park: searchParams.get('park') as 'tdl' | 'tds' | undefined,
+    restaurant: searchParams.get('restaurant') || undefined,
+    categories: searchParams.get('categories')?.split(',').filter(Boolean),
+    tags: searchParams.get('tags')?.split(',').filter(Boolean),
+    min_price: searchParams.get('min_price') ? parseInt(searchParams.get('min_price')!) : undefined,
+    max_price: searchParams.get('max_price') ? parseInt(searchParams.get('max_price')!) : undefined,
+    only_available: searchParams.get('only_available') === 'true',
     sort: sortParam,
     order: orderParam as 'asc' | 'desc' | undefined,
     page,
     limit: 12,
-    only_available: false,  // すべてのメニューを表示
   };
 
   // モーダル状態管理
@@ -159,63 +176,105 @@ export function MenuListPage() {
   const meta = data?.meta;
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        メニュー一覧
-      </Typography>
-
-      {/* 検索バー */}
-      <SearchBar
-        value={searchQuery}
-        onChange={handleSearchChange}
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      {/* フィルターパネル */}
+      <FilterPanel
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        isMobile={isMobile}
       />
 
-      {meta && (
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          全{meta.total}件中 {(meta.page - 1) * meta.limit + 1}-
-          {Math.min(meta.page * meta.limit, meta.total)}件を表示
-        </Typography>
-      )}
+      {/* メインコンテンツ */}
+      <Box sx={{ flexGrow: 1, width: '100%' }}>
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+          {/* ヘッダーとフィルター切替ボタン */}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+            <Typography variant="h4" component="h1">
+              メニュー一覧
+            </Typography>
+            {!isMobile && (
+              <IconButton
+                onClick={() => setFilterOpen(!filterOpen)}
+                aria-label={filterOpen ? 'フィルターを閉じる' : 'フィルターを開く'}
+                sx={{ ml: 2 }}
+              >
+                {filterOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              </IconButton>
+            )}
+          </Box>
 
-      <Box
-        sx={{
-          mt: 2,
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(3, 1fr)',
-          },
-          gap: 3,
-        }}
-      >
-        {menus.map((menu) => (
-          <MenuCard
-            key={menu.id}
-            menu={menu}
-            onClick={() => handleCardClick(menu)}
+          {/* 検索バー */}
+          <SearchBar
+            value={searchQuery}
+            onChange={handleSearchChange}
           />
-        ))}
+
+          {meta && (
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              全{meta.total}件中 {(meta.page - 1) * meta.limit + 1}-
+              {Math.min(meta.page * meta.limit, meta.total)}件を表示
+            </Typography>
+          )}
+
+          <Box
+            sx={{
+              mt: 2,
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: 'repeat(1, 1fr)',
+                sm: 'repeat(2, 1fr)',
+                md: filterOpen ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
+                lg: filterOpen ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
+              },
+              gap: 3,
+            }}
+          >
+            {menus.map((menu) => (
+              <MenuCard
+                key={menu.id}
+                menu={menu}
+                onClick={() => handleCardClick(menu)}
+              />
+            ))}
+          </Box>
+
+          {menus.length === 0 && (
+            <Box sx={{ textAlign: 'center', py: 8 }}>
+              <Typography variant="h6" color="text.secondary">
+                メニューが見つかりませんでした
+              </Typography>
+            </Box>
+          )}
+
+          {meta && meta.pages > 1 && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+              <Pagination
+                count={meta.pages}
+                page={page}
+                onChange={handlePageChange}
+                color="primary"
+                size="large"
+              />
+            </Box>
+          )}
+        </Container>
       </Box>
 
-      {menus.length === 0 && (
-        <Box sx={{ textAlign: 'center', py: 8 }}>
-          <Typography variant="h6" color="text.secondary">
-            メニューが見つかりませんでした
-          </Typography>
-        </Box>
-      )}
-
-      {meta && meta.pages > 1 && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-          <Pagination
-            count={meta.pages}
-            page={page}
-            onChange={handlePageChange}
-            color="primary"
-            size="large"
-          />
-        </Box>
+      {/* モバイル: フローティングボタン */}
+      {isMobile && (
+        <Fab
+          color="primary"
+          aria-label="フィルター"
+          onClick={() => setFilterOpen(true)}
+          sx={{
+            position: 'fixed',
+            bottom: 16,
+            right: 16,
+            zIndex: 1000,
+          }}
+        >
+          <FilterListIcon />
+        </Fab>
       )}
 
       {/* 詳細モーダル */}
@@ -224,6 +283,6 @@ export function MenuListPage() {
         open={modalOpen}
         onClose={handleModalClose}
       />
-    </Container>
+    </Box>
   );
 }

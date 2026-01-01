@@ -71,13 +71,22 @@ export const menuAPI = {
 
     // オプショナルなパラメータを追加
     if (filters?.q) params.q = filters.q;
-    if (filters?.tags) params.tags = filters.tags;
-    if (filters?.categories) params.categories = filters.categories;
+    if (filters?.restaurant) params.restaurant = filters.restaurant;
+    if (filters?.tags) {
+      // 配列の場合はカンマ区切りに変換
+      params.tags = Array.isArray(filters.tags) ? filters.tags.join(',') : filters.tags;
+    }
+    if (filters?.categories) {
+      // 配列の場合はカンマ区切りに変換
+      params.categories = Array.isArray(filters.categories) ? filters.categories.join(',') : filters.categories;
+    }
     if (filters?.min_price !== undefined) params.min_price = filters.min_price;
     if (filters?.max_price !== undefined) params.max_price = filters.max_price;
     if (filters?.park) params.park = filters.park;
     if (filters?.area) params.area = filters.area;
     if (filters?.character) params.character = filters.character;
+    if (filters?.sort) params.sort = filters.sort;
+    if (filters?.order) params.order = filters.order;
 
     // デバッグログ
     console.log('[API] getMenus request params:', params);

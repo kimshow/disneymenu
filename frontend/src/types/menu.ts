@@ -46,8 +46,9 @@ export interface AvailabilityPeriod {
 
 export interface MenuFilters {
   q?: string;
-  tags?: string;
-  categories?: string;
+  restaurant?: string;  // レストラン名
+  tags?: string | string[];  // タグ（文字列配列対応）
+  categories?: string | string[];  // カテゴリ（文字列配列対応）
   min_price?: number;
   max_price?: number;
   park?: "tdl" | "tds";
