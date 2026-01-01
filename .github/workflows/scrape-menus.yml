@@ -84,7 +84,7 @@ jobs:
           FOOD_TAG_STATS=$(python scripts/generate_commit_stats.py data/menus.json | grep FOOD_TAG_STATS | cut -d= -f2)
 
           git add data/menus.json
-          
+
           # コミットメッセージを作成（ヒアドキュメント使用）
           git commit -F - <<EOF
           chore: 週次メニューデータ更新
