@@ -204,41 +204,41 @@ export function importFavorites(jsonString: string): boolean {
 /**
  * FavoritesDataの型検証
  */
-function validateFavoritesData(data: any): data is FavoritesData {
+function validateFavoritesData(data: unknown): data is FavoritesData {
   return (
     typeof data === 'object' &&
     data !== null &&
-    typeof data.version === 'string' &&
-    Array.isArray(data.favorites) &&
-    data.favorites.every(
-      (item: any) =>
+    typeof (data as any).version === 'string' &&
+    Array.isArray((data as any).favorites) &&
+    (data as any).favorites.every(
+      (item: unknown) =>
         typeof item === 'object' &&
         item !== null &&
-        typeof item.menuId === 'string' &&
-        typeof item.addedAt === 'string' &&
+        typeof (item as any).menuId === 'string' &&
+        typeof (item as any).addedAt === 'string' &&
         // menuDataは必須（新しいバージョン）
-        typeof item.menuData === 'object'
+        typeof (item as any).menuData === 'object'
     ) &&
-    typeof data.updatedAt === 'string'
+    typeof (data as any).updatedAt === 'string'
   );
 }
 
 /**
  * ExportDataの型検証
  */
-function validateExportData(data: any): data is ExportData {
+function validateExportData(data: unknown): data is ExportData {
   return (
     typeof data === 'object' &&
     data !== null &&
-    typeof data.version === 'string' &&
-    typeof data.exportedAt === 'string' &&
-    Array.isArray(data.favorites) &&
-    data.favorites.every(
-      (item: any) =>
+    typeof (data as any).version === 'string' &&
+    typeof (data as any).exportedAt === 'string' &&
+    Array.isArray((data as any).favorites) &&
+    (data as any).favorites.every(
+      (item: unknown) =>
         typeof item === 'object' &&
         item !== null &&
-        typeof item.menuId === 'string' &&
-        typeof item.addedAt === 'string'
+        typeof (item as any).menuId === 'string' &&
+        typeof (item as any).addedAt === 'string'
     )
   );
 }
