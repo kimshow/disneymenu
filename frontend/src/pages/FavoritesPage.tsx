@@ -217,8 +217,9 @@ export function FavoritesPage() {
             sm: 'repeat(2, 1fr)',
             md: 'repeat(3, 1fr)',
             lg: 'repeat(4, 1fr)',
+            xl: 'repeat(5, 1fr)',
           },
-          gap: 3,
+          gap: { xs: 2, sm: 3 },
         }}
       >
         {sortedMenus.map((menu) => (

@@ -161,7 +161,7 @@ export function MenuListPage() {
 
       {/* メインコンテンツ */}
       <Box sx={{ flexGrow: 1, width: '100%' }}>
-        <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 4 }, px: { xs: 2, sm: 3 } }}>
           {/* ヘッダーとフィルター切替ボタン */}
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
             <Typography variant="h4" component="h1">
@@ -216,8 +216,9 @@ export function MenuListPage() {
                 sm: 'repeat(2, 1fr)',
                 md: filterOpen ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
                 lg: filterOpen ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
+                xl: filterOpen ? 'repeat(4, 1fr)' : 'repeat(5, 1fr)',
               },
-              gap: 3,
+              gap: { xs: 2, sm: 3 },
             }}
           >
             {menus.map((menu) => (
