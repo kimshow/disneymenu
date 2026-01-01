@@ -12,7 +12,7 @@ test.describe('ソート機能', () => {
     const sortControl = page.locator('select[aria-label*="並び替え"]')
       .or(page.locator('label:has-text("並び替え")'))
       .or(page.locator('text=/ソート|並び替え/i'));
-    
+
     // ソートコントロールが存在することを確認（Phase 3で実装予定のため、存在しない場合はスキップ）
     const controlCount = await sortControl.count();
     if (controlCount === 0) {
@@ -21,39 +21,47 @@ test.describe('ソート機能', () => {
   });
 
   test('価格昇順でソートできる', async ({ page }) => {
-    // ソート選択
-    const sortSelect = page.locator('select[aria-label*="並び替え"]').or(page.locator('label:has-text("並び替え")').locator('..').locator('select'));
+    // ソート選択Selectをクリック
+    const sortSelect = page.locator('#sort-select');
     
     if (await sortSelect.count() > 0) {
-      await sortSelect.first().selectOption('price');
+      await sortSelect.click();
+      await page.waitForTimeout(300);
       
-      // 昇順ボタンをクリック
+      // "価格順"オプションを選択
+      await page.locator('[role="option"][data-value="price"]').click();
+      await page.waitForTimeout(500);
+
+      // 昇順ボタンの状態を確認（デフォルトは降順なので、クリックして昇順にする）
       const ascButton = page.locator('button[aria-label*="昇順"]');
-      if (await ascButton.count() > 0) {
-        await ascButton.first().click();
+      const descButton = page.locator('button[aria-label*="降順"]');
+      
+      // 降順の場合はクリックして昇順にする
+      if (await descButton.count() > 0) {
+        await descButton.first().click();
         await page.waitForTimeout(500);
+      }
 
-        // URLにsortパラメータが反映されることを確認
-        const url = page.url();
-        expect(url).toContain('sort=price');
-        expect(url).toContain('order=asc');
+      // URLにsortパラメータが反映されることを確認
+      const url = page.url();
+      expect(url).toContain('sort=price');
+      expect(url).toContain('order=asc');
 
-        // 価格が昇順に並んでいることを確認
-        const priceElements = page.locator('[data-testid="menu-card"]').locator('text=/¥[0-9,]+/');
-        const priceCount = await priceElements.count();
-        
-        if (priceCount >= 2) {
-          const prices: number[] = [];
-          for (let i = 0; i < Math.min(priceCount, 5); i++) {
-            const priceText = await priceElements.nth(i).textContent();
-            const price = parseInt(priceText?.replace(/[^0-9]/g, '') || '0');
-            prices.push(price);
-          }
-          
-          // 昇順に並んでいることを確認
-          for (let i = 1; i < prices.length; i++) {
-            expect(prices[i]).toBeGreaterThanOrEqual(prices[i - 1]);
-          }
+      // 価格が昇順に並んでいることを確認
+      const priceElements = page.locator('[data-testid="menu-card"]').locator('text=/¥[0-9,]+/');
+      const priceCount = await priceElements.count();
+
+      if (priceCount >= 2) {
+        const prices: number[] = [];
+        for (let i = 0; i < Math.min(priceCount, 5); i++) {
+          const priceText = await priceElements.nth(i).textContent();
+          const price = parseInt(priceText?.replace(/[^0-9]/g, '') || '0');
+          prices.push(price);
+        }
+
+        // 昇順に並んでいることを確認
+        for (let i = 1; i < prices.length; i++) {
+          expect(prices[i]).toBeGreaterThanOrEqual(prices[i - 1]);
         }
       }
     } else {
@@ -62,38 +70,37 @@ test.describe('ソート機能', () => {
   });
 
   test('価格降順でソートできる', async ({ page }) => {
-    const sortSelect = page.locator('select[aria-label*="並び替え"]').or(page.locator('label:has-text("並び替え")').locator('..').locator('select'));
+    // ソート選択Selectをクリック
+    const sortSelect = page.locator('#sort-select');
     
     if (await sortSelect.count() > 0) {
-      await sortSelect.first().selectOption('price');
+      await sortSelect.click();
+      await page.waitForTimeout(300);
       
-      // 降順ボタンをクリック
-      const descButton = page.locator('button[aria-label*="降順"]');
-      if (await descButton.count() > 0) {
-        await descButton.first().click();
-        await page.waitForTimeout(500);
+      // "価格順"オプションを選択
+      await page.locator('[role="option"][data-value="price"]').click();
+      await page.waitForTimeout(500);
 
-        // URLにsortパラメータが反映されることを確認
-        const url = page.url();
-        expect(url).toContain('sort=price');
-        expect(url).toContain('order=desc');
+      // URLにsortパラメータが反映されることを確認（デフォルトは降順）
+      const url = page.url();
+      expect(url).toContain('sort=price');
+      expect(url).toContain('order=desc');
 
-        // 価格が降順に並んでいることを確認
-        const priceElements = page.locator('[data-testid="menu-card"]').locator('text=/¥[0-9,]+/');
-        const priceCount = await priceElements.count();
-        
-        if (priceCount >= 2) {
-          const prices: number[] = [];
-          for (let i = 0; i < Math.min(priceCount, 5); i++) {
-            const priceText = await priceElements.nth(i).textContent();
-            const price = parseInt(priceText?.replace(/[^0-9]/g, '') || '0');
-            prices.push(price);
-          }
-          
-          // 降順に並んでいることを確認
-          for (let i = 1; i < prices.length; i++) {
-            expect(prices[i]).toBeLessThanOrEqual(prices[i - 1]);
-          }
+      // 価格が降順に並んでいることを確認
+      const priceElements = page.locator('[data-testid="menu-card"]').locator('text=/¥[0-9,]+/');
+      const priceCount = await priceElements.count();
+
+      if (priceCount >= 2) {
+        const prices: number[] = [];
+        for (let i = 0; i < Math.min(priceCount, 5); i++) {
+          const priceText = await priceElements.nth(i).textContent();
+          const price = parseInt(priceText?.replace(/[^0-9]/g, '') || '0');
+          prices.push(price);
+        }
+
+        // 降順に並んでいることを確認
+        for (let i = 1; i < prices.length; i++) {
+          expect(prices[i]).toBeLessThanOrEqual(prices[i - 1]);
         }
       }
     } else {
@@ -102,10 +109,15 @@ test.describe('ソート機能', () => {
   });
 
   test('名前順でソートできる', async ({ page }) => {
-    const sortSelect = page.locator('select[aria-label*="並び替え"]').or(page.locator('label:has-text("並び替え")').locator('..').locator('select'));
+    // ソート選択Selectをクリック
+    const sortSelect = page.locator('#sort-select');
     
     if (await sortSelect.count() > 0) {
-      await sortSelect.first().selectOption('name');
+      await sortSelect.click();
+      await page.waitForTimeout(300);
+      
+      // "名前順"オプションを選択
+      await page.locator('[role="option"][data-value="name"]').click();
       await page.waitForTimeout(500);
 
       // URLにsortパラメータが反映されることを確認
@@ -117,10 +129,20 @@ test.describe('ソート機能', () => {
   });
 
   test('新着順でソートできる', async ({ page }) => {
-    const sortSelect = page.locator('select[aria-label*="並び替え"]').or(page.locator('label:has-text("並び替え")').locator('..').locator('select'));
+    // まず価格順に変更してから新着順に戻す
+    const sortSelect = page.locator('#sort-select');
     
     if (await sortSelect.count() > 0) {
-      await sortSelect.first().selectOption('scraped_at');
+      // 価格順に変更
+      await sortSelect.click();
+      await page.waitForTimeout(300);
+      await page.locator('[role="option"][data-value="price"]').click();
+      await page.waitForTimeout(500);
+      
+      // 新着順に戻す
+      await sortSelect.click();
+      await page.waitForTimeout(300);
+      await page.locator('[role="option"][data-value="scraped_at"]').click();
       await page.waitForTimeout(500);
 
       // URLにsortパラメータが反映されることを確認
@@ -133,10 +155,10 @@ test.describe('ソート機能', () => {
 
   test('ソート順の切り替えができる', async ({ page }) => {
     const orderButton = page.locator('button[aria-label*="昇順"]').or(page.locator('button[aria-label*="降順"]'));
-    
+
     if (await orderButton.count() > 0) {
       const initialLabel = await orderButton.first().getAttribute('aria-label');
-      
+
       // ボタンをクリック
       await orderButton.first().click();
       await page.waitForTimeout(500);

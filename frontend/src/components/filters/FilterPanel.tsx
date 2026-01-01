@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Box, Drawer, IconButton, Typography, Divider, useTheme, useMediaQuery } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { RestaurantFilter } from './RestaurantFilter';
@@ -23,7 +24,7 @@ interface FilterPanelProps {
  * @param onClose - パネルを閉じる時のコールバック
  * @param isMobile - モバイル表示かどうか
  */
-export const FilterPanel = ({ open, onClose, isMobile: isMobileProp }: FilterPanelProps) => {
+export const FilterPanel = memo<FilterPanelProps>(({ open, onClose, isMobile: isMobileProp }) => {
   const theme = useTheme();
   const isMobile = isMobileProp ?? useMediaQuery(theme.breakpoints.down('md'));
 
@@ -121,4 +122,4 @@ export const FilterPanel = ({ open, onClose, isMobile: isMobileProp }: FilterPan
       {open && content}
     </Box>
   );
-};
+});

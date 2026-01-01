@@ -30,7 +30,7 @@ test.describe('検索機能', () => {
   test('検索クエリがURLに反映される', async ({ page }) => {
     await page.fill('input[placeholder*="検索"]', 'カレー');
     await page.waitForTimeout(500);
-    
+
     const url = page.url();
     expect(url).toContain('q=');
   });

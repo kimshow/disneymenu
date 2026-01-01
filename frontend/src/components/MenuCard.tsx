@@ -1,6 +1,7 @@
 /**
  * メニューカードコンポーネント
  */
+import { memo } from 'react';
 import { Card, CardContent, CardMedia, Typography, Chip, Box, Stack } from '@mui/material';
 import type { MenuItem } from '../types/menu';
 import { ParkChip } from './menu/ParkChip';
@@ -12,7 +13,7 @@ interface MenuCardProps {
   onClick?: () => void;
 }
 
-export function MenuCard({ menu, onClick }: MenuCardProps) {
+export const MenuCard = memo<MenuCardProps>(({ menu, onClick }) => {
   // thumbnail_urlまたはimage_urlsの最初の画像を取得
   const imageUrl = menu.thumbnail_url || menu.image_urls?.[0];
   // ユニークなパークを取得
@@ -122,4 +123,7 @@ export function MenuCard({ menu, onClick }: MenuCardProps) {
       </CardContent>
     </Card>
   );
-}
+}, (prevProps, nextProps) => {
+  // menu.idが同じ場合は再レンダリングをスキップ
+  return prevProps.menu.id === nextProps.menu.id && prevProps.onClick === nextProps.onClick;
+});

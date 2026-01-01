@@ -23,6 +23,8 @@ import { MenuCard } from '../components/MenuCard';
 import { MenuDetailModal } from '../components/menu/MenuDetailModal';
 import { SearchBar } from '../components/search/SearchBar';
 import { FilterPanel } from '../components/filters/FilterPanel';
+import { SortControl } from '../components/sort/SortControl';
+import { AppliedFilters } from '../components/filters/AppliedFilters';
 import type { MenuFilters, MenuItem } from '../types/menu';
 
 export function MenuListPage() {
@@ -47,6 +49,8 @@ export function MenuListPage() {
     min_price: searchParams.get('min_price') ? parseInt(searchParams.get('min_price')!) : undefined,
     max_price: searchParams.get('max_price') ? parseInt(searchParams.get('max_price')!) : undefined,
     only_available: searchParams.get('only_available') === 'true',
+    sort: searchParams.get('sort') as 'price' | 'name' | 'scraped_at' | undefined,
+    order: searchParams.get('order') as 'asc' | 'desc' | undefined,
     page,
     limit: 12,
   };
@@ -173,6 +177,12 @@ export function MenuListPage() {
 
           {/* 検索バー */}
           <SearchBar />
+
+          {/* ソートコントロール */}
+          <SortControl />
+
+          {/* 適用中フィルター */}
+          <AppliedFilters />
 
           {meta && (
             <Typography variant="body2" color="text.secondary" gutterBottom>

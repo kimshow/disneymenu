@@ -20,23 +20,23 @@ interface SearchBarProps {
 export const SearchBar = ({ placeholder = 'メニューを検索（例: カレー、ミッキー）' }: SearchBarProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = useState(searchParams.get('q') || '');
-  
+
   // デバウンス（300ms）
   const debouncedValue = useDebounce(value, 300);
 
   // デバウンスされた値をURLに反映
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
-    
+
     if (debouncedValue) {
       params.set('q', debouncedValue);
     } else {
       params.delete('q');
     }
-    
+
     // ページをリセット
     params.delete('page');
-    
+
     setSearchParams(params);
   }, [debouncedValue]);
 
