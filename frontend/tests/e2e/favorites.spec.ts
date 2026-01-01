@@ -97,8 +97,8 @@ test.describe('お気に入り機能', () => {
     const menuCards = page.locator('[data-testid="menu-card"]');
     await expect(menuCards.first()).toBeVisible({ timeout: 10000 });
 
-    // 最初のメニューの名前を取得
-    const firstMenuName = await menuCards.first().locator('h6').first().textContent();
+    // 最初のメニューの名前を取得（h2要素、component="h2"で実装されている）
+    const firstMenuName = await menuCards.first().locator('h2').first().textContent();
 
     // お気に入りに追加
     const favoriteButton = menuCards.first().locator('[aria-label*="お気に入り"]').first();
@@ -173,14 +173,14 @@ test.describe('お気に入り機能', () => {
     await page.waitForLoadState('networkidle');
 
     // ソート機能が表示されることを確認
-    await expect(page.locator('label:has-text("並び替え")')).toBeVisible();
+    await expect(page.getByLabel('並び替え')).toBeVisible();
     
-    // ソートオプションをクリック
-    await page.locator('label:has-text("並び替え")').locator('..').locator('div[role="button"]').first().click();
+    // Material-UI SelectをクリックしてプションOをCpen（role="combobox"で検索）
+    await page.getByRole('combobox', { name: '並び替え' }).click();
     
     // ソートオプションが表示される
-    await expect(page.locator('li:has-text("名前")')).toBeVisible();
-    await expect(page.locator('li:has-text("価格")')).toBeVisible();
+    await expect(page.getByRole('option', { name: '名前' })).toBeVisible();
+    await expect(page.getByRole('option', { name: '価格' })).toBeVisible();
   });
 
   test('お気に入りページですべてクリアできる', async ({ page }) => {
