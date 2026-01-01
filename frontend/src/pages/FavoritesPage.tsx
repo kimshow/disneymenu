@@ -22,13 +22,19 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useFavorites } from '../hooks/useFavorites';
 import { MenuCard } from '../components/MenuCard';
+import { MenuDetailModal } from '../components/menu/MenuDetailModal';
 import type { FavoritesSortOption, SortOrder } from '../types/favorites';
+import type { MenuItem as MenuItemType } from '../types/menu';
 
 export function FavoritesPage() {
   const navigate = useNavigate();
   const { favoriteItems, clearAll, count } = useFavorites();
   const [sortBy, setSortBy] = useState<FavoritesSortOption>('addedAt');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+
+  // モーダル状態管理
+  const [selectedMenu, setSelectedMenu] = useState<MenuItemType | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   // ソート処理（localStorageから直接取得したメニューデータを使用）
   const sortedMenus = useMemo(() => {
@@ -57,6 +63,19 @@ export function FavoritesPage() {
     return menus;
   }, [favoriteItems, sortBy, sortOrder]);
 
+  // メニューカードクリック時の処理
+  const handleCardClick = (menu: MenuItemType) => {
+    setSelectedMenu(menu);
+    setModalOpen(true);
+  };
+
+  // モーダルを閉じる
+  const handleModalClose = () => {
+    setModalOpen(false);
+    // アニメーション完了後にクリア
+    setTimeout(() => setSelectedMenu(null), 300);
+  };
+
   // すべてクリア確認
   const handleClearAll = () => {
     if (window.confirm(`すべてのお気に入り（${count}件）を削除しますか？`)) {
@@ -67,7 +86,7 @@ export function FavoritesPage() {
   // 空状態
   if (count === 0) {
     return (
-      <Container maxWidth="md" sx={{ py: 4 }}>
+      <Container maxWidth="md" sx={{ py: { xs: 3, sm: 4 }, px: { xs: 2, sm: 3 } }}>
         <Button
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate('/menus')}
@@ -114,23 +133,24 @@ export function FavoritesPage() {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 4 }, px: { xs: 2, sm: 3 } }}>
       {/* ヘッダー */}
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ mb: { xs: 3, sm: 4 } }}>
         <Button
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate('/menus')}
           sx={{ mb: 2 }}
+          size="small"
         >
           メニュー一覧へ戻る
         </Button>
 
-        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
-          <FavoriteIcon color="error" sx={{ fontSize: 32 }} />
-          <Typography variant="h4" component="h1">
+        <Stack direction="row" alignItems="center" spacing={{ xs: 1, sm: 2 }} sx={{ mb: { xs: 2, sm: 3 } }}>
+          <FavoriteIcon color="error" sx={{ fontSize: { xs: 28, sm: 32 } }} />
+          <Typography variant="h4" component="h1" sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
             お気に入り
           </Typography>
-          <Typography variant="h6" color="text.secondary">
+          <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
             ({count}件)
           </Typography>
         </Stack>
@@ -142,9 +162,9 @@ export function FavoritesPage() {
           alignItems={{ xs: 'stretch', sm: 'center' }}
           justifyContent="space-between"
         >
-          <Stack direction="row" spacing={2}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ width: { xs: '100%', sm: 'auto' } }}>
             {/* ソート項目 */}
-            <FormControl size="small" sx={{ minWidth: 150 }}>
+            <FormControl size="small" sx={{ minWidth: { xs: '100%', sm: 150 } }}>
               <InputLabel>並び替え</InputLabel>
               <Select
                 value={sortBy}
@@ -158,7 +178,7 @@ export function FavoritesPage() {
             </FormControl>
 
             {/* ソート順 */}
-            <FormControl size="small" sx={{ minWidth: 120 }}>
+            <FormControl size="small" sx={{ minWidth: { xs: '100%', sm: 120 } }}>
               <InputLabel>順序</InputLabel>
               <Select
                 value={sortOrder}
@@ -177,6 +197,10 @@ export function FavoritesPage() {
             color="error"
             startIcon={<DeleteSweepIcon />}
             onClick={handleClearAll}
+            sx={{ 
+              width: { xs: '100%', sm: 'auto' },
+              minWidth: { sm: 150 } 
+            }}
           >
             すべてクリア
           </Button>
@@ -198,9 +222,16 @@ export function FavoritesPage() {
         }}
       >
         {sortedMenus.map((menu) => (
-          <MenuCard key={menu.id} menu={menu} />
+          <MenuCard key={menu.id} menu={menu} onClick={() => handleCardClick(menu)} />
         ))}
       </Box>
+
+      {/* メニュー詳細モーダル */}
+      <MenuDetailModal
+        menu={selectedMenu}
+        open={modalOpen}
+        onClose={handleModalClose}
+      />
     </Container>
   );
 }
