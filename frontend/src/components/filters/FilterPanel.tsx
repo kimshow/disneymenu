@@ -1,11 +1,13 @@
 import { memo } from 'react';
-import { Box, Drawer, IconButton, Typography, Divider, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Drawer, IconButton, Typography, Divider, useTheme, useMediaQuery, CircularProgress } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { RestaurantFilter } from './RestaurantFilter';
 import { PriceRangeFilter } from './PriceRangeFilter';
 import { ParkFilter } from './ParkFilter';
 import { CategoryFilter } from './CategoryFilter';
-import { TagFilter } from './TagFilter';
+import { TagFilterGrouped } from './TagFilterGrouped';
 import { AvailabilityFilter } from './AvailabilityFilter';
 
 interface FilterPanelProps {
@@ -27,6 +29,16 @@ interface FilterPanelProps {
 export const FilterPanel = memo<FilterPanelProps>(({ open, onClose, isMobile: isMobileProp }) => {
   const theme = useTheme();
   const isMobile = isMobileProp ?? useMediaQuery(theme.breakpoints.down('md'));
+
+  // グループ化タグAPIを呼び出し
+  const { data: groupedTags, isLoading: isLoadingTags } = useQuery({
+    queryKey: ['groupedTags'],
+    queryFn: async () => {
+      const response = await axios.get('http://localhost:8000/api/tags/grouped');
+      return response.data;
+    },
+    staleTime: 10 * 60 * 1000, // 10分間キャッシュ
+  });
 
   const content = (
     <Box sx={{ p: 2, width: isMobile ? 320 : 280, height: '100%', overflow: 'auto' }}>
@@ -72,12 +84,15 @@ export const FilterPanel = memo<FilterPanelProps>(({ open, onClose, isMobile: is
         <CategoryFilter />
       </Box>
 
-      {/* タグフィルター */}
+      {/* タグフィルター（グループ化） */}
       <Box sx={{ mb: 3 }}>
-        <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600 }}>
-          タグ
-        </Typography>
-        <TagFilter />
+        {isLoadingTags ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+            <CircularProgress size={24} />
+          </Box>
+        ) : groupedTags ? (
+          <TagFilterGrouped groupedTags={groupedTags} />
+        ) : null}
       </Box>
 
       {/* 販売状況フィルター */}

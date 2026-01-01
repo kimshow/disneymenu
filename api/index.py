@@ -4,10 +4,11 @@ FastAPI application for Disney Menu API
 
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from pydantic import BaseModel
 from api.data_loader import MenuDataLoader
 from api.models import MenuItem, ParkType
+from api.constants import TAG_CATEGORIES, CATEGORY_LABELS
 
 app = FastAPI(title="Disney Menu API", description="API for browsing Tokyo Disney Resort food menus", version="1.0.0")
 
@@ -203,6 +204,78 @@ async def get_categories():
     """
     categories = loader.get_all_categories()
     return ListResponse(data=categories)
+
+
+@app.get("/api/tags/grouped", tags=["Tags"])
+async def get_grouped_tags() -> Dict[str, Any]:
+    """
+    カテゴリ別にグループ化されたタグを返す
+
+    Returns:
+        {
+            "food_type": {
+                "label": "料理の種類",
+                "tags": ["カレー", "ピザ", ...]
+            },
+            "drink_type": {
+                "label": "ドリンク種類",
+                "tags": ["ソフトドリンク", ...]
+            },
+            ...
+        }
+    """
+    # メニューデータから実際に使用されているタグを抽出
+    menus = loader.load_menus()
+
+    # カテゴリごとのタグを格納
+    all_tags_by_category: Dict[str, set] = {category: set() for category in TAG_CATEGORIES.keys()}
+    all_tags_by_category["area"] = set()
+    all_tags_by_category["restaurant"] = set()
+
+    for menu in menus:
+        tags = menu.get("tags", [])
+
+        # 各カテゴリに分類
+        for tag in tags:
+            categorized = False
+
+            # 定義済みカテゴリに分類
+            for category, category_tags in TAG_CATEGORIES.items():
+                if tag in category_tags:
+                    all_tags_by_category[category].add(tag)
+                    categorized = True
+                    break
+
+            if categorized:
+                continue
+
+            # エリアタグの判定
+            for restaurant in menu.get("restaurants", []):
+                if tag == restaurant.get("area"):
+                    all_tags_by_category["area"].add(tag)
+                    categorized = True
+                    break
+
+            if categorized:
+                continue
+
+            # レストランタグの判定
+            for restaurant in menu.get("restaurants", []):
+                if tag == restaurant.get("name"):
+                    all_tags_by_category["restaurant"].add(tag)
+                    categorized = True
+                    break
+
+    # レスポンス構築
+    result = {}
+    for category, tags in all_tags_by_category.items():
+        if tags:  # タグが存在する場合のみ含める
+            result[category] = {
+                "label": CATEGORY_LABELS.get(category, category),
+                "tags": sorted(list(tags)),  # アルファベット順にソート
+            }
+
+    return result
 
 
 @app.get("/api/stats", response_model=StatsResponse, tags=["Stats"])

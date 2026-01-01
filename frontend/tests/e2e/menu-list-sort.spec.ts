@@ -23,11 +23,11 @@ test.describe('ソート機能', () => {
   test('価格昇順でソートできる', async ({ page }) => {
     // ソート選択Selectをクリック
     const sortSelect = page.locator('#sort-select');
-    
+
     if (await sortSelect.count() > 0) {
       await sortSelect.click();
       await page.waitForTimeout(300);
-      
+
       // "価格順"オプションを選択
       await page.locator('[role="option"][data-value="price"]').click();
       await page.waitForTimeout(500);
@@ -35,7 +35,7 @@ test.describe('ソート機能', () => {
       // 昇順ボタンの状態を確認（デフォルトは降順なので、クリックして昇順にする）
       const ascButton = page.locator('button[aria-label*="昇順"]');
       const descButton = page.locator('button[aria-label*="降順"]');
-      
+
       // 降順の場合はクリックして昇順にする
       if (await descButton.count() > 0) {
         await descButton.first().click();
@@ -72,11 +72,11 @@ test.describe('ソート機能', () => {
   test('価格降順でソートできる', async ({ page }) => {
     // ソート選択Selectをクリック
     const sortSelect = page.locator('#sort-select');
-    
+
     if (await sortSelect.count() > 0) {
       await sortSelect.click();
       await page.waitForTimeout(300);
-      
+
       // "価格順"オプションを選択
       await page.locator('[role="option"][data-value="price"]').click();
       await page.waitForTimeout(500);
@@ -111,11 +111,11 @@ test.describe('ソート機能', () => {
   test('名前順でソートできる', async ({ page }) => {
     // ソート選択Selectをクリック
     const sortSelect = page.locator('#sort-select');
-    
+
     if (await sortSelect.count() > 0) {
       await sortSelect.click();
       await page.waitForTimeout(300);
-      
+
       // "名前順"オプションを選択
       await page.locator('[role="option"][data-value="name"]').click();
       await page.waitForTimeout(500);
@@ -131,14 +131,14 @@ test.describe('ソート機能', () => {
   test('新着順でソートできる', async ({ page }) => {
     // まず価格順に変更してから新着順に戻す
     const sortSelect = page.locator('#sort-select');
-    
+
     if (await sortSelect.count() > 0) {
       // 価格順に変更
       await sortSelect.click();
       await page.waitForTimeout(300);
       await page.locator('[role="option"][data-value="price"]').click();
       await page.waitForTimeout(500);
-      
+
       // 新着順に戻す
       await sortSelect.click();
       await page.waitForTimeout(300);

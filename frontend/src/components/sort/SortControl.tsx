@@ -11,19 +11,19 @@ import { useSearchParams } from 'react-router-dom';
  */
 export const SortControl = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   const sort = searchParams.get('sort') || 'scraped_at';
   const order = searchParams.get('order') || 'desc';
 
   const handleSortChange = (newSort: string) => {
     const params = new URLSearchParams(searchParams);
     params.set('sort', newSort);
-    
+
     // orderがまだ設定されていない場合はデフォルトを設定
     if (!params.has('order')) {
       params.set('order', 'desc');
     }
-    
+
     // ページをリセット
     params.delete('page');
     setSearchParams(params);
@@ -33,12 +33,12 @@ export const SortControl = () => {
     const params = new URLSearchParams(searchParams);
     const currentOrder = order === 'asc' ? 'desc' : 'asc';
     params.set('order', currentOrder);
-    
+
     // sortがまだ設定されていない場合はデフォルトを設定
     if (!params.has('sort')) {
       params.set('sort', 'scraped_at');
     }
-    
+
     // ページをリセット
     params.delete('page');
     setSearchParams(params);
@@ -69,10 +69,10 @@ export const SortControl = () => {
   };
 
   return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
         gap: 2,
         mb: 2,
       }}
@@ -102,7 +102,7 @@ export const SortControl = () => {
         >
           {order === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
         </IconButton>
-        
+
         <Typography variant="body2" color="text.secondary" sx={{ minWidth: 80 }}>
           {getOrderLabel(order)}
         </Typography>

@@ -24,7 +24,7 @@ export const AppliedFilters = () => {
   };
 
   // フィルターが1つでも適用されているか確認
-  const hasActiveFilters = 
+  const hasActiveFilters =
     filters.q ||
     filters.park ||
     filters.restaurant ||
@@ -41,12 +41,12 @@ export const AppliedFilters = () => {
   // 個別フィルター削除
   const removeFilter = (key: string, value?: string) => {
     const params = new URLSearchParams(searchParams);
-    
+
     if (key === 'categories' || key === 'tags') {
       // 配列形式のフィルター
       const current = params.get(key)?.split(',').filter(Boolean) || [];
       const updated = current.filter(item => item !== value);
-      
+
       if (updated.length > 0) {
         params.set(key, updated.join(','));
       } else {
@@ -59,7 +59,7 @@ export const AppliedFilters = () => {
     } else {
       params.delete(key);
     }
-    
+
     // ページをリセット
     params.delete('page');
     setSearchParams(params);
@@ -68,14 +68,14 @@ export const AppliedFilters = () => {
   // すべてのフィルターをクリア
   const clearAllFilters = () => {
     const params = new URLSearchParams();
-    
+
     // ソートとページのみ保持
     const sort = searchParams.get('sort');
     const order = searchParams.get('order');
-    
+
     if (sort) params.set('sort', sort);
     if (order) params.set('order', order);
-    
+
     setSearchParams(params);
   };
 
@@ -84,10 +84,10 @@ export const AppliedFilters = () => {
   };
 
   return (
-    <Box 
-      sx={{ 
-        mb: 3, 
-        p: 2, 
+    <Box
+      sx={{
+        mb: 3,
+        p: 2,
         bgcolor: 'background.paper',
         borderRadius: 1,
         border: '1px solid',
@@ -98,7 +98,7 @@ export const AppliedFilters = () => {
         <Typography variant="subtitle2" color="text.secondary" sx={{ mr: 2 }}>
           適用中のフィルター:
         </Typography>
-        
+
         <Button
           size="small"
           onClick={clearAllFilters}

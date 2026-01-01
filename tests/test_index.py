@@ -452,6 +452,87 @@ class TestSortFeature:
         assert data["success"] is True
 
 
+class TestGroupedTagsEndpoint:
+    """Tests for /api/tags/grouped endpoint"""
+
+    def test_get_grouped_tags(self, client, mock_data_loader):
+        """Test grouped tags endpoint returns categorized tags"""
+        # モックデータにタグ付きメニューを追加
+        mock_menus = [
+            {
+                "id": "0001",
+                "tags": ["カレー", "ソフトドリンク", "ミッキーマウス", "ワンハンドメニュー", "スナック"],
+                "restaurants": [{"name": "テストレストラン", "area": "ワールドバザール"}],
+            },
+            {
+                "id": "0002",
+                "tags": ["ピザ", "ホット", "ワールドバザール", "テストレストラン"],
+                "restaurants": [{"name": "テストレストラン", "area": "ワールドバザール"}],
+            },
+        ]
+        mock_data_loader.load_menus.return_value = mock_menus
+
+        response = client.get("/api/tags/grouped")
+        assert response.status_code == 200
+        data = response.json()
+
+        # カテゴリが存在することを確認
+        assert "food_type" in data
+        assert "drink_type" in data
+        assert "character" in data
+        assert "area" in data
+        assert "restaurant" in data
+        # featuresは存在する場合のみチェック（featuresタグがない場合は含まれない）
+
+        # 各カテゴリの構造を確認
+        for category, content in data.items():
+            assert "label" in content
+            assert "tags" in content
+            assert isinstance(content["tags"], list)
+
+        # food_typeカテゴリに「カレー」「ピザ」「ワンハンドメニュー」が含まれることを確認
+        assert "カレー" in data["food_type"]["tags"]
+        assert "ピザ" in data["food_type"]["tags"]
+        assert "ワンハンドメニュー" in data["food_type"]["tags"]
+
+        # drink_typeカテゴリに「ソフトドリンク」「ホット」が含まれることを確認
+        assert "ソフトドリンク" in data["drink_type"]["tags"]
+        assert "ホット" in data["drink_type"]["tags"]
+
+        # characterカテゴリに「ミッキーマウス」が含まれることを確認
+        assert "ミッキーマウス" in data["character"]["tags"]
+
+        # areaカテゴリに「ワールドバザール」が含まれることを確認
+        assert "ワールドバザール" in data["area"]["tags"]
+
+        # restaurantカテゴリに「テストレストラン」が含まれることを確認
+        assert "テストレストラン" in data["restaurant"]["tags"]
+
+        # featuresカテゴリがある場合は「スナック」が含まれることを確認
+        # 注: 「ワンハンドメニュー」はfood_typeとfeaturesの両方に定義されているため、
+        #     food_typeが優先されfeaturesには含まれない
+        if "features" in data:
+            assert "スナック" in data["features"]["tags"]
+
+    def test_grouped_tags_labels(self, client, mock_data_loader):
+        """Test grouped tags have correct Japanese labels"""
+        mock_menus = [
+            {
+                "id": "0001",
+                "tags": ["カレー"],
+                "restaurants": [{"name": "テストレストラン", "area": "ワールドバザール"}],
+            }
+        ]
+        mock_data_loader.load_menus.return_value = mock_menus
+
+        response = client.get("/api/tags/grouped")
+        assert response.status_code == 200
+        data = response.json()
+
+        # 日本語ラベルが正しいことを確認
+        assert data["food_type"]["label"] == "料理の種類"
+
+
 class TestQueryParameterParsing:
     """Tests for query parameter parsing"""
 
