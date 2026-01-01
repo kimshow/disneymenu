@@ -78,24 +78,10 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
-          # メニュー数と統計を取得
-          MENU_COUNT=$(python -c "import json; print(len(json.load(open('data/menus.json'))))")
-
-          # 料理種類タグの統計
-          FOOD_TAG_STATS=$(python -c "
-import json
-with open('data/menus.json') as f:
-    menus = json.load(f)
-food_tags = ['麺類', 'ご飯もの', 'パン', '肉料理', '魚介料理', 'ピザ', 'デザート']
-stats = []
-for tag in food_tags:
-    count = sum(1 for m in menus if tag in m.get('tags', []))
-    if count > 0:
-        stats.append(f'{tag}:{count}')
-print(', '.join(stats[:5]))  # 上位5つ
-")
-
+          
+          # 統計情報を取得
+          eval "$(python scripts/generate_commit_stats.py data/menus.json)"
+          
           git add data/menus.json
           git commit -m "chore: 週次メニューデータ更新
 
@@ -104,7 +90,7 @@ print(', '.join(stats[:5]))  # 上位5つ
 - 料理種類タグ: ${FOOD_TAG_STATS}
 - 処理: スクレイピング → カテゴリ割当 → タグ正規化 → 料理種類タグ付与
 - 自動実行: GitHub Actions"
-
+          
           git push
 
       - name: Deploy to Vercel
@@ -126,60 +112,10 @@ print(', '.join(stats[:5]))  # 上位5つ
       - name: Create summary
         if: always()
         run: |
-          echo "## 🍴 スクレイピング実行結果" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          if [ -f data/menus.json ]; then
-            MENU_COUNT=$(python -c "import json; menus=json.load(open('data/menus.json')); print(len(menus))")
-            echo "✅ **総メニュー数**: ${MENU_COUNT}件" >> $GITHUB_STEP_SUMMARY
-
-            # 詳細統計
-            python << 'EOF' >> $GITHUB_STEP_SUMMARY
-import json
-from collections import Counter
-
-with open('data/menus.json') as f:
-    menus = json.load(f)
-
-# パーク別
-tdl_count = sum(1 for m in menus if any(r.get('park') == 'tdl' for r in m.get('restaurants', [])))
-tds_count = sum(1 for m in menus if any(r.get('park') == 'tds' for r in m.get('restaurants', [])))
-
-print(f"\n### 📊 統計情報")
-print(f"- **ディズニーランド**: {tdl_count}件")
-print(f"- **ディズニーシー**: {tds_count}件")
-
-# 料理種類タグ統計
-food_tags = ['麺類', 'ご飯もの', 'パン', '肉料理', '魚介料理', 'ピザ', 'スープ', 'デザート', 'アイスクリーム']
-food_stats = []
-for tag in food_tags:
-    count = sum(1 for m in menus if tag in m.get('tags', []))
-    if count > 0:
-        food_stats.append((tag, count))
-
-if food_stats:
-    print(f"\n### 🍽️ 料理種類タグ（上位5件）")
-    for tag, count in sorted(food_stats, key=lambda x: x[1], reverse=True)[:5]:
-        print(f"- {tag}: {count}件")
-EOF
-
-            echo "" >> $GITHUB_STEP_SUMMARY
-            if [ "${{ steps.git-check.outputs.changed }}" == "true" ]; then
-              echo "### 🔄 実行内容" >> $GITHUB_STEP_SUMMARY
-              echo "1. ✅ メニュースクレイピング" >> $GITHUB_STEP_SUMMARY
-              echo "2. ✅ カテゴリ自動割り当て" >> $GITHUB_STEP_SUMMARY
-              echo "3. ✅ タグ正規化" >> $GITHUB_STEP_SUMMARY
-              echo "4. ✅ 料理種類タグ付与" >> $GITHUB_STEP_SUMMARY
-              echo "5. ✅ データ検証" >> $GITHUB_STEP_SUMMARY
-              echo "6. ✅ Gitコミット・プッシュ" >> $GITHUB_STEP_SUMMARY
-              echo "7. 🚀 Vercel本番デプロイ" >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-              echo "🎉 **データが更新され、本番環境にデプロイされました！**" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "ℹ️ データに変更はありませんでした" >> $GITHUB_STEP_SUMMARY
-            fi
+          if [ "${{ steps.git-check.outputs.changed }}" == "true" ]; then
+            python scripts/generate_summary.py data/menus.json changed >> $GITHUB_STEP_SUMMARY
           else
-            echo "❌ スクレイピングに失敗しました" >> $GITHUB_STEP_SUMMARY
+            python scripts/generate_summary.py data/menus.json >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Upload artifact on failure
