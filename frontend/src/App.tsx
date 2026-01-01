@@ -3,6 +3,7 @@
  */
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { FavoritesProvider } from './contexts/FavoritesContext';
 import { MenuListPage } from './pages/MenuListPage';
 
 const theme = createTheme({
@@ -29,13 +30,15 @@ const theme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Routes>
-        <Route path="/" element={<MenuListPage />} />
-        <Route path="/menus" element={<MenuListPage />} />
-      </Routes>
-    </ThemeProvider>
+    <FavoritesProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Routes>
+          <Route path="/" element={<MenuListPage />} />
+          <Route path="/menus" element={<MenuListPage />} />
+        </Routes>
+      </ThemeProvider>
+    </FavoritesProvider>
   );
 }
 
