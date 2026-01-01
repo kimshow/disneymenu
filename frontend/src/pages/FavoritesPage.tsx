@@ -35,8 +35,9 @@ export function FavoritesPage() {
 
   // お気に入りのメニューIDを使ってメニューデータを取得
   // お気に入りが0件の場合はAPIコールしない
+  // limit=1000で全メニューを取得（お気に入りメニューが確実に含まれるように）
   const { data, isLoading, isError } = useMenus(
-    count > 0 ? {} : undefined
+    count > 0 ? { limit: 1000 } : undefined
   );
 
   // ソート処理
@@ -158,7 +159,7 @@ export function FavoritesPage() {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
       {/* ヘッダー */}
       <Box sx={{ mb: 4 }}>
         <Button
@@ -230,11 +231,13 @@ export function FavoritesPage() {
       {/* メニュー一覧 */}
       <Box
         sx={{
+          mt: 2,
           display: 'grid',
           gridTemplateColumns: {
-            xs: '1fr',
+            xs: 'repeat(1, 1fr)',
             sm: 'repeat(2, 1fr)',
             md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)',
           },
           gap: 3,
         }}
