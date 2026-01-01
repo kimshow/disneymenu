@@ -1,15 +1,15 @@
 """
-Requests ベースのシンプルなスクレイピングスクリプト
-aiohttpやPlaywrightよりも安定した動作
+非同期バッチ処理によるスクレイピングスクリプト
+10ID単位でバッチ処理し、高速化を実現
 
 Usage:
     python scripts/scrape_menus_simple.py --start 0 --end 100
 """
 
-import requests
+import asyncio
+import aiohttp
 import json
 import sys
-import time
 import argparse
 from pathlib import Path
 from typing import List, Dict, Optional
@@ -23,16 +23,20 @@ from api.scraper import MenuScraper
 
 
 class SimpleMenuScraper:
-    """Requestsベースのシンプルなメニュースクレイパー"""
+    """非同期バッチ処理によるメニュースクレイパー"""
 
-    def __init__(self, rate_limit: float = 1.0, timeout: int = 20):
+    def __init__(self, rate_limit: float = 1.0, timeout: int = 20, max_concurrent: int = 5, batch_size: int = 10):
         """
         Args:
-            rate_limit: 各リクエスト間の待機時間（秒）
+            rate_limit: バッチ間の待機時間（秒）
             timeout: タイムアウト時間（秒）
+            max_concurrent: 最大同時接続数
+            batch_size: バッチサイズ（デフォルト: 10）
         """
         self.rate_limit = rate_limit
         self.timeout = timeout
+        self.max_concurrent = max_concurrent
+        self.batch_size = batch_size
         self.scraper = MenuScraper()
 
         # ブラウザに近いヘッダー設定
@@ -46,57 +50,53 @@ class SimpleMenuScraper:
             "Upgrade-Insecure-Requests": "1",
         }
 
-        # セッションを作成（Cookieを保持）
-        self.session = requests.Session()
-        self.session.headers.update(self.headers)
-
-    def scrape_menu(self, menu_id: str) -> Optional[Dict]:
+    async def scrape_menu(
+        self, session: aiohttp.ClientSession, menu_id: str, semaphore: asyncio.Semaphore
+    ) -> Optional[Dict]:
         """
-        単一メニューをスクレイピング
+        単一メニューをスクレイピング（非同期）
 
         Args:
+            session: aiohttp session
             menu_id: メニューID（4桁）
+            semaphore: 同時接続数制限用
 
         Returns:
             パースされたメニューデータ、または None
         """
         url = f"https://www.tokyodisneyresort.jp/food/{menu_id}/"
 
-        try:
-            response = self.session.get(url, timeout=self.timeout)
+        async with semaphore:
+            try:
+                timeout = aiohttp.ClientTimeout(total=self.timeout, connect=5)
+                async with session.get(url, timeout=timeout, allow_redirects=False) as response:
+                    if response.status == 200:
+                        # レスポンスサイズ制限（5MB）
+                        content_length = response.headers.get("Content-Length")
+                        if content_length and int(content_length) > 5 * 1024 * 1024:
+                            return None
 
-            # ステータスコードを確認
-            if response.status_code == 404:
+                        html = await response.text()
+
+                        # HTMLサイズチェック
+                        if len(html) > 5 * 1024 * 1024:
+                            return None
+
+                        return self.scraper.parse_menu_page(html, menu_id)
+                    elif response.status == 404:
+                        return None  # 存在しないID
+                    else:
+                        return None
+            except asyncio.TimeoutError:
                 return None
-            elif response.status_code != 200:
-                print(f"Warning: {menu_id} returned status {response.status_code}")
+            except aiohttp.ClientError:
+                return None
+            except Exception:
                 return None
 
-            # HTMLコンテンツを取得
-            html = response.text
-
-            # スクレイパーでパース
-            data = self.scraper.parse_menu_page(html, menu_id)
-
-            # レート制限
-            if self.rate_limit > 0:
-                time.sleep(self.rate_limit)
-
-            return data
-
-        except requests.exceptions.Timeout:
-            print(f"Timeout: {menu_id}")
-            return None
-        except requests.exceptions.RequestException as e:
-            print(f"Error scraping {menu_id}: {e}")
-            return None
-        except Exception as e:
-            print(f"Unexpected error scraping {menu_id}: {e}")
-            return None
-
-    def scrape_range(self, start_id: int, end_id: int) -> List[Dict]:
+    async def scrape_range(self, start_id: int, end_id: int) -> List[Dict]:
         """
-        指定範囲のメニューをスクレイピング
+        指定範囲のメニューをスクレイピング（非同期バッチ処理）
 
         Args:
             start_id: 開始ID
@@ -106,20 +106,50 @@ class SimpleMenuScraper:
             メニューデータのリスト
         """
         results = []
+        semaphore = asyncio.Semaphore(self.max_concurrent)
 
-        print(f"Scraping menu IDs {start_id:04d} to {end_id:04d}...")
+        # TCPConnectorでSSL検証を有効化し、接続プールを設定
+        connector = aiohttp.TCPConnector(
+            limit=self.max_concurrent, limit_per_host=self.max_concurrent, ttl_dns_cache=300, ssl=True
+        )
 
-        for menu_id_num in tqdm(range(start_id, end_id + 1), desc="Scraping"):
-            menu_id_str = str(menu_id_num).zfill(4)
-            data = self.scrape_menu(menu_id_str)
-            if data:
-                results.append(data)
+        async with aiohttp.ClientSession(headers=self.headers, connector=connector) as session:
+            total_ids = end_id - start_id + 1
+
+            print(f"\nScraping menu IDs {start_id:04d} to {end_id:04d} ({total_ids} IDs)")
+            print(f"Concurrent requests: {self.max_concurrent}")
+            print(f"Batch size: {self.batch_size}")
+            print(f"Rate limit: {self.rate_limit}s between batches")
+            print(f"Estimated time: ~{total_ids * self.rate_limit / self.batch_size / 60:.1f} minutes\n")
+
+            # プログレスバー付きでバッチ処理
+            with tqdm(total=total_ids, desc="Scraping", unit="menu") as pbar:
+                for batch_start in range(start_id, end_id + 1, self.batch_size):
+                    batch_end = min(batch_start + self.batch_size - 1, end_id)
+
+                    # バッチ内のタスクを作成
+                    tasks = []
+                    for menu_id_num in range(batch_start, batch_end + 1):
+                        menu_id_str = str(menu_id_num).zfill(4)
+                        tasks.append(self.scrape_menu(session, menu_id_str, semaphore))
+
+                    # バッチを並行実行
+                    batch_results = await asyncio.gather(*tasks)
+
+                    # 結果を集約
+                    for data in batch_results:
+                        if data:
+                            results.append(data)
+
+                    # プログレスバー更新
+                    pbar.update(len(tasks))
+                    pbar.set_postfix({"found": len(results)})
+
+                    # レート制限: バッチ間の待機（最後のバッチ以外）
+                    if self.rate_limit > 0 and batch_end < end_id:
+                        await asyncio.sleep(self.rate_limit)
 
         return results
-
-    def close(self):
-        """セッションをクローズ"""
-        self.session.close()
 
 
 def save_menus(menus: List[Dict], output_path: str = "data/menus.json"):
@@ -211,28 +241,38 @@ def save_menus(menus: List[Dict], output_path: str = "data/menus.json"):
 
 def main():
     """メイン処理"""
-    parser = argparse.ArgumentParser(description="Scrape Disney menu items (Simple Requests version)")
+    parser = argparse.ArgumentParser(description="Scrape Disney menu items (Async Batch version)")
     parser.add_argument("--start", type=int, default=0, help="Start ID (default: 0)")
     parser.add_argument("--end", type=int, default=9999, help="End ID (default: 9999)")
     parser.add_argument("--output", type=str, default="data/menus.json", help="Output file path")
-    parser.add_argument("--rate-limit", type=float, default=1.0, help="Rate limit in seconds (default: 1.0)")
+    parser.add_argument(
+        "--rate-limit", type=float, default=1.0, help="Rate limit between batches in seconds (default: 1.0)"
+    )
     parser.add_argument("--timeout", type=int, default=20, help="Request timeout in seconds (default: 20)")
+    parser.add_argument("--max-concurrent", type=int, default=5, help="Max concurrent requests (default: 5)")
+    parser.add_argument("--batch-size", type=int, default=10, help="Batch size (default: 10)")
 
     args = parser.parse_args()
 
     print("=" * 60)
-    print("Disney Menu Scraper (Simple Requests)")
+    print("Disney Menu Scraper (Async Batch)")
     print("=" * 60)
     print(f"Range: {args.start:04d} - {args.end:04d}")
-    print(f"Rate limit: {args.rate_limit} seconds")
+    print(f"Batch size: {args.batch_size}")
+    print(f"Max concurrent: {args.max_concurrent}")
+    print(f"Rate limit: {args.rate_limit} seconds between batches")
     print(f"Timeout: {args.timeout} seconds")
     print(f"Output: {args.output}")
     print("=" * 60)
 
     try:
-        scraper = SimpleMenuScraper(rate_limit=args.rate_limit, timeout=args.timeout)
-        menus = scraper.scrape_range(args.start, args.end)
-        scraper.close()
+        scraper = SimpleMenuScraper(
+            rate_limit=args.rate_limit,
+            timeout=args.timeout,
+            max_concurrent=args.max_concurrent,
+            batch_size=args.batch_size,
+        )
+        menus = asyncio.run(scraper.scrape_range(args.start, args.end))
 
         save_menus(menus, args.output)
 
