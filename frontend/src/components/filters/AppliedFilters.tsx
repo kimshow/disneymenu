@@ -23,6 +23,11 @@ export const AppliedFilters = () => {
     only_available: searchParams.get('only_available') === 'true',
   };
 
+  // 価格フィルターがデフォルト値（0-17000）から変更されているかチェック
+  const hasPriceFilter =
+    (filters.min_price && parseInt(filters.min_price) > 0) ||
+    (filters.max_price && parseInt(filters.max_price) < 17000);
+
   // フィルターが1つでも適用されているか確認
   const hasActiveFilters =
     filters.q ||
@@ -30,8 +35,7 @@ export const AppliedFilters = () => {
     filters.restaurant ||
     (filters.categories && filters.categories.length > 0) ||
     (filters.tags && filters.tags.length > 0) ||
-    filters.min_price ||
-    filters.max_price ||
+    hasPriceFilter ||
     filters.only_available;
 
   if (!hasActiveFilters) {
@@ -144,9 +148,9 @@ export const AppliedFilters = () => {
         )}
 
         {/* 価格範囲 */}
-        {(filters.min_price || filters.max_price) && (
+        {hasPriceFilter && (
           <Chip
-            label={`価格: ¥${filters.min_price || '0'} - ¥${filters.max_price || '13,000'}`}
+            label={`価格: ¥${filters.min_price || '0'} - ¥${filters.max_price || '17,000'}`}
             onDelete={() => removeFilter('price_range')}
             size="small"
             color="primary"

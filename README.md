@@ -210,7 +210,9 @@ npm run test:e2e:ui
 
 ### 基本情報
 
-**ベースURL**: `http://localhost:8000/api` (開発) / `https://your-domain.vercel.app/api` (本番)
+**ベースURL**: 
+- 開発環境: `http://localhost:8000/api`
+- 本番環境: `https://tdrmenu.vercel.app/api`
 
 ### エンドポイント一覧
 
@@ -396,6 +398,13 @@ GET /api/stats
 - ✅ レート制限: 1秒1リクエスト
 - ✅ 実行頻度: 週1回
 - ✅ User-Agent設定済み
+
+## 🌐 本番環境
+
+**メインサイト**: https://tdrmenu.vercel.app  
+**API**: https://tdrmenu.vercel.app/api/
+
+詳細なデプロイ手順は [DEPLOYMENT.md](DEPLOYMENT.md) を参照してください。
 
 ## デプロイ
 

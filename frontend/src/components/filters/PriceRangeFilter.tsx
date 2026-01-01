@@ -1,6 +1,6 @@
 import { Box, Slider, Typography } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDebounce } from '../../hooks/useDebounce';
 
 /**
@@ -17,6 +17,7 @@ export const PriceRangeFilter = () => {
 
   const [priceRange, setPriceRange] = useState<[number, number]>([minPriceParam, maxPriceParam]);
   const debouncedPriceRange = useDebounce(priceRange, 500);
+  const isInitialMount = useRef(true);
 
   // URLパラメータ変更時にローカル状態を更新
   useEffect(() => {
@@ -25,6 +26,32 @@ export const PriceRangeFilter = () => {
 
   // デバウンス後にURLを更新
   useEffect(() => {
+    // 初回マウント時はスキップ
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    // URLパラメータから現在の値を取得
+    const currentMinPrice = searchParams.get('min_price');
+    const currentMaxPrice = searchParams.get('max_price');
+
+
+    // ローカル状態とURL状態を比較
+    const minPriceChanged =
+      (debouncedPriceRange[0] > 0 && currentMinPrice !== debouncedPriceRange[0].toString()) ||
+      (debouncedPriceRange[0] === 0 && currentMinPrice !== null);
+
+    const maxPriceChanged =
+      (debouncedPriceRange[1] < 17000 && currentMaxPrice !== debouncedPriceRange[1].toString()) ||
+      (debouncedPriceRange[1] === 17000 && currentMaxPrice !== null);
+
+
+    if (!minPriceChanged && !maxPriceChanged) {
+      return;
+    }
+
+
     const params = new URLSearchParams(searchParams);
 
     if (debouncedPriceRange[0] > 0) {
@@ -43,7 +70,8 @@ export const PriceRangeFilter = () => {
     params.delete('page');
 
     setSearchParams(params, { replace: true });
-  }, [debouncedPriceRange, setSearchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedPriceRange]);
 
   const handleChange = (_: Event, newValue: number | number[]) => {
     setPriceRange(newValue as [number, number]);

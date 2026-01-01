@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import {
   Box,
   Typography,
@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSearchParams } from 'react-router-dom';
-import { PARK_AREAS, getParkByArea } from '../../constants/parkAreas';
+import { PARK_AREAS } from '../../constants/parkAreas';
 
 interface TagGroup {
   label: string;
@@ -68,7 +68,7 @@ export const TagFilterGrouped = memo<TagFilterGroupedProps>(({ groupedTags }) =>
         if (category === 'area' && selectedPark) {
           const parkKey = selectedPark.toLowerCase() as 'disneyland' | 'disneysea' | 'tdl' | 'tds';
           const allowedAreas = PARK_AREAS[parkKey] || [];
-          filteredTags = tags.filter(tag => allowedAreas.includes(tag));
+          filteredTags = tags.filter(tag => (allowedAreas as readonly string[]).includes(tag));
         }
 
         // タグが0件の場合は表示しない

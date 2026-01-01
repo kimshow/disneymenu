@@ -23,7 +23,7 @@ export const CategoryFilter = () => {
   const { data: categories, isLoading } = useQuery<Category[]>({
     queryKey: ['categories'],
     queryFn: async () => {
-      const response = await axios.get('http://localhost:8000/api/categories');
+      const response = await axios.get('/api/categories');
       return response.data.data;
     },
     staleTime: 10 * 60 * 1000, // 10分間キャッシュ

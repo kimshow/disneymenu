@@ -41,6 +41,7 @@ playwright/.cache/
 
 # Downloaded test files
 *.html
+!frontend/index.html
 *_files/
 
 # Logs

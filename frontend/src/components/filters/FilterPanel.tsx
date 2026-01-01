@@ -43,7 +43,7 @@ export const FilterPanel = memo<FilterPanelProps>(({ open, onClose, isMobile: is
       if (selectedPark) {
         params.set('park', selectedPark);
       }
-      const response = await axios.get(`http://localhost:8000/api/tags/grouped?${params.toString()}`);
+      const response = await axios.get(`/api/tags/grouped?${params.toString()}`);
       return response.data;
     },
     staleTime: 10 * 60 * 1000, // 10分間キャッシュ

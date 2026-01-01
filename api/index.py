@@ -26,6 +26,7 @@ app = FastAPI(
     title="Disney Menu API",
     description="東京ディズニーリゾートのメニュー検索API",
     version="1.0.0",
+    root_path="/api",  # Vercelのルーティングに合わせてroot_pathを設定
     docs_url="/docs" if DEBUG else None,  # 本番環境ではSwagger UIを無効化
     redoc_url="/redoc" if DEBUG else None,
 )
@@ -90,7 +91,7 @@ async def root():
     }
 
 
-@app.get("/api/menus", response_model=MenuListResponse, tags=["Menus"])
+@app.get("/menus", response_model=MenuListResponse, tags=["Menus"])
 async def get_menus(
     q: Optional[str] = Query(None, min_length=1, max_length=200, description="検索クエリ（名前、説明）"),
     tags: Optional[str] = Query(None, max_length=500, description="タグフィルタ（カンマ区切り）"),
@@ -221,7 +222,7 @@ async def get_menus(
     )
 
 
-@app.get("/api/menus/{menu_id}", response_model=MenuResponse, tags=["Menus"])
+@app.get("/menus/{menu_id}", response_model=MenuResponse, tags=["Menus"])
 async def get_menu(menu_id: str):
     """
     特定のメニューを取得
@@ -243,7 +244,7 @@ async def get_menu(menu_id: str):
     return MenuResponse(data=menu)
 
 
-@app.get("/api/restaurants", response_model=ListResponse, tags=["Restaurants"])
+@app.get("/restaurants", response_model=ListResponse, tags=["Restaurants"])
 async def get_restaurants(park: Optional[ParkType] = Query(None, description="パークフィルタ（tdl/tds）")):
     """
     レストラン一覧を取得
@@ -260,7 +261,7 @@ async def get_restaurants(park: Optional[ParkType] = Query(None, description="�
     return ListResponse(data=restaurants)
 
 
-@app.get("/api/tags", response_model=ListResponse, tags=["Tags"])
+@app.get("/tags", response_model=ListResponse, tags=["Tags"])
 async def get_tags():
     """
     タグ一覧を取得
@@ -269,7 +270,7 @@ async def get_tags():
     return ListResponse(data=tags)
 
 
-@app.get("/api/tags/grouped", tags=["Tags"])
+@app.get("/tags/grouped", tags=["Tags"])
 async def get_grouped_tags(park: Optional[str] = None) -> Dict[str, Any]:
     """
     カテゴリ別にグループ化されたタグを返す
@@ -354,7 +355,7 @@ async def get_grouped_tags(park: Optional[str] = None) -> Dict[str, Any]:
     return result
 
 
-@app.get("/api/categories", response_model=ListResponse, tags=["Categories"])
+@app.get("/categories", response_model=ListResponse, tags=["Categories"])
 async def get_categories():
     """
     メニューカテゴリ一覧とそれぞれのメニュー数を取得
@@ -378,7 +379,7 @@ async def get_categories():
     return ListResponse(data=categories)
 
 
-@app.get("/api/stats", response_model=StatsResponse, tags=["Stats"])
+@app.get("/stats", response_model=StatsResponse, tags=["Stats"])
 async def get_stats():
     """
     統計情報を取得
@@ -387,5 +388,5 @@ async def get_stats():
     return StatsResponse(data=stats)
 
 
-# Vercel用のハンドラー
-handler = app
+# Vercel用: appをそのままエクスポート
+# VercelはFastAPIのASGIアプリケーションとして扱う

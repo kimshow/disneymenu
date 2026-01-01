@@ -44,19 +44,6 @@ export const SortControl = () => {
     setSearchParams(params);
   };
 
-  const getSortLabel = (sortValue: string) => {
-    switch (sortValue) {
-      case 'price':
-        return '価格順';
-      case 'name':
-        return '名前順';
-      case 'scraped_at':
-        return '新着順';
-      default:
-        return '新着順';
-    }
-  };
-
   const getOrderLabel = (orderValue: string) => {
     if (sort === 'price') {
       return orderValue === 'asc' ? '安い順' : '高い順';
