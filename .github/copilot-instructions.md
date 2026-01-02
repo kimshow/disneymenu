@@ -4,7 +4,9 @@
 FastAPI + React web application for browsing Tokyo Disney Resort food menus with search, tag filtering, and price filtering. Backend deployed on Vercel as serverless functions. Menu data scraped from `https://www.tokyodisneyresort.jp/food/****` (4-digit IDs).
 
 ## Constraints
-- **output language**: you have to use japanese for comments and documentation and outputs
+- **output language**: ドキュメント・コメント・出力は日本語で記述すること
+- **ターミナル運用ルール**: ターミナルは既存のものを再利用し、毎回新しいタブやウィンドウを開かないこと。新規でサーバを複数立てず、既に立てているサーバを再利用すること。バックエンドサーバ用、フロントエンドサーバ用それぞれのターミナルは1つずつに限定すること。
+
 
 ## Architecture
 
