@@ -24,6 +24,8 @@ Thumbs.db
 
 # Data
 data/*.json
+data/test/
+!data/menus.json
 !data/.gitkeep
 
 # Environment
@@ -52,9 +54,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 scraping.log
+scrape_log.txt
 
 # Build outputs
 dist/
 dist-ssr/
 *.local
+
+# Node modules
+node_modules/
+.vite-temp/
+
+# Temporary and backup files
+*.backup
+*.backup.*
+*_backup_*.json
+*_new.json
 .cache/
