@@ -18,7 +18,12 @@ disneymenu/
 │   ├── TESTS.md                       # テスト実行ガイド
 │   ├── IMPLEMENTATION_PLAN.md         # 全体実装計画
 │   ├── FAVORITES_FEATURE_DESIGN.md    # お気に入り機能設計書
-│   ├── PHASE5_PLAN.md                 # Phase 5実装計画
+│   ├── PHASE5_PLAN.md                 # Phase 5: 検索体験とUI/UX向上（1.5週間）
+│   ├── PHASE6_PLAN.md                 # Phase 6: コンテンツ充実化（2週間）
+│   ├── PHASE7_PLAN.md                 # Phase 7: データ分析とビジュアライゼーション（2週間）
+│   ├── PHASE8_PLAN.md                 # Phase 8: マップ機能（3週間）
+│   ├── PHASE9_PLAN.md                 # Phase 9: ユーザー体験向上（2週間）
+│   ├── PHASE10_PLAN.md                # Phase 10: パフォーマンス最適化（1週間）
 │   ├── FRONTEND_ENHANCEMENT_PLAN.md   # フロントエンド拡張計画
 │   ├── CATEGORY_CLEANUP_SPEC.md       # カテゴリクリーンアップ仕様
 │   ├── TAG_CLEANUP_SPEC.md            # タグクリーンアップ仕様
@@ -112,6 +117,39 @@ disneymenu/
 - Phase 1-4の計画と進捗
 - 技術選定の理由
 - リスク管理
+
+#### Phase別実装計画書
+
+**Phase 5**: [PHASE5_PLAN.md](PHASE5_PLAN.md) - 検索体験とUI/UX向上（1.5週間）
+- オートコンプリート機能（Fuse.js）
+- 検索履歴機能（localStorage）
+- 検索結果ハイライト
+- フィルターUI改善
+
+**Phase 6**: [PHASE6_PLAN.md](PHASE6_PLAN.md) - コンテンツ充実化（2週間）
+- 人気メニューサジェスト（react-slick）
+- メニュー詳細ページ拡張（栄養成分、SNSシェア）
+- レストラン詳細ページ
+
+**Phase 7**: [PHASE7_PLAN.md](PHASE7_PLAN.md) - データ分析とビジュアライゼーション（2週間）
+- 統計ダッシュボード（Chart.js）
+- トレンド分析（人気ランキング）
+- データエクスポート機能（CSV/JSON）
+
+**Phase 8**: [PHASE8_PLAN.md](PHASE8_PLAN.md) - マップ機能（3週間）
+- Google Maps API統合
+- レストラン位置表示
+- ルート案内機能
+
+**Phase 9**: [PHASE9_PLAN.md](PHASE9_PLAN.md) - ユーザー体験向上（2週間）
+- ダークモード対応
+- 多言語対応（日本語・英語）
+- アクセシビリティ強化（WCAG 2.1 AAA準拠）
+
+**Phase 10**: [PHASE10_PLAN.md](PHASE10_PLAN.md) - パフォーマンス最適化（1週間）
+- バンドルサイズ削減（Code Splitting、Tree Shaking）
+- 画像最適化（WebP、Lazy Loading）
+- PWA対応（Service Worker、オフライン機能）
 
 #### FAVORITES_FEATURE_DESIGN.md
 **目的**: お気に入り機能の詳細設計書  

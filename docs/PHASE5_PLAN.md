@@ -1,9 +1,10 @@
-# Phase 5: 検索体験とUI/UX向上 - 実装計画書
+# Phase 5: 検索体験とUI/UX向上 - 実装計画書（改訂版）
 
 **作成日**: 2026年1月2日  
+**最終更新**: 2026年1月2日（実装状況を反映）  
 **優先度**: 🔥 高  
-**ステータス**: 計画中  
-**想定期間**: 2週間
+**ステータス**: 実装準備中  
+**想定期間**: 1.5週間（実働10日）
 
 ---
 
@@ -24,48 +25,74 @@
 
 ### プロジェクト概要
 
-Phase 4.5でお気に入り機能の完全実装が完了し、基本機能が揃いました。Phase 5では、ユーザーがメニューをより快適に探せるよう、検索体験とUI/UXを大幅に向上させます。
+Phase 4.5でお気に入り機能の完全実装が完了し、検索・フィルター・ソート機能も既に実装済みです。Phase 5では、既存の検索体験を大幅に向上させる4つの機能を追加します。
 
-### 主要機能追加
+### 主要機能追加（優先度順）
 
-1. **オートコンプリート機能** - 入力中にメニュー候補をリアルタイム表示
-2. **検索履歴保存** - 過去の検索クエリを再利用可能に
-3. **検索結果ハイライト** - 検索キーワードを結果内で視覚的に強調
-4. **人気メニューサジェスト** - アクセス頻度の高いメニューをレコメンド
-5. **フィルター改善** - アニメーション、UI改善、モバイル最適化
+1. **オートコンプリート機能** 🔥 - 入力中にメニュー候補をリアルタイム表示
+2. **検索履歴機能** 🔥 - 過去の検索クエリを再利用可能に
+3. **検索結果ハイライト** 🟡 - 検索キーワードを結果内で視覚的に強調
+4. **フィルターUI改善** 🟡 - アニメーション強化とモバイル体験向上
 
-### スケジュール
+**Phase 6に移動:**
+- ~~人気メニューサジェスト~~ → 優先度を下げて後続フェーズで実装
 
-- **Phase 5.1**: オートコンプリート実装（3日）
+### スケジュール（改訂版）
+
+- **Phase 5.1**: オートコンプリート実装（4日）
 - **Phase 5.2**: 検索履歴機能（2日）
 - **Phase 5.3**: 検索結果ハイライト（2日）
-- **Phase 5.4**: 人気メニュー機能（3日）
-- **Phase 5.5**: フィルターUI改善（2日）
-- **Phase 5.6**: テスト・デバッグ（2日）
+- **Phase 5.4**: フィルターUI改善（2日）
 
-**合計**: 約2週間（実働14日）
+**合計**: 約1.5週間（実働10日）
 
 ---
 
-## 🔍 現状分析
+## 🔍 現状分析（実装済み機能）
 
-### 完了済み機能（Phase 1-4.5）
+### ✅ 完了済み機能（Phase 1-4.5）
 
-#### ✅ Phase 4.5: お気に入り機能
-- お気に入り追加/削除（localStorage完結型）
-- お気に入り一覧ページ（ソート機能付き）
-- エクスポート/インポート機能
-- 完全レスポンシブデザイン（1列/2列/3-5列グリッド）
-- E2Eテスト20件全パス
+#### **Phase 4.5: お気に入り機能（完全実装済み）**
+- ✅ お気に入り追加/削除（localStorage完結型）
+- ✅ お気に入り一覧ページ（ソート機能付き）
+- ✅ エクスポート/インポート機能
+- ✅ 完全レスポンシブデザイン（1列/2列/3-5列グリッド）
+- ✅ E2Eテスト20件全パス
 
-#### ✅ 既存の検索・フィルター機能
-- テキスト検索（メニュー名・説明文の全文検索）
-- タグフィルター（料理種類、ドリンク、キャラクター等）
-- カテゴリフィルター（メインディッシュ、スイーツ等）
-- 価格帯フィルター（¥0～¥17,000スライダー）
-- パークフィルター（ランド/シー）
-- レストランフィルター（102箇所）
-- 販売状況フィルター
+#### **検索機能（基本実装済み）**
+- ✅ `SearchBar.tsx`: テキスト検索コンポーネント
+  - Enterキー対応
+  - クリアボタン付き
+  - URLクエリパラメータと同期
+- ❌ オートコンプリート（未実装）
+- ❌ 検索履歴（未実装）
+- ❌ ハイライト表示（未実装）
+
+#### **フィルター機能（完全実装済み）**
+- ✅ `FilterPanel.tsx`: デスクトップ/モバイル対応
+- ✅ `PriceRangeFilter.tsx`: スライダー式（デバウンス付き）
+- ✅ `ParkFilter.tsx`: ランド/シー選択
+- ✅ `CategoryFilter.tsx`: カテゴリフィルター
+- ✅ `TagFilterGrouped.tsx`: グループ化タグフィルター
+- ✅ `RestaurantFilter.tsx`: **MUI Autocomplete使用**（102件）
+- ✅ `AvailabilityFilter.tsx`: 販売状況フィルター
+- ✅ `AppliedFilters.tsx`: 適用中フィルター表示・個別削除
+
+#### **ソート機能（完全実装済み）**
+- ✅ `SortControl.tsx`: 新着順/価格順/名前順、昇降順切替
+
+#### **カスタムHooks（実装済み）**
+- ✅ `useDebounce.ts`: デバウンス処理（500ms）
+- ✅ `useFavorites.ts`: お気に入り管理
+- ✅ `useMenus.ts`: TanStack Query使用
+
+#### **技術スタック（現在使用中）**
+- React 19.2 + TypeScript 5.9
+- Material-UI 7.3.6（Autocomplete, Drawer等を活用）
+- TanStack Query 5.90（データキャッシュ）
+- React Router 7.11（URLクエリパラメータ同期）
+- Axios 1.13
+- Playwright（E2Eテスト）
 
 ### 現状の課題
 
@@ -431,12 +458,12 @@ frontend/src/
 
 **検索機能:**
 - **Fuse.js**: ファジー検索ライブラリ（v7.0.0）
-- **react-highlight-words**: テキストハイライト（v0.20.0）
 
-**UI/UXライブラリ:**
-- **react-swipeable**: スワイプ操作対応（v7.0.1）
-- **framer-motion**: アニメーション（v11.0.0）
-- **react-slick**: カルーセル実装（v0.30.0）
+**不要なライブラリ（削除）:**
+- ❌ ~~react-highlight-words~~ → 軽量な自作実装で対応
+- ❌ ~~framer-motion~~ → MUIのトランジション機能で代替
+- ❌ ~~react-swipeable~~ → MUI Drawerのデフォルト機能で対応
+- ❌ ~~react-slick~~ → Phase 6に延期（人気メニュー機能）
 
 #### パフォーマンス最適化
 
@@ -446,28 +473,31 @@ frontend/src/
 - cacheTime: 10分
 
 **デバウンス:**
-- 検索入力: 150ms
-- オートコンプリート: 100ms
+- 検索入力: 150ms（既存の`useDebounce`フックを活用）
+- オートコンプリート: 150ms
 
-**仮想スクロール:**
-- 候補リストが10件超の場合に適用
-- react-window 使用
+**参考にする既存実装:**
+- `RestaurantFilter.tsx`: MUI Autocompleteの実装例
+- `useDebounce.ts`: デバウンス処理の実装例
+- `favoritesStorage.ts`: localStorage管理のパターン
 
 ---
 
 ## 📐 実装手順
 
-### Phase 5.1: オートコンプリート実装（3日）
+### Phase 5.1: オートコンプリート実装（4日）
 
-#### Day 1: 基本構造構築
+#### Day 1-2: 基本構造構築
 
 **タスク 5.1.1: 依存関係インストール**
 ```bash
 cd frontend
-npm install fuse.js@7.0.0 react-highlight-words@0.20.0
+npm install fuse.js@7.0.0
 ```
 
 **タスク 5.1.2: SearchAutocomplete コンポーネント作成**
+
+参考: `RestaurantFilter.tsx`のMUI Autocomplete実装をベースにする
 
 ファイル: `frontend/src/components/search/SearchAutocomplete.tsx`
 
@@ -476,6 +506,7 @@ import { useState, useMemo } from 'react';
 import { Autocomplete, TextField, Box, Typography } from '@mui/material';
 import Fuse from 'fuse.js';
 import { useMenus } from '../../hooks/useMenus';
+import { useDebounce } from '../../hooks/useDebounce';
 
 interface AutocompleteOption {
   id: string;
@@ -486,24 +517,25 @@ interface AutocompleteOption {
 
 export function SearchAutocomplete() {
   const [inputValue, setInputValue] = useState('');
-  const { data: menus } = useMenus({ limit: 1000 });
+  const debouncedInput = useDebounce(inputValue, 150);
+  const { data: response } = useMenus({ limit: 1000 });
+  const menus = response?.data || [];
 
   // Fuse.js設定
   const fuse = useMemo(
     () =>
-      new Fuse(menus || [], {
+      new Fuse(menus, {
         keys: ['name', 'description'],
         threshold: 0.3,
-        limit: 10,
       }),
     [menus]
   );
 
   // 検索実行
   const options = useMemo(() => {
-    if (inputValue.length < 2) return [];
-    return fuse.search(inputValue).map((result) => result.item);
-  }, [inputValue, fuse]);
+    if (debouncedInput.length < 2) return [];
+    return fuse.search(debouncedInput).slice(0, 10).map((result) => result.item);
+  }, [debouncedInput, fuse]);
 
   return (
     <Autocomplete
@@ -531,18 +563,18 @@ export function SearchAutocomplete() {
 }
 ```
 
-#### Day 2: キーボード操作とモバイル最適化
+#### Day 3: キーボード操作とモバイル最適化
 
 **タスク 5.1.3: キーボードナビゲーション実装**
-- 上下矢印キーで候補選択
+- 上下矢印キーで候補選択（MUI Autocompleteのデフォルト動作）
 - Enter で検索実行
 - Esc で閉じる
 
 **タスク 5.1.4: モバイル用ドロワー実装**
-- 画面サイズ判定
-- ドロワーアニメーション
+- `useMediaQuery`で画面サイズ判定
+- モバイル時はDrawer形式の候補リスト
 
-#### Day 3: テストとデバッグ
+#### Day 4: テストとデバッグ
 
 **タスク 5.1.5: E2Eテスト作成**
 
@@ -567,9 +599,11 @@ test('オートコンプリート候補が表示される', async ({ page }) => 
 
 ### Phase 5.2: 検索履歴機能（2日）
 
-#### Day 4: localStorage管理実装
+#### Day 5: localStorage管理実装
 
 **タスク 5.2.1: SearchHistoryService 作成**
+
+参考: `favoritesStorage.ts`のlocalStorage管理パターンをベースにする
 
 ファイル: `frontend/src/services/searchHistoryService.ts`
 
@@ -623,7 +657,7 @@ class SearchHistoryService {
 export const searchHistoryService = new SearchHistoryService();
 ```
 
-#### Day 5: UI実装とテスト
+#### Day 6: UI実装とテスト
 
 **タスク 5.2.2: SearchHistory コンポーネント作成**
 **タスク 5.2.3: E2Eテスト作成**
@@ -632,9 +666,11 @@ export const searchHistoryService = new SearchHistoryService();
 
 ### Phase 5.3: 検索結果ハイライト（2日）
 
-#### Day 6: ハイライト関数実装
+#### Day 7: ハイライト関数実装
 
 **タスク 5.3.1: highlightText ユーティリティ作成**
+
+軽量な自作実装（ライブラリ不要）
 
 ファイル: `frontend/src/utils/highlightText.ts`
 
@@ -656,7 +692,7 @@ export function highlightText(
     );
 
     return isMatch ? (
-      <mark key={index} style={{ backgroundColor: '#FFEB3B', color: '#000' }}>
+      <mark key={index} style={{ backgroundColor: '#FFEB3B', color: '#000', fontWeight: 'bold' }}>
         {part}
       </mark>
     ) : (
@@ -666,67 +702,56 @@ export function highlightText(
 }
 ```
 
-#### Day 7: MenuCard統合とテスト
+#### Day 8: MenuCard統合とテスト
 
 **タスク 5.3.2: MenuCard にハイライト適用**
 **タスク 5.3.3: アクセシビリティテスト**
 
 ---
 
-### Phase 5.4: 人気メニュー機能（3日）
+### Phase 5.4: フィルターUI改善（2日）
 
-#### Day 8-9: カルーセル実装
+#### Day 9: アニメーション追加
 
-**タスク 5.4.1: react-slick インストール**
-```bash
-npm install react-slick@0.30.0 @types/react-slick
+**タスク 5.4.1: MUIトランジションを活用**
+
+framer-motionは不要、MUIの組み込みコンポーネントを使用
+
+```typescript
+import { Fade, Collapse, Slide } from '@mui/material';
+
+// フィルター適用時
+<Fade in={isVisible}>
+  <AppliedFilters />
+</Fade>
+
+// フィルターパネル開閉
+<Collapse in={isOpen}>
+  <FilterPanel />
+</Collapse>
 ```
 
-**タスク 5.4.2: PopularMenusCarousel 作成**
+**タスク 5.4.2: FilterPanelを拡張**
+- フィルター選択時のスムーズなトランジション
+- フィルタークリア時のフェードアウト
+- 結果更新時のフェードイン
 
-#### Day 10: 初回ガイド実装
+#### Day 10: 最終調整とテスト
 
-**タスク 5.4.3: WelcomeGuide モーダル作成**
-**タスク 5.4.4: localStorage で表示制御**
+**タスク 5.4.3: モバイル最適化**
+- タップ領域の拡大（最小44x44px）
+- MUI Drawerのデフォルトスワイプ機能を活用
 
----
-
-### Phase 5.5: フィルターUI改善（2日）
-
-#### Day 11: アニメーション追加
-
-**タスク 5.5.1: framer-motion インストール**
-```bash
-npm install framer-motion@11.0.0
-```
-
-**タスク 5.5.2: AnimatedFilterPanel 作成**
-
-#### Day 12: モバイル最適化
-
-**タスク 5.5.3: スワイプ操作実装**
-**タスク 5.5.4: FAB（フローティングボタン）追加**
-
----
-
-### Phase 5.6: テスト・デバッグ（2日）
-
-#### Day 13: 統合テスト
-
-**タスク 5.6.1: 全E2Eテスト実行**
+**タスク 5.4.4: E2Eテスト作成と全体テスト**
 ```bash
 npm run test:e2e
 ```
 
-**タスク 5.6.2: パフォーマンステスト**
-- Lighthouse スコア測定
-- バンドルサイズ確認
+**タスク 5.4.5: Lighthouseスコア測定**
+- Performance: 90以上目標
+- Accessibility: 95以上目標
 
-#### Day 14: 最終調整とデプロイ
-
-**タスク 5.6.3: バグ修正**
-**タスク 5.6.4: ドキュメント更新**
-**タスク 5.6.5: 本番デプロイ**
+**タスク 5.4.6: ドキュメント更新と本番デプロイ**
 
 ---
 
@@ -737,7 +762,7 @@ npm run test:e2e
 #### オートコンプリート（3件）
 1. 候補が表示される
 2. キーボードで操作できる
-3. モバイルドロワーが動作する
+3. 候補を選択すると検索される
 
 #### 検索履歴（3件）
 4. 検索履歴が保存される
@@ -748,9 +773,9 @@ npm run test:e2e
 7. 検索結果がハイライトされる
 8. 複数キーワードがハイライトされる
 
-#### 人気メニュー（2件）
-9. 人気メニューカルーセルが表示される
-10. 初回ガイドが表示される
+#### フィルターUI（2件）
+9. フィルター適用時にアニメーションが動作する
+10. モバイルでフィルタードロワーが正常に動作する
 
 ### パフォーマンステスト
 
@@ -762,26 +787,113 @@ npm run test:e2e
 
 ---
 
-## ⚠️ リスク管理
+## 🚀 Phase 6以降のロードマップ
 
-### 技術的リスク
+### **Phase 6: コンテンツ充実化**（2週間）
 
-#### リスク1: バンドルサイズ増加
-- **影響**: ページ読み込み速度の低下
-- **対策**: Code Splitting、Tree Shaking、lazy loading
-- **軽減策**: Lighthouse で継続監視
+#### 6.1: 人気メニュー機能
+- カルーセル形式で表示（react-slick）
+- 手動選定し10件の人気メニュー
+- 初回訪問ガイドモーダル
 
-#### リスク2: 検索パフォーマンス劣化
-- **影響**: オートコンプリートの応答遅延
-- **対策**: Web Worker でバックグラウンド処理
-- **軽減策**: 候補数を10件に制限
+#### 6.2: メニュー詳細ページ拡張
+- 栄養成分情報表示
+- 関連メニューサジェスト
+- SNSシェアボタン
 
-### スケジュールリスク
+#### 6.3: レストラン詳細ページ
+- レストラン情報ページ作成
+- 営業時間、座席数、特徴
+- メニュー一覧
 
-#### リスク3: 実装の遅延
-- **影響**: リリース日の延期
-- **対策**: 各Phaseの完了判定を厳格に
-- **軽減策**: MVP機能を優先実装
+---
+
+### **Phase 7: データ分析とビジュアライゼーション**（2週間）
+
+#### 7.1: 統計ダッシュボード
+- 価格分布グラフ（Chart.js）
+- カテゴリ別メニュー数
+- パーク別比較
+
+#### 7.2: トレンド分析
+- 人気メニューランキング
+- 価格帯別人気度
+- 季節限定メニューのタイムライン
+
+#### 7.3: データエクスポート機能
+- CSV/JSONダウンロード
+- 統計レポート生成
+
+---
+
+### **Phase 8: マップ機能**（3週間）
+
+#### 8.1: パーク内マップ表示
+- Google Maps API統合
+- レストラン位置表示
+- 現在地からのルート案内
+
+#### 8.2: インタラクティブマップ
+- マーカークリックでレストラン情報表示
+- フィルター連動
+- エリア別絞り込み
+
+---
+
+### **Phase 9: ユーザー体験向上**（2週間）
+
+#### 9.1: ダークモード対応
+- MUIテーマ切替
+- localStorage保存
+- システム設定連動
+
+#### 9.2: 多言語対応
+- i18n導入（react-i18next）
+- 英語版対応
+- 言語切替UI
+
+#### 9.3: アクセシビリティ向上
+- スクリーンリーダー対応強化
+- キーボードナビゲーション改善
+- WCAG 2.1 AAA準拠
+
+---
+
+### **Phase 10: パフォーマンス最適化**（1週間）
+
+#### 10.1: バンドルサイズ削減
+- Code Splitting
+- Tree Shaking
+- Dynamic Import
+
+#### 10.2: 画像最適化
+- WebP対応
+- Lazy Loading
+- Responsive Images
+
+#### 10.3: キャッシュ戦略
+- Service Worker導入
+- PWA対応
+- オフライン機能
+
+---
+
+## 📈 長期ロードマップ（Phase 11以降）
+
+### **Phase 11: ユーザー機能**
+- ユーザー登録・ログイン（Firebase Auth）
+- お気に入りの同期
+- レビュー・評価機能
+
+### **Phase 12: ソーシャル機能**
+- メニューへのコメント
+- ユーザー間でお気に入り共有
+- フォロー機能
+
+### **Phase 13: AI機能**
+- メニューレコメンドエンジン
+- 画像認識でメニュー検索
+- チャットボットサポート
 
 ---
 
