@@ -87,6 +87,7 @@ export const MenuCard = memo<MenuCardProps>(({ menu, onClick }) => {
           height="200"
           image={imageUrl}
           alt={menu.name}
+          loading="lazy"
           sx={{ objectFit: 'cover' }}
         />
       ) : (

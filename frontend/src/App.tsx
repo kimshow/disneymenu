@@ -1,11 +1,28 @@
 /**
  * Disney Menu App
  */
+import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { ThemeProvider, createTheme, CssBaseline, Box, CircularProgress } from '@mui/material';
 import { FavoritesProvider } from './contexts/FavoritesContext';
-import { MenuListPage } from './pages/MenuListPage';
-import { FavoritesPage } from './pages/FavoritesPage';
+
+// Code Splitting: 各ページを遅延読み込み
+const MenuListPage = lazy(() => import('./pages/MenuListPage').then(m => ({ default: m.MenuListPage })));
+const FavoritesPage = lazy(() => import('./pages/FavoritesPage').then(m => ({ default: m.FavoritesPage })));
+
+// ローディング表示コンポーネント
+const LoadingFallback = () => (
+  <Box 
+    display="flex" 
+    justifyContent="center" 
+    alignItems="center" 
+    minHeight="60vh"
+    role="progressbar"
+    aria-label="ページを読み込んでいます"
+  >
+    <CircularProgress />
+  </Box>
+);
 
 const theme = createTheme({
   palette: {
@@ -34,11 +51,13 @@ function App() {
     <FavoritesProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Routes>
-          <Route path="/" element={<MenuListPage />} />
-          <Route path="/menus" element={<MenuListPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
-        </Routes>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            <Route path="/" element={<MenuListPage />} />
+            <Route path="/menus" element={<MenuListPage />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
+          </Routes>
+        </Suspense>
       </ThemeProvider>
     </FavoritesProvider>
   );

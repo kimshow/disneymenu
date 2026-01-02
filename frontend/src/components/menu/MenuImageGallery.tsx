@@ -42,6 +42,7 @@ export function MenuImageGallery({ images, name }: MenuImageGalleryProps) {
         component="img"
         src={images[0]}
         alt={name}
+        loading="lazy"
         sx={{
           width: '100%',
           height: 400,
@@ -58,6 +59,7 @@ export function MenuImageGallery({ images, name }: MenuImageGalleryProps) {
         component="img"
         src={images[activeStep]}
         alt={`${name} - ${activeStep + 1}`}
+        loading="lazy"
         sx={{
           width: '100%',
           height: 400,
