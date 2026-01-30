@@ -147,17 +147,48 @@ async def scrape_all_menus(
 
 def save_menus(menus: List[Dict], output_path: str = "data/menus.json"):
     """
-    メニューデータをJSONに保存
+    メニューデータをJSONに保存（既存データとマージ）
 
     Args:
-        menus: メニューデータのリスト
+        menus: 新規メニューデータのリスト
         output_path: 出力先パス
     """
     output_file = Path(output_path)
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
+    # 既存データを読み込み
+    existing_menus = {}
+    if output_file.exists():
+        try:
+            with open(output_file, "r", encoding="utf-8") as f:
+                existing_data = json.load(f)
+                existing_menus = {menu["id"]: menu for menu in existing_data}
+                print(f"\n📂 Loaded {len(existing_menus)} existing menus")
+        except Exception as e:
+            print(f"\n⚠️  Failed to load existing data: {e}")
+
+    # 新規データでマージ（既存のcategoryやtagsを保持）
+    merged_count = 0
+    new_count = 0
+    for menu in menus:
+        menu_id = menu["id"]
+        if menu_id in existing_menus:
+            # 既存データのcategoryとcustom fieldsを保持
+            old_menu = existing_menus[menu_id]
+            if "category" in old_menu:
+                menu["category"] = old_menu["category"]
+            merged_count += 1
+        else:
+            new_count += 1
+        existing_menus[menu_id] = menu
+
+    print(f"📊 Merge stats: {new_count} new, {merged_count} updated")
+
+    # ソートして保存
+    all_menus = sorted(existing_menus.values(), key=lambda x: int(x["id"]))
+
     with open(output_file, "w", encoding="utf-8") as f:
-        json.dump(menus, f, ensure_ascii=False, indent=2)
+        json.dump(all_menus, f, ensure_ascii=False, indent=2)
 
     print(f"\n✓ Saved {len(menus)} menus to {output_path}")
 
